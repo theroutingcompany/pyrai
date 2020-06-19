@@ -2,7 +2,7 @@ import requests
 import location
 import user_key
 
-def get_vehicle_info(location, id, user_key):
+def make_vehicle_offline(location, id, user_key):
     payload = {'location': location.__dict__,\
         'id': id,\
         'user_key': user_key.__dict__}
