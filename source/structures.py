@@ -55,6 +55,9 @@ class Vehicle():
             d.get('req_ids'),\
             d.get('events'))
 
+    def __str__(self):
+        return str(self.__dict__)
+
 class Request():
     def __init__(self, pickup, dropoff, request_time, req_id, veh_id, load, assigned):
         self.pickup = pickup

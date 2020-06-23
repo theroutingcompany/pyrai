@@ -50,10 +50,13 @@ if __name__ == '__main__':
     req_id = 30
     event = "progress"
     query = update_vehicle.UpdateVehicleQuery(id, location, direction, event_time, req_id, event, USER_KEY)
-    r5 = query.run()
-    print(r5)
+    r6 = query.run()
+    print(r6)
 
     # get vehicle info
+    query = get_vehicle_info.GetVehicleInfoQuery(API_KEY, USER_KEY.fleet_key, 42)
+    r7=query.run()
+    print(r7)
 
     # get request info
 

@@ -26,17 +26,18 @@ class UpdateVehicleQuery():
         r = requests.post('http://api.routable.ai/dispatcher/vehicle/update',\
             data = json.dumps(payload))
         if r.status_code == 200:
-            return UpdateVehicleResponse(r.json().get('veh_id'),\
-                Location(r.json().get('location').get('lat'),\
-                    r.json().get('location').get('lng')),\
-                r.json().get('assigned'),\
-                r.json().get('req_ids'),\
-                [Event(e.get('req_id'),\
-                    Location(e.get('location').get('lat'),\
-                        e.get('location').get('lng')),\
-                    isoparse(e.get('time')),\
-                    e.get('event')\
-                    ) for e in r.json().get('events')])
+            return Vehicle.fromdict(r.json())
+            # return UpdateVehicleResponse(r.json().get('veh_id'),\
+            #     Location(r.json().get('location').get('lat'),\
+            #         r.json().get('location').get('lng')),\
+            #     r.json().get('assigned'),\
+            #     r.json().get('req_ids'),\
+            #     [Event(e.get('req_id'),\
+            #         Location(e.get('location').get('lat'),\
+            #             e.get('location').get('lng')),\
+            #         isoparse(e.get('time')),\
+            #         e.get('event')\
+            #         ) for e in r.json().get('events')])
         else:
             return StatusResponse(status = r.json().get('status'),\
                 error = r.json().get('error'))
