@@ -1,6 +1,5 @@
 import requests
 import datetime
-import structures
 import json
 
 def add_request(id, pickup, dropoff, load, request_time, user_key):

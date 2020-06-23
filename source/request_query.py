@@ -1,5 +1,4 @@
-from all_api_calls import *
-from structures import *
+import requests
 
 class RequestQuery():
     def __init__(self, api_key):

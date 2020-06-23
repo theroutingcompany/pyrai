@@ -1,5 +1,4 @@
 import requests
-import fleet_params
 
 def create_live_fleet(api_key, params):
     payload = {'api_key': api_key,\

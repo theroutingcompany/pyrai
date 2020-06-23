@@ -1,7 +1,4 @@
 import requests
-import location
-import user_key
-import event
 import datetime
 
 def update_vehicle(id, location, direction, event_time, req_id, event, user_key):

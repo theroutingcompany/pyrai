@@ -1,6 +1,4 @@
 import requests
-import location
-import user_key
 
 def make_vehicle_online(location, id, capacity, user_key):
     payload = {'location': location.__dict__,\
