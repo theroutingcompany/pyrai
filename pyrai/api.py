@@ -6,6 +6,8 @@ from dateutil.parser import *
 
 class Defaults:
     BASE_URL = "http://api.routable.ai"
+    DEFAULT_CAPACITY = 6
+    DEFAULT_DIRECTION = 0
 
 
 class Endpoints:
@@ -62,7 +64,7 @@ class Pyrai(object):
         resp = r.json()
 
         if r.status_code == 200:
-            return Fleet(api_key=self.api_key, fleet_key=resp.get('fleet_key'))
+            return Fleet(pyrai=self, fleet_key=resp.get('fleet_key'))
         else:
             return StatusResponse(resp=resp)
 
@@ -92,17 +94,17 @@ class Pyrai(object):
     
 
 class Fleet(object):
-    def __init__(self, api_key, fleet_key, base_url=Defaults.BASE_URL):
-        self.api_key = api_key
+    def __init__(self, pyrai, fleet_key):
+        self.api_key = pyrai.api_key
         self.fleet_key = fleet_key
-        self.base_url = base_url
+        self.pyrai = pyrai
     
     @property
     def user_key(self):
         return UserKey(self.api_key, self.fleet_key)
 
     def build_url(self, endpoint):
-        return build_url(self.base_url, endpoint)
+        return self.pyrai.build_url(self.base_url, endpoint)
     
     def make_vehicle_online(self, vid, location, capacity):
         url = self.build_url(Endpoints.MAKE_VEHICLE_ONLINE)
@@ -127,7 +129,7 @@ class Fleet(object):
         resp = r.json()
         return StatusResponse(resp = resp)
     
-    def update_vehicle(self, vid, location, direction, event_time, req_id, event, users):
+    def update_vehicle(self, vid, location, direction, event_time, req_id, event):
         url = self.build_url(Endpoints.UPDATE_VEHICLE)
         payload = {
             'id': vid,
@@ -232,8 +234,8 @@ def build_url(base_url, endpoint):
     return urlparse.urljoin(base_url, endpoint)
 
 class Vehicle():
-    def __init__(self, user_key, veh_id, location, assigned, req_ids, events):
-        self.user_key = user_key
+    def __init__(self, fleet, veh_id, location, assigned, req_ids, events):
+        self.fleet = fleet
         self.veh_id = veh_id
         self.location = location
         self.assigned = assigned
@@ -241,9 +243,9 @@ class Vehicle():
         self.events = events
     
     @staticmethod
-    def fromdict(user_key, d):
+    def fromdict(fleet, d):
         return Vehicle(
-            user_key,
+            fleet,
             d.get('veh_id'),
             Location.fromdict(d.get('location')),
             d.get('assigned'),
@@ -251,17 +253,48 @@ class Vehicle():
             d.get('events')
         )
 
-    def make_vehicle_online(self):
-        pass
+    def make_online(self, location=None, capacity=Defaults.DEFAULT_CAPACITY):
 
-    def make_vehicle_offline(self):
-        pass    
+        if location is None:
+            location = self.location
 
-    def update_vehicle(self):
-        pass
+        return self.fleet.make_vehicle_online(self.veh_id, location, capacity)
 
-    def remove_vehicle(self):
-        pass
+    def make_offline(self, location=None):
+
+        if location is None:
+            location = self.location
+
+        return self.fleet.make_vehicle_offline(self.veh_id, location)
+
+    def update(self, 
+        req_id,
+        event,
+        location=None, 
+        direction=Defaults.DEFAULT_DIRECTION, 
+        event_time=None):
+        
+        if location is None:
+            location = self.location
+        
+        if event_time is None:
+            event_time = datetime.datetime.now()
+
+        return self.fleet.update_vehicle(
+            self.veh_id,
+            location,
+            direction,
+            event_time,
+            req_id,
+            event
+        )
+
+    def remove(self, location=None):
+        
+        if location is None:
+            location = self.location
+
+        return self.fleet.remove_vehicle(self.veh_id, location)
 
     def __str__(self):
         return str(self.__dict__)
@@ -287,8 +320,8 @@ class Location(object):
 
 
 class Request():
-    def __init__(self, user_key, pickup, dropoff, request_time, req_id, veh_id, load, assigned):
-        self.user_key = user_key
+    def __init__(self, fleet, pickup, dropoff, request_time, req_id, veh_id, load, assigned):
+        self.fleet = fleet
         self.pickup = pickup
         self.dropoff = dropoff
         self.request_time = request_time
@@ -298,9 +331,9 @@ class Request():
         self.assigned = assigned
 
     @staticmethod
-    def fromdict(user_key, d):
+    def fromdict(fleet, d):
         return Request(
-            user_key,
+            fleet,
             Location.fromdict(d.get('pickup')),
             Location.fromdict(d.get('dropoff')),
             isoparse(d.get('request_time')),
