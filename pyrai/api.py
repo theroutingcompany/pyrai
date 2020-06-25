@@ -104,7 +104,7 @@ class Fleet(object):
         return UserKey(self.api_key, self.fleet_key)
 
     def build_url(self, endpoint):
-        return self.pyrai.build_url(self.base_url, endpoint)
+        return self.pyrai.build_url(self.pyrai.base_url, endpoint)
     
     def make_vehicle_online(self, vid, location, capacity):
         url = self.build_url(Endpoints.MAKE_VEHICLE_ONLINE)
