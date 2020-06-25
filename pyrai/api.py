@@ -1,4 +1,4 @@
-import urlparse
+import urllib.parse
 import requests
 import datetime
 import json
@@ -30,6 +30,14 @@ class FleetParams(object):
         self.unlocked_window = unlocked_window
         self.close_pickup_window = close_pickup_window
 
+    def todict(self):
+        return {
+            'max_wait': self.max_wait,
+            'max_delay': self.max_delay,
+            'unlocked_window': self.unlocked_window,
+            'close_pickup_window': self.close_pickup_window
+        }
+
 
 class Pyrai(object):
     """
@@ -44,14 +52,22 @@ class Pyrai(object):
         self.base_url = url
     
     def build_url(self, endpoint):
-        return build_url(self.base_url, endpoint)
+        return urllib.parse.urljoin(self.base_url, endpoint)
+
+    def todict(self):
+        return {
+            'api_key': self.api_key
+        }
+
+    def __str__(self):
+        return str(self.todict())
 
     def __create_fleet(
         self, endpoint,
         max_wait="3m", max_delay="6m",
         unlocked_window="2m", close_pickup_window="1s"
     ):
-        url = self.build_url(endpoint = endpoint)
+        url = self.build_url(endpoint)
         params = FleetParams(
             max_wait=max_wait,
             max_delay=max_delay,
@@ -59,7 +75,7 @@ class Pyrai(object):
             close_pickup_window=close_pickup_window
         )
 
-        payload = {"api_key": self.api_key, "params": dict(params)}
+        payload = {"api_key": self.api_key, "params": params.todict()}
         r = requests.post(url, data=json.dumps(payload))
         resp = r.json()
 
@@ -103,16 +119,25 @@ class Fleet(object):
     def user_key(self):
         return UserKey(self.api_key, self.fleet_key)
 
+    def todict(self):
+        return {
+            'api_key': self.api_key,
+            'fleet_key': self.fleet_key
+        }
+
+    def __str__(self):
+        return str(self.todict())
+
     def build_url(self, endpoint):
-        return self.pyrai.build_url(self.base_url, endpoint)
+        return self.pyrai.build_url(endpoint)
     
     def make_vehicle_online(self, vid, location, capacity):
         url = self.build_url(Endpoints.MAKE_VEHICLE_ONLINE)
         payload = {
-            "location": dict(location),
+            "location": location.todict(),
             "id": vid,
             'capacity': capacity,
-            'user_key': dict(self.user_key)
+            'user_key': self.user_key.todict()
         }
         r = requests.post(url, data=json.dumps(payload))
         resp = r.json()
@@ -121,9 +146,9 @@ class Fleet(object):
     def make_vehicle_offline(self, vid, location):
         url = self.build_url(Endpoints.MAKE_VEHICLE_OFFLINE)
         payload = {
-            'location': dict(location),
+            'location': location.todict(),
             'id': vid,
-            'user_key': dict(self.user_key)
+            'user_key': self.user_key.todict()
         }
         r = requests.post(url, data = json.dumps(payload))
         resp = r.json()
@@ -133,12 +158,12 @@ class Fleet(object):
         url = self.build_url(Endpoints.UPDATE_VEHICLE)
         payload = {
             'id': vid,
-            'location': dict(location),
+            'location': location.todict(),
             'direction': direction,
             'event_time': to_rfc3339(event_time),
             'req_id': req_id,
             'event': event,
-            'user_key': dict(self.user_key)
+            'user_key': self.user_key.todict()
         }
         r = requests.post(url, data = json.dumps(payload))
         resp = r.json()
@@ -151,9 +176,9 @@ class Fleet(object):
     def remove_vehicle(self, vid, location):
         url = self.build_url(Endpoints.REMOVE_VEHICLE)
         payload = {
-            'location': dict(location),
+            'location': location.todict(),
             'id': vid,
-            'user_key': dict(self.user_key)
+            'user_key': self.user_key.todict()
         }
         r = requests.post(url, data = json.dumps(payload))
         resp = r.json()
@@ -182,11 +207,11 @@ class Fleet(object):
         url = self.build_url(Endpoints.ADD_REQUEST)
         payload = {
             'id': rid,
-            'pickup': dict(pickup),
-            'dropoff': dict(dropoff),
+            'pickup': pickup.todict(),
+            'dropoff': dropoff.todict(),
             'load': load,
             'request_time': to_rfc3339(request_time),
-            'user_key': dict(self.user_key)
+            'user_key': self.user_key.todict()
         }
 
         r = requests.post(url, data=json.dumps(payload))
@@ -198,7 +223,7 @@ class Fleet(object):
         payload = {
             'id': rid,
             'event_time': to_rfc3339(event_time),
-            'user_key': dict(self.user_key)
+            'user_key': self.user_key.todict()
         }
 
         r = requests.post(url, data = payload)
@@ -230,8 +255,6 @@ class Fleet(object):
 def to_rfc3339(dt):
     return dt.astimezone(datetime.timezone.utc).isoformat()
 
-def build_url(base_url, endpoint):
-    return urlparse.urljoin(base_url, endpoint)
 
 class Vehicle():
     def __init__(self, fleet, veh_id, location, assigned, req_ids, events):
@@ -250,8 +273,21 @@ class Vehicle():
             Location.fromdict(d.get('location')),
             d.get('assigned'),
             d.get('req_ids'),
-            d.get('events')
+            [Event.fromdict(e) for e in d.get('events')]
         )
+
+    def todict(self):
+        return {
+            'fleet': self.fleet.todict(),
+            'veh_id': self.veh_id,
+            'location': self.location.todict(),
+            'assigned': self.assigned,
+            'req_ids': self.req_ids,
+            'events': [e.todict() for e in self.events]
+        }
+
+    def __str__(self):
+        return str(self.todict())
 
     def make_online(self, location=None, capacity=Defaults.DEFAULT_CAPACITY):
 
@@ -296,14 +332,20 @@ class Vehicle():
 
         return self.fleet.remove_vehicle(self.veh_id, location)
 
-    def __str__(self):
-        return str(self.__dict__)
-
 
 class UserKey(object):
     def __init__(self, api_key, fleet_key):
         self.api_key = api_key
         self.fleet_key = fleet_key
+    
+    def todict(self):
+        return {
+            'api_key': self.api_key,
+            'fleet_key': self.fleet_key
+        }
+
+    def __str__(self):
+        return str(self.todict())
 
 
 class Location(object):
@@ -315,8 +357,14 @@ class Location(object):
     def fromdict(d):
         return Location(d.get('lat'), d.get('lng'))
 
+    def todict(self):
+        return {
+            'lat': self.lat,
+            'lng': self.lng
+        }
+
     def __str__(self):
-        return str(self.__dict__)
+        return str(self.todict())
 
 
 class Request():
@@ -342,6 +390,48 @@ class Request():
             d.get('load'),
             d.get('assigned')
         )
+    
+    def todict(self):
+        return {
+            'fleet': self.fleet.todict(),
+            'pickup': self.pickup.todict(),
+            'dropoff': self.dropoff.todict(),
+            'request_time': isoparse(self.request_time),
+            'req_id': self.req_id,
+            'veh_id': self.veh_id,
+            'load': self.load,
+            'assigned': self.assigned
+        }
+
+    def __str__(self):
+        return str(self.todict())
+
+class Event(object):
+    def __init__(self, req_id, location, time, event):
+        self.req_id = req_id
+        self.location = location
+        self.time = time
+        self.event = event
+
+    @staticmethod
+    def fromdict(d):
+        return Event(
+            d.get('req_id'),
+            Location.fromdict(d.get('location')),
+            isoparse(d.get('time')),
+            d.get('event')
+        )
+
+    def todict(self):
+        return {
+            'req_id': self.req_id,
+            'location': self.location.todict(),
+            'time': isoparse(self.time),
+            'event': self.event
+        }
+    
+    def __str__(self):
+        return str(self.todict())
 
 class Notification():
     def __init__(self, message, data):
@@ -354,6 +444,15 @@ class Notification():
             d.get('message'),
             NotificationData.fromdict(d.get('data'))
         )
+
+    def todict(self):
+        return {
+            'message': self.message,
+            'data': self.data.todict()
+        }
+
+    def __str__(self):
+        return str(self.todict())
 
 class NotificationData():
     def __init__(self, veh_id, req_id, waiting_duration, assigned):
@@ -371,6 +470,17 @@ class NotificationData():
             d.get('assigned')
         )
 
+    def todict(self):
+        return {
+            'veh_id': self.veh_id,
+            'req_id': self.req_id,
+            'waiting_duration': self.waiting_duration,
+            'assigned': self.assigned
+        }
+
+    def __str__(self):
+        return str(self.todict())
+
 class StatusResponse(object):
     def __init__(self, resp=None, status=None, error=None):
         if resp is not None:
@@ -380,8 +490,14 @@ class StatusResponse(object):
             self.status = status
             self.error = error
 
+    def todict(self):
+        return {
+            'status': self.status,
+            'error': self.error
+        }
+
     def __str__(self):
-        return str(self.__dict__)
+        return str(self.todict())
 
 
 class VehicleAssignments(object):
@@ -390,7 +506,17 @@ class VehicleAssignments(object):
         self.requests = requests
         self.notifications = notifications
 
-rai = Pyrai(api_key="abcd-efgh")
-sim = rai.create_sim_fleet(max_wait="3m", max_delay="6m",)
-veh = sim.make_vehicle_online(id=1, location=Location(12.1, 31.3), capacity=10)
-sim.make_vehicle_offline(veh)
+    def todict(self):
+        return {
+            'vehs': [v.todict() for v in self.vehs], 
+            'requests': [r.todict() for r in self.requests],
+            'notifications': [n.todict() for n in self.notifications]
+        }
+
+    def __str__(self):
+        return str(self.todict())
+
+# rai = Pyrai(api_key="abcd-efgh")
+# sim = rai.create_sim_fleet(max_wait="3m", max_delay="6m",)
+# veh = sim.make_vehicle_online(id=1, location=Location(12.1, 31.3), capacity=10)
+# sim.make_vehicle_offline(veh)
