@@ -59,7 +59,7 @@ class Pyrai(object):
             close_pickup_window=close_pickup_window
         )
 
-        payload = {"api_key": self.api_key, "params": params.__dict__}
+        payload = {"api_key": self.api_key, "params": params.todict()}
         r = requests.post(url, data=json.dumps(payload))
         resp = r.json()
 
@@ -109,10 +109,10 @@ class Fleet(object):
     def make_vehicle_online(self, vid, location, capacity):
         url = self.build_url(Endpoints.MAKE_VEHICLE_ONLINE)
         payload = {
-            "location": dict(location),
+            "location": location.todict(),
             "id": vid,
             'capacity': capacity,
-            'user_key': dict(self.user_key)
+            'user_key': self.user_key.todict()
         }
         r = requests.post(url, data=json.dumps(payload))
         resp = r.json()
@@ -121,9 +121,9 @@ class Fleet(object):
     def make_vehicle_offline(self, vid, location):
         url = self.build_url(Endpoints.MAKE_VEHICLE_OFFLINE)
         payload = {
-            'location': dict(location),
+            'location': location.todict(),
             'id': vid,
-            'user_key': dict(self.user_key)
+            'user_key': self.user_key.todict()
         }
         r = requests.post(url, data = json.dumps(payload))
         resp = r.json()
@@ -133,12 +133,12 @@ class Fleet(object):
         url = self.build_url(Endpoints.UPDATE_VEHICLE)
         payload = {
             'id': vid,
-            'location': dict(location),
+            'location': location.todict(),
             'direction': direction,
             'event_time': to_rfc3339(event_time),
             'req_id': req_id,
             'event': event,
-            'user_key': dict(self.user_key)
+            'user_key': self.user_key.todict()
         }
         r = requests.post(url, data = json.dumps(payload))
         resp = r.json()
@@ -151,9 +151,9 @@ class Fleet(object):
     def remove_vehicle(self, vid, location):
         url = self.build_url(Endpoints.REMOVE_VEHICLE)
         payload = {
-            'location': dict(location),
+            'location': location.todict(),
             'id': vid,
-            'user_key': dict(self.user_key)
+            'user_key': self.user_key.todict()
         }
         r = requests.post(url, data = json.dumps(payload))
         resp = r.json()
@@ -182,11 +182,11 @@ class Fleet(object):
         url = self.build_url(Endpoints.ADD_REQUEST)
         payload = {
             'id': rid,
-            'pickup': dict(pickup),
-            'dropoff': dict(dropoff),
+            'pickup': pickup.todict(),
+            'dropoff': dropoff.todict(),
             'load': load,
             'request_time': to_rfc3339(request_time),
-            'user_key': dict(self.user_key)
+            'user_key': self.user_key.todict()
         }
 
         r = requests.post(url, data=json.dumps(payload))
@@ -198,7 +198,7 @@ class Fleet(object):
         payload = {
             'id': rid,
             'event_time': to_rfc3339(event_time),
-            'user_key': dict(self.user_key)
+            'user_key': self.user_key.todict()
         }
 
         r = requests.post(url, data = payload)
