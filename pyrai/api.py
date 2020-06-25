@@ -54,6 +54,14 @@ class Pyrai(object):
     def build_url(self, endpoint):
         return urllib.parse.urljoin(self.base_url, endpoint)
 
+    def todict(self):
+        return {
+            'api_key': self.api_key
+        }
+
+    def __str__(self):
+        return str(self.todict())
+
     def __create_fleet(
         self, endpoint,
         max_wait="3m", max_delay="6m",
@@ -110,6 +118,15 @@ class Fleet(object):
     @property
     def user_key(self):
         return UserKey(self.api_key, self.fleet_key)
+
+    def todict(self):
+        return {
+            'api_key': self.api_key,
+            'fleet_key': self.fleet_key
+        }
+
+    def __str__(self):
+        return str(self.todict())
 
     def build_url(self, endpoint):
         return self.pyrai.build_url(endpoint)
@@ -269,6 +286,9 @@ class Vehicle():
             'events': [e.todict() for e in self.events]
         }
 
+    def __str__(self):
+        return str(self.todict())
+
     def make_online(self, location=None, capacity=Defaults.DEFAULT_CAPACITY):
 
         if location is None:
@@ -312,9 +332,6 @@ class Vehicle():
 
         return self.fleet.remove_vehicle(self.veh_id, location)
 
-    def __str__(self):
-        return str(self.__dict__)
-
 
 class UserKey(object):
     def __init__(self, api_key, fleet_key):
@@ -326,6 +343,9 @@ class UserKey(object):
             'api_key': self.api_key,
             'fleet_key': self.fleet_key
         }
+
+    def __str__(self):
+        return str(self.todict())
 
 
 class Location(object):
@@ -344,7 +364,7 @@ class Location(object):
         }
 
     def __str__(self):
-        return str(self.__dict__)
+        return str(self.todict())
 
 
 class Request():
@@ -383,6 +403,9 @@ class Request():
             'assigned': self.assigned
         }
 
+    def __str__(self):
+        return str(self.todict())
+
 class Event(object):
     def __init__(self, req_id, location, time, event):
         self.req_id = req_id
@@ -406,6 +429,9 @@ class Event(object):
             'time': isoparse(self.time),
             'event': self.event
         }
+    
+    def __str__(self):
+        return str(self.todict())
 
 class Notification():
     def __init__(self, message, data):
@@ -418,6 +444,15 @@ class Notification():
             d.get('message'),
             NotificationData.fromdict(d.get('data'))
         )
+
+    def todict(self):
+        return {
+            'message': self.message,
+            'data': self.data.todict()
+        }
+
+    def __str__(self):
+        return str(self.todict())
 
 class NotificationData():
     def __init__(self, veh_id, req_id, waiting_duration, assigned):
@@ -435,6 +470,17 @@ class NotificationData():
             d.get('assigned')
         )
 
+    def todict(self):
+        return {
+            'veh_id': self.veh_id,
+            'req_id': self.req_id,
+            'waiting_duration': self.waiting_duration,
+            'assigned': self.assigned
+        }
+
+    def __str__(self):
+        return str(self.todict())
+
 class StatusResponse(object):
     def __init__(self, resp=None, status=None, error=None):
         if resp is not None:
@@ -444,8 +490,14 @@ class StatusResponse(object):
             self.status = status
             self.error = error
 
+    def todict(self):
+        return {
+            'status': self.status,
+            'error': self.error
+        }
+
     def __str__(self):
-        return str(self.__dict__)
+        return str(self.todict())
 
 
 class VehicleAssignments(object):
@@ -454,7 +506,17 @@ class VehicleAssignments(object):
         self.requests = requests
         self.notifications = notifications
 
-rai = Pyrai(api_key="abcd-efgh")
-sim = rai.create_sim_fleet(max_wait="3m", max_delay="6m",)
-veh = sim.make_vehicle_online(id=1, location=Location(12.1, 31.3), capacity=10)
-sim.make_vehicle_offline(veh)
+    def todict(self):
+        return {
+            'vehs': [v.todict() for v in self.vehs], 
+            'requests': [r.todict() for r in self.requests],
+            'notifications': [n.todict() for n in self.notifications]
+        }
+
+    def __str__(self):
+        return str(self.todict())
+
+# rai = Pyrai(api_key="abcd-efgh")
+# sim = rai.create_sim_fleet(max_wait="3m", max_delay="6m",)
+# veh = sim.make_vehicle_online(id=1, location=Location(12.1, 31.3), capacity=10)
+# sim.make_vehicle_offline(veh)
