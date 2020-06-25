@@ -30,6 +30,14 @@ class FleetParams(object):
         self.unlocked_window = unlocked_window
         self.close_pickup_window = close_pickup_window
 
+    def todict():
+        return {
+            'max_wait': self.max_wait,
+            'max_delay': self.max_delay,
+            'unlocked_window': self.unlocked_window,
+            'close_pickup_window': close_pickup_window
+        }
+
 
 class Pyrai(object):
     """
