@@ -231,7 +231,7 @@ class Fleet(object):
         return StatusResponse(resp = resp)
 
 
-    def compute_assignments(self, current_time):
+    def get_assignments(self, current_time):
         url = self.build_url(Endpoints.COMPUTE_ASSIGNMENTS)
         payload = {
             'api_key': self.api_key,
@@ -239,7 +239,7 @@ class Fleet(object):
             'current_time': to_rfc3339(current_time)
         }
 
-        r = requests.post(url, data = payload)
+        r = requests.get(url, data=payload)
         resp = r.json()
 
         if r.status_code == 200:
