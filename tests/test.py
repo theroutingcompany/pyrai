@@ -1,5 +1,5 @@
 import unittest
-from api import *
+from pyrai.api import *
 
 class TestAPICalls(unittest.TestCase):
 
@@ -31,13 +31,33 @@ class TestAPICalls(unittest.TestCase):
         self.assertNotEqual(self.bad_live_fleet.status, 0)
 
     def test_make_vehicle_online(self):
+        resp = self.sim_fleet.make_vehicle_online(1, Location(80, -80), 5)
+        self.assertEqual(resp.status, 0)
+    
+    def test_get_vehicle_info(self):
+        TestAPICalls.veh = self.sim_fleet.get_vehicle_info(1)
+        self.assertEqual(self.veh.fleet, self.sim_fleet)
+        self.assertEqual(self.veh.veh_id, 1)
+
+    def test_update_vehicle(self):
+        TestAPICalls.updated_veh = self.veh.update("unassigned", location=Location(50, 50))
+        self.assertEqual(self.updated_veh.fleet, self.veh.fleet)
+        self.assertEqual(self.updated_veh.veh_id, self.veh.veh_id)
+        self.assertNotEqual(self.updated_veh.location, self.veh.location)
+
+    def test_add_request(self):
         pass
 
-def suite():
+
+
+def suite(): # ensure the tests run in order
     suite = unittest.TestSuite()
     suite.addTest(TestAPICalls('test_create_pyrai'))
     suite.addTest(TestAPICalls('test_create_sim_fleet'))
     suite.addTest(TestAPICalls('test_create_live_fleet'))
+    suite.addTest(TestAPICalls('test_make_vehicle_online'))
+    suite.addTest(TestAPICalls('test_get_vehicle_info'))
+    suite.addTest(TestAPICalls('test_update_vehicle'))
     return suite
 
 if __name__ == '__main__':

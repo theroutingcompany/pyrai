@@ -17,26 +17,11 @@ class Endpoints:
     MAKE_VEHICLE_OFFLINE = "/dispatcher/vehicle/offline"
     UPDATE_VEHICLE = "/dispatcher/vehicle/update"
     REMOVE_VEHICLE = "/dispatcher/vehicle/remove"
-    GET_VEHICLE_INFO = "/graphql"
+    GET_VEHICLE_INFO = "/dispatcher/vehicle"
     ADD_REQUEST = "/dispatcher/request/add"
     CANCEL_REQUEST = "/dispatcher/request/cancel"
     COMPUTE_ASSIGNMENTS = "/dispatcher/assignments"
-
-
-class FleetParams(object):
-    def __init__(self, max_wait, max_delay, unlocked_window, close_pickup_window):
-        self.max_wait = max_wait
-        self.max_delay = max_delay
-        self.unlocked_window = unlocked_window
-        self.close_pickup_window = close_pickup_window
-
-    def todict(self):
-        return {
-            'max_wait': self.max_wait,
-            'max_delay': self.max_delay,
-            'unlocked_window': self.unlocked_window,
-            'close_pickup_window': self.close_pickup_window
-        }
+    SET_PARAMS = "/dispatcher/params"
 
 
 class Pyrai(object):
@@ -56,7 +41,8 @@ class Pyrai(object):
 
     def todict(self):
         return {
-            'api_key': self.api_key
+            'api_key': self.api_key,
+            'base_url': self.base_url
         }
 
     def __str__(self):
@@ -80,7 +66,7 @@ class Pyrai(object):
         resp = r.json()
 
         if r.status_code == 200:
-            return Fleet(pyrai=self, fleet_key=resp.get('fleet_key'))
+            return Fleet(pyrai=self, fleet_key=resp.get('fleet_key'), params=params)
         else:
             return StatusResponse(resp=resp)
 
@@ -110,7 +96,7 @@ class Pyrai(object):
     
 
 class Fleet(object):
-    def __init__(self, fleet_key, api_key=None, pyrai=None):
+    def __init__(self, fleet_key, params, api_key=None, pyrai=None):
 
         if api_key is None:
             api_key = pyrai.api_key
@@ -121,6 +107,7 @@ class Fleet(object):
         self.api_key = api_key
         self.fleet_key = fleet_key
         self.pyrai = pyrai
+        self.params = params
     
     @property
     def user_key(self):
@@ -129,7 +116,7 @@ class Fleet(object):
     def todict(self):
         return {
             'api_key': self.api_key,
-            'fleet_key': self.fleet_key
+            'fleet_key': self.fleet_key,
         }
 
     def __str__(self):
@@ -137,6 +124,33 @@ class Fleet(object):
 
     def build_url(self, endpoint):
         return self.pyrai.build_url(endpoint)
+
+    def set_params(self,
+        max_wait=None,
+        max_delay=None,
+        unlocked_window=None,
+        close_pickup_window=None):
+
+        if max_wait is not None:
+            self.params.max_wait = max_wait
+
+        if max_delay is not None:
+            self.params.max_delay = max_delay
+
+        if unlocked_window is not None:
+            self.params.unlocked_window = unlocked_window
+
+        if close_pickup_window is not None:
+            self.params.close_pickup_window = close_pickup_window
+
+        url = self.build_url(Endpoints.SET_PARAMS)
+        payload = {
+            "params": self.params.todict(),
+            "user_key": self.user_key.todict()
+        }
+        r = requests.post(url, data=json.dumps(payload))
+        resp = r.json()
+        return StatusResponse(resp=resp)
     
     def make_vehicle_online(self, vid, location, capacity):
         url = self.build_url(Endpoints.MAKE_VEHICLE_ONLINE)
@@ -161,22 +175,25 @@ class Fleet(object):
         resp = r.json()
         return StatusResponse(resp = resp)
     
-    def update_vehicle(self, vid, location, direction, event_time, req_id, event):
+    def update_vehicle(self, vid, location, direction, event, event_time=datetime.datetime.now(), req_id=None):
         url = self.build_url(Endpoints.UPDATE_VEHICLE)
         payload = {
             'id': vid,
             'location': location.todict(),
             'direction': direction,
             'event_time': to_rfc3339(event_time),
-            'req_id': req_id,
             'event': event,
             'user_key': self.user_key.todict()
         }
+        
+        if req_id is not None:
+            payload['req_id'] = req_id
+        
         r = requests.post(url, data = json.dumps(payload))
         resp = r.json()
 
         if r.status_code == 200:
-            return Vehicle.fromdict(self.user_key, resp)
+            return Vehicle.fromdict(self, resp)
         else:
             return StatusResponse(resp = resp)
 
@@ -195,6 +212,7 @@ class Fleet(object):
         else:
             return StatusResponse(resp = resp)
             
+    # need to update to use GraphQL but the endpoint doesn't work as expected?
     def get_vehicle_info(self, vid):
         url = self.build_url(Endpoints.GET_VEHICLE_INFO)
         params = {
@@ -206,7 +224,7 @@ class Fleet(object):
         resp = r.json()
 
         if r.status_code == 200:
-            return Vehicle.fromdict(self.user_key, resp)
+            return Vehicle.fromdict(self, resp)
         else:
             return StatusResponse(resp=resp) 
     
@@ -251,8 +269,8 @@ class Fleet(object):
 
         if r.status_code == 200:
             return VehicleAssignments(
-                vehs=[Vehicle.fromdict(self.user_key, veh) for veh in resp.get('vehs')],
-                requests=[Request.fromdict(self.user_key, req) for req in resp.get('reqs')],
+                vehs=[Vehicle.fromdict(self, veh) for veh in resp.get('vehs')],
+                requests=[Request.fromdict(self, req) for req in resp.get('reqs')],
                 notifications=[Notification.fromdict(notif) for notif in resp.get('notifications')],
             )
         else:
@@ -311,8 +329,8 @@ class Vehicle():
         return self.fleet.make_vehicle_offline(self.veh_id, location)
 
     def update(self, 
-        req_id,
         event,
+        req_id=None,
         location=None, 
         direction=Defaults.DEFAULT_DIRECTION, 
         event_time=None):
@@ -324,12 +342,12 @@ class Vehicle():
             event_time = datetime.datetime.now()
 
         return self.fleet.update_vehicle(
-            self.veh_id,
-            location,
-            direction,
-            event_time,
-            req_id,
-            event
+            vid=self.veh_id,
+            location=location,
+            direction=direction,
+            event_time=event_time,
+            req_id=req_id,
+            event=event
         )
 
     def remove(self, location=None):
@@ -338,6 +356,21 @@ class Vehicle():
             location = self.location
 
         return self.fleet.remove_vehicle(self.veh_id, location)
+
+class FleetParams(object):
+    def __init__(self, max_wait, max_delay, unlocked_window, close_pickup_window):
+        self.max_wait = max_wait
+        self.max_delay = max_delay
+        self.unlocked_window = unlocked_window
+        self.close_pickup_window = close_pickup_window
+
+    def todict(self):
+        return {
+            'max_wait': self.max_wait,
+            'max_delay': self.max_delay,
+            'unlocked_window': self.unlocked_window,
+            'close_pickup_window': self.close_pickup_window
+        }
 
 
 class UserKey(object):
