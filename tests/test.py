@@ -46,8 +46,20 @@ class TestAPICalls(unittest.TestCase):
         self.assertNotEqual(self.updated_veh.location, self.veh.location)
 
     def test_add_request(self):
-        pass
+        resp = self.sim_fleet.add_request(2, 
+            Location(50, 7), 
+            Location(51, 7), 
+            3, 
+            datetime.datetime.now())
+        self.assertEqual(resp.status, 0)
 
+    def test_get_request(self):
+        TestAPICalls.req = self.sim_fleet.get_request(2)
+        self.assertEqual(self.req.fleet, self.sim_fleet)
+        self.assertEqual(self.req.veh_id, -1)
+        self.assertEqual(self.req.req_id, 2)
+        self.assertEqual(self.req.load, 3)
+        self.assertEqual(self.req.assigned, False)
 
 
 def suite(): # ensure the tests run in order
@@ -58,6 +70,8 @@ def suite(): # ensure the tests run in order
     suite.addTest(TestAPICalls('test_make_vehicle_online'))
     suite.addTest(TestAPICalls('test_get_vehicle_info'))
     suite.addTest(TestAPICalls('test_update_vehicle'))
+    suite.addTest(TestAPICalls('test_add_request'))
+    suite.addTest(TestAPICalls('test_get_request'))
     return suite
 
 if __name__ == '__main__':

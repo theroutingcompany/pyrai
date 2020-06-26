@@ -19,6 +19,7 @@ class Endpoints:
     REMOVE_VEHICLE = "/dispatcher/vehicle/remove"
     GET_VEHICLE_INFO = "/dispatcher/vehicle"
     ADD_REQUEST = "/dispatcher/request/add"
+    GET_REQUEST = "/dispatcher/request"
     CANCEL_REQUEST = "/dispatcher/request/cancel"
     COMPUTE_ASSIGNMENTS = "/dispatcher/assignments"
     SET_PARAMS = "/dispatcher/params"
@@ -254,6 +255,22 @@ class Fleet(object):
         r = requests.post(url, data = payload)
         resp = r.json()
         return StatusResponse(resp = resp)
+
+    def get_request(self, rid):
+        url = self.build_url(Endpoints.GET_REQUEST)
+        payload = {
+            'api_key': self.api_key,
+            'fleet_key': self.fleet_key,
+            'id': rid
+        }
+
+        r = requests.get(url, params=payload)
+        resp = r.json()
+        
+        if r.status_code == 200:
+            return Request.fromdict(self, resp)
+        else:
+            return StatusResponse(resp=resp) 
 
 
     def compute_assignments(self, current_time):
