@@ -239,7 +239,7 @@ class Fleet(object):
             'current_time': to_rfc3339(current_time)
         }
 
-        r = requests.get(url, data=payload)
+        r = requests.get(url, params=payload)
         resp = r.json()
 
         if r.status_code == 200:
