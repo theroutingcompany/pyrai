@@ -131,6 +131,9 @@ class Fleet(object):
         max_delay=None,
         unlocked_window=None,
         close_pickup_window=None):
+        '''
+        note that this mutates the fleet object
+        '''
 
         if max_wait is not None:
             self.params.max_wait = max_wait
@@ -252,7 +255,7 @@ class Fleet(object):
             'user_key': self.user_key.todict()
         }
 
-        r = requests.post(url, data = payload)
+        r = requests.post(url, data = json.dumps(payload))
         resp = r.json()
         return StatusResponse(resp = resp)
 
@@ -273,15 +276,17 @@ class Fleet(object):
             return StatusResponse(resp=resp) 
 
 
-    def compute_assignments(self, current_time):
+    def get_assignments(self, current_time=None):
         url = self.build_url(Endpoints.COMPUTE_ASSIGNMENTS)
         payload = {
             'api_key': self.api_key,
-            'fleet_key': self.fleet_key,
-            'current_time': to_rfc3339(current_time)
+            'fleet_key': self.fleet_key
         }
 
-        r = requests.post(url, data = payload)
+        if current_time is not None:
+            payload['current_time'] = to_rfc3339(current_time)
+
+        r = requests.get(url, params=payload)
         resp = r.json()
 
         if r.status_code == 200:
@@ -351,6 +356,9 @@ class Vehicle():
         location=None, 
         direction=Defaults.DEFAULT_DIRECTION, 
         event_time=None):
+        '''
+        note that this mutates the input veh
+        '''
         
         if location is None:
             location = self.location
@@ -358,7 +366,7 @@ class Vehicle():
         if event_time is None:
             event_time = datetime.datetime.now()
 
-        return self.fleet.update_vehicle(
+        updated_veh = self.fleet.update_vehicle(
             vid=self.veh_id,
             location=location,
             direction=direction,
@@ -366,6 +374,13 @@ class Vehicle():
             req_id=req_id,
             event=event
         )
+
+        self.location = updated_veh.location
+        self.assigned = updated_veh.assigned
+        self.req_ids = updated_veh.req_ids
+        self.events = updated_veh.events
+
+        return
 
     def remove(self, location=None):
         
@@ -453,7 +468,7 @@ class Request():
             'fleet': self.fleet.todict(),
             'pickup': self.pickup.todict(),
             'dropoff': self.dropoff.todict(),
-            'request_time': isoparse(self.request_time),
+            'request_time': to_rfc3339(self.request_time),
             'req_id': self.req_id,
             'veh_id': self.veh_id,
             'load': self.load,
@@ -483,7 +498,7 @@ class Event(object):
         return {
             'req_id': self.req_id,
             'location': self.location.todict(),
-            'time': isoparse(self.time),
+            'time': to_rfc3339(self.time),
             'event': self.event
         }
     

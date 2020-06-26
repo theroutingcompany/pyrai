@@ -1,4 +1,5 @@
 import unittest
+import datetime
 from pyrai.api import *
 
 class TestAPICalls(unittest.TestCase):
@@ -40,15 +41,16 @@ class TestAPICalls(unittest.TestCase):
         self.assertEqual(self.veh.veh_id, 1)
 
     def test_update_vehicle(self):
-        TestAPICalls.updated_veh = self.veh.update("unassigned", location=Location(50, 50))
-        self.assertEqual(self.updated_veh.fleet, self.veh.fleet)
-        self.assertEqual(self.updated_veh.veh_id, self.veh.veh_id)
-        self.assertNotEqual(self.updated_veh.location, self.veh.location)
+        old_loc = self.veh.location
+        self.veh.update("unassigned", location=Location(50.75, 6.01))
+        self.assertEqual(self.veh.fleet, self.sim_fleet)
+        self.assertEqual(self.veh.veh_id, 1)
+        self.assertNotEqual(self.veh.location, old_loc)
 
     def test_add_request(self):
         resp = self.sim_fleet.add_request(2, 
-            Location(50, 7), 
-            Location(51, 7), 
+            Location(50.75, 6.019), 
+            Location(51.15, 6.017), 
             3, 
             datetime.datetime.now())
         self.assertEqual(resp.status, 0)
@@ -61,6 +63,32 @@ class TestAPICalls(unittest.TestCase):
         self.assertEqual(self.req.load, 3)
         self.assertEqual(self.req.assigned, False)
 
+    def test_set_params(self):
+        resp = self.sim_fleet.set_params(
+            max_wait="4m", max_delay="8m",
+            unlocked_window="3m", close_pickup_window="2s"
+        )
+        self.assertEqual(resp.status, 0)
+
+    def test_get_assignments(self):
+        TestAPICalls.assignments = self.sim_fleet.get_assignments(datetime.datetime.now())
+        self.assertEqual(len(self.assignments.vehs), 1)
+        self.assertEqual(len(self.assignments.requests), 1)
+        self.assertEqual(self.assignments.vehs[0].veh_id, 1)
+        self.assertEqual(self.assignments.requests[0].req_id, 2)
+
+    def test_cancel_request(self):
+        resp = self.sim_fleet.cancel_request(2, datetime.datetime.now())
+        self.assertEqual(resp.status, 0, resp.error)
+
+    def test_make_vehicle_offline(self):
+        resp = self.veh.make_offline()
+        self.assertEqual(resp.status, 0, resp.error)
+
+    def test_remove_vehicle(self):
+        resp = self.veh.remove()
+        self.assertEqual(resp, None)
+
 
 def suite(): # ensure the tests run in order
     suite = unittest.TestSuite()
@@ -72,6 +100,11 @@ def suite(): # ensure the tests run in order
     suite.addTest(TestAPICalls('test_update_vehicle'))
     suite.addTest(TestAPICalls('test_add_request'))
     suite.addTest(TestAPICalls('test_get_request'))
+    suite.addTest(TestAPICalls('test_set_params'))
+    suite.addTest(TestAPICalls('test_get_assignments'))
+    suite.addTest(TestAPICalls('test_cancel_request'))
+    suite.addTest(TestAPICalls('test_make_vehicle_offline'))
+    suite.addTest(TestAPICalls('test_remove_vehicle'))
     return suite
 
 if __name__ == '__main__':
