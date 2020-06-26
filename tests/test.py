@@ -20,7 +20,7 @@ class TestAPICalls(unittest.TestCase):
         self.assertIsNotNone(self.sim_fleet.fleet_key)
         self.assertEqual(self.sim_fleet.pyrai, self.rai)
         TestAPICalls.bad_sim_fleet = self.bad_rai.create_sim_fleet()
-        self.assertNotEqual(self.bad_sim_fleet.status, 0)
+        self.assertNotEqual(self.bad_sim_fleet.status, 0, self.bad_sim_fleet.error)
 
     def test_create_live_fleet(self):
         TestAPICalls.live_fleet = self.rai.create_live_fleet(max_wait="3m", max_delay="6m",
@@ -29,11 +29,11 @@ class TestAPICalls(unittest.TestCase):
         self.assertIsNotNone(self.live_fleet.fleet_key)
         self.assertEqual(self.live_fleet.pyrai, self.rai)
         TestAPICalls.bad_live_fleet = self.bad_rai.create_live_fleet()
-        self.assertNotEqual(self.bad_live_fleet.status, 0)
+        self.assertNotEqual(self.bad_live_fleet.status, 0, self.bad_sim_fleet.error)
 
     def test_make_vehicle_online(self):
         resp = self.sim_fleet.make_vehicle_online(1, Location(80, -80), 5)
-        self.assertEqual(resp.status, 0)
+        self.assertEqual(resp.status, 0, resp.error)
     
     def test_get_vehicle_info(self):
         TestAPICalls.veh = self.sim_fleet.get_vehicle_info(1)
@@ -53,7 +53,7 @@ class TestAPICalls(unittest.TestCase):
             Location(51.15, 6.017), 
             3, 
             datetime.datetime.now())
-        self.assertEqual(resp.status, 0)
+        self.assertEqual(resp.status, 0, resp.error)
 
     def test_get_request(self):
         TestAPICalls.req = self.sim_fleet.get_request(2)
@@ -68,7 +68,7 @@ class TestAPICalls(unittest.TestCase):
             max_wait="4m", max_delay="8m",
             unlocked_window="3m", close_pickup_window="2s"
         )
-        self.assertEqual(resp.status, 0)
+        self.assertEqual(resp.status, 0, resp.error)
 
     def test_get_assignments(self):
         TestAPICalls.assignments = self.sim_fleet.get_assignments(datetime.datetime.now())
