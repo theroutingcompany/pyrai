@@ -17,7 +17,7 @@ class Endpoints:
     MAKE_VEHICLE_OFFLINE = "/dispatcher/vehicle/offline"
     UPDATE_VEHICLE = "/dispatcher/vehicle/update"
     REMOVE_VEHICLE = "/dispatcher/vehicle/remove"
-    GET_VEHICLE_INFO = "/dispatcher/vehicle"
+    GET_VEHICLE_INFO = "/graphql"
     ADD_REQUEST = "/dispatcher/request/add"
     CANCEL_REQUEST = "/dispatcher/request/cancel"
     COMPUTE_ASSIGNMENTS = "/dispatcher/assignments"
@@ -110,8 +110,15 @@ class Pyrai(object):
     
 
 class Fleet(object):
-    def __init__(self, pyrai, fleet_key):
-        self.api_key = pyrai.api_key
+    def __init__(self, fleet_key, api_key=None, pyrai=None):
+
+        if api_key is None:
+            api_key = pyrai.api_key
+
+        if pyrai is None:
+            pyrai = Pyrai(api_key=api_key)
+
+        self.api_key = api_key
         self.fleet_key = fleet_key
         self.pyrai = pyrai
     
@@ -516,7 +523,3 @@ class VehicleAssignments(object):
     def __str__(self):
         return str(self.todict())
 
-# rai = Pyrai(api_key="abcd-efgh")
-# sim = rai.create_sim_fleet(max_wait="3m", max_delay="6m",)
-# veh = sim.make_vehicle_online(id=1, location=Location(12.1, 31.3), capacity=10)
-# sim.make_vehicle_offline(veh)
