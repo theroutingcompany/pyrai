@@ -2,12 +2,36 @@ import urllib.parse
 import requests
 import datetime
 import json
+import IPython
 from dateutil.parser import *
 
+
+class FleetParams(object):
+    def __init__(self, max_wait, max_delay, unlocked_window, close_pickup_window):
+        self.max_wait = max_wait
+        self.max_delay = max_delay
+        self.unlocked_window = unlocked_window
+        self.close_pickup_window = close_pickup_window
+
+    def todict(self):
+        return {
+            'max_wait': self.max_wait,
+            'max_delay': self.max_delay,
+            'unlocked_window': self.unlocked_window,
+            'close_pickup_window': self.close_pickup_window
+        }
+
 class Defaults:
-    BASE_URL = "http://api.routable.ai"
+    BASE_URL = "https://api.routable.ai"
+    VISUALIZATION_URL = "https://dev.routable.ai/simulation/map?name={}&start={}&end={}&api_key={}&fleet_key={}"
     DEFAULT_CAPACITY = 6
     DEFAULT_DIRECTION = 0
+    DEFAULT_PARAMS = FleetParams(
+            max_wait="3m",
+            max_delay="6m",
+            unlocked_window="2m",
+            close_pickup_window="1s"
+        )
 
 
 class Endpoints:
@@ -97,7 +121,7 @@ class Pyrai(object):
     
 
 class Fleet(object):
-    def __init__(self, fleet_key, params, api_key=None, pyrai=None):
+    def __init__(self, fleet_key, params=Defaults.DEFAULT_PARAMS, api_key=None, pyrai=None, vis_url=Defaults.VISUALIZATION_URL):
 
         if api_key is None:
             api_key = pyrai.api_key
@@ -109,6 +133,7 @@ class Fleet(object):
         self.fleet_key = fleet_key
         self.pyrai = pyrai
         self.params = params
+        self.vis_url = vis_url
     
     @property
     def user_key(self):
@@ -298,9 +323,25 @@ class Fleet(object):
         else:
             return StatusResponse(resp = resp)
 
+    def visualize_state(self, start_time, end_time):
+        url = self.vis_url.format("state", 
+            to_rfc3339(start_time), 
+            to_rfc3339(end_time), 
+            self.api_key, 
+            self.fleet_key)
+        return IPython.display.IFrame(url, 800, 500)
+
+    def visualize_requests(self, start_time, end_time):
+        url = self.vis_url.format("requests", 
+            to_rfc3339(start_time), 
+            to_rfc3339(end_time), 
+            self.api_key, 
+            self.fleet_key)
+        return IPython.display.IFrame(url, 800, 500)
+
 
 def to_rfc3339(dt):
-    return dt.astimezone(datetime.timezone.utc).isoformat()
+    return dt.astimezone(datetime.timezone.utc).isoformat()[:-6] + "Z"
 
 
 class Vehicle():
@@ -388,21 +429,6 @@ class Vehicle():
             location = self.location
 
         return self.fleet.remove_vehicle(self.veh_id, location)
-
-class FleetParams(object):
-    def __init__(self, max_wait, max_delay, unlocked_window, close_pickup_window):
-        self.max_wait = max_wait
-        self.max_delay = max_delay
-        self.unlocked_window = unlocked_window
-        self.close_pickup_window = close_pickup_window
-
-    def todict(self):
-        return {
-            'max_wait': self.max_wait,
-            'max_delay': self.max_delay,
-            'unlocked_window': self.unlocked_window,
-            'close_pickup_window': self.close_pickup_window
-        }
 
 
 class UserKey(object):
