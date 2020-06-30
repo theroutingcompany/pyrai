@@ -286,7 +286,10 @@ class Fleet(object):
         resp = r.json()
 
         if r.status_code == 200:
-            return resp.get('req_ids')
+            if resp is not None:
+                return resp.get('req_ids')
+            else:
+                return []
         else:
             return StatusResponse(resp = resp)
             
@@ -306,7 +309,7 @@ class Fleet(object):
         else:
             return StatusResponse(resp=resp) 
     
-    def add_request(self, rid, pickup, dropoff, load, request_time):
+    def add_request(self, rid, pickup, dropoff, load, request_time=datetime.datetime.now()):
         url = self.build_url(Endpoints.ADD_REQUEST)
         payload = {
             'id': rid,
@@ -321,7 +324,7 @@ class Fleet(object):
         resp = r.json()
         return StatusResponse(resp = resp)
 
-    def cancel_request(self, rid, event_time):
+    def cancel_request(self, rid, event_time=datetime.datetime.now()):
         url = self.build_url(Endpoints.CANCEL_REQUEST)
         payload = {
             'id': rid,
@@ -372,6 +375,7 @@ class Fleet(object):
         else:
             return StatusResponse(resp = resp)
 
+    # TODO: make __visualize function
     def visualize_state(self, start_time, end_time):
         url = self.vis_url.format(name = "state", 
             start = to_rfc3339(start_time), 
@@ -569,6 +573,9 @@ class Request():
             'load': self.load,
             'assigned': self.assigned
         }
+
+    def cancel(self, event_time=datetime.datetime.now()):
+        return self.fleet.cancel_request(self.req_id, event_time)
 
     def __str__(self):
         return str(self.todict())
