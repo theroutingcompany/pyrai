@@ -3,6 +3,7 @@ import requests
 import datetime
 import json
 import IPython
+import plotly.graph_objects as go
 from dateutil.parser import *
 
 
@@ -23,7 +24,8 @@ class FleetParams(object):
 
 class Defaults:
     BASE_URL = "https://api.routable.ai"
-    VISUALIZATION_URL = "https://dev.routable.ai/simulation/map?name={}&start={}&end={}&api_key={}&fleet_key={}"
+    #visualization url temporary until dashboard is back
+    VISUALIZATION_URL = "https://dev.routable.ai/simulation/map?name={name}&start={start}&end={end}&api_key={apie_key}&fleet_key={fleet_key}"
     DEFAULT_CAPACITY = 6
     DEFAULT_DIRECTION = 0
     DEFAULT_PARAMS = FleetParams(
@@ -47,7 +49,54 @@ class Endpoints:
     CANCEL_REQUEST = "/dispatcher/request/cancel"
     COMPUTE_ASSIGNMENTS = "/dispatcher/assignments"
     SET_PARAMS = "/dispatcher/params"
+    GRAPHQL = "/graphql"
 
+
+class Metrics:
+    TIME = "time"
+    PASSENGERS = "passengers"
+    WAITING_REQUESTS = "waiting_requests"
+    ACTIVE_REQUESTS = "active_requests"
+    DROPPED_REQUESTS = "dropped_requests"
+    CANCELED_REQUESTS = "canceled_requests"
+    TOTAL_REQUESTS = "total_requests"
+    ASSIGNED_VEHICLES = "assigned_vehicles"
+    IDLE_VEHICLES = "idle_vehicles"
+    REBALANCING_VEHICLES = "rebalancing_vehicles"
+    OFFLINE_VEHICLES = "offline_vehicles"
+    AVG_WAIT = "avg_wait"
+    AVG_DELAY = "avg_delay"
+    AVG_OCCUPANCY = "avg_occupancy"
+    SERVICE_RATE = "service_rate"
+    QUERY = """
+    {{
+    live_fleets(
+        api_key: "{api_key}"
+        fleet_key: "{fleet_key}"
+    ) {{
+        metrics (
+        start: "{start_time}"
+        end: "{end_time}"
+        ) {{
+            time
+            passengers
+            waiting_requests
+            active_requests
+            dropped_requests
+            canceled_requests
+            total_requests
+            assigned_vehicles
+            idle_vehicles
+            rebalancing_vehicles
+            offline_vehicles
+            avg_wait
+            avg_delay
+            avg_occupancy
+            service_rate
+            }}
+        }}
+    }}
+    """
 
 class Pyrai(object):
     """
@@ -324,20 +373,36 @@ class Fleet(object):
             return StatusResponse(resp = resp)
 
     def visualize_state(self, start_time, end_time):
-        url = self.vis_url.format("state", 
-            to_rfc3339(start_time), 
-            to_rfc3339(end_time), 
-            self.api_key, 
-            self.fleet_key)
+        url = self.vis_url.format(name = "state", 
+            start = to_rfc3339(start_time), 
+            end = to_rfc3339(end_time), 
+            api_key = self.api_key, 
+            fleet_key = self.fleet_key)
         return IPython.display.IFrame(url, 800, 500)
 
     def visualize_requests(self, start_time, end_time):
-        url = self.vis_url.format("requests", 
-            to_rfc3339(start_time), 
-            to_rfc3339(end_time), 
-            self.api_key, 
-            self.fleet_key)
+        url = self.vis_url.format(name = "requests", 
+            start = to_rfc3339(start_time), 
+            end = to_rfc3339(end_time), 
+            api_key = self.api_key, 
+            fleet_key = self.fleet_key)
         return IPython.display.IFrame(url, 800, 500)
+
+    def plot_metric(self, metric, start_time, end_time):
+        url = self.build_url(Endpoints.GRAPHQL)
+        query = Metrics.QUERY.format(
+            api_key = self.api_key,
+            fleet_key = self.fleet_key,
+            start_time = to_rfc3339(start_time),
+            end_time = to_rfc3339(end_time)
+        )
+        r = requests.post(url, json={"query": query})
+        resp = r.json()
+        data = resp['data']['live_fleets'][0]['metrics']
+        x = [met[Metrics.TIME] for met in data]
+        y = [met[metric] for met in data]
+        return go.Figure(data=go.Scatter(x=x, y=y))
+        
 
 
 def to_rfc3339(dt):
