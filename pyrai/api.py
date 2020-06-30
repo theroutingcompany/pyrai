@@ -388,7 +388,7 @@ class Fleet(object):
             fleet_key = self.fleet_key)
         return IPython.display.IFrame(url, 800, 500)
 
-    def plot_metric(self, metric, start_time, end_time):
+    def plot_metric(self, metrics, start_time, end_time):
         url = self.build_url(Endpoints.GRAPHQL)
         query = Metrics.QUERY.format(
             api_key = self.api_key,
@@ -400,8 +400,12 @@ class Fleet(object):
         resp = r.json()
         data = resp['data']['live_fleets'][0]['metrics']
         x = [met[Metrics.TIME] for met in data]
-        y = [met[metric] for met in data]
-        return go.Figure(data=go.Scatter(x=x, y=y))
+        figure = go.Figure()
+        for metric in metrics:
+            figure.add_trace(go.Scatter(x=x, y=[met[metric] for met in data],
+                        mode='lines+markers',
+                        name=metric))
+        return figure
         
 
 
