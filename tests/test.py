@@ -19,8 +19,8 @@ class TestAPICalls(unittest.TestCase):
         self.assertEqual(self.sim_fleet.api_key, self.api_key)
         self.assertIsNotNone(self.sim_fleet.fleet_key)
         self.assertEqual(self.sim_fleet.pyrai, self.rai)
-        TestAPICalls.bad_sim_fleet = self.bad_rai.create_sim_fleet()
-        self.assertNotEqual(self.bad_sim_fleet.status, 0, self.bad_sim_fleet.error)
+        with self.assertRaises(StatusError):
+            self.bad_rai.create_sim_fleet()
 
     def test_create_live_fleet(self):
         TestAPICalls.live_fleet = self.rai.create_live_fleet(max_wait="3m", max_delay="6m",
@@ -28,8 +28,8 @@ class TestAPICalls(unittest.TestCase):
         self.assertEqual(self.live_fleet.api_key, self.api_key)
         self.assertIsNotNone(self.live_fleet.fleet_key)
         self.assertEqual(self.live_fleet.pyrai, self.rai)
-        TestAPICalls.bad_live_fleet = self.bad_rai.create_live_fleet()
-        self.assertNotEqual(self.bad_live_fleet.status, 0, self.bad_sim_fleet.error)
+        with self.assertRaises(StatusError):
+            self.bad_rai.create_live_fleet()
 
     def test_make_vehicle_online(self):
         resp = self.sim_fleet.make_vehicle_online(1, Location(80, -80), 5)
@@ -42,7 +42,7 @@ class TestAPICalls(unittest.TestCase):
 
     def test_update_vehicle(self):
         old_loc = self.veh.location
-        self.veh.update("unassigned", location=Location(50.75, 6.01))
+        self.veh.update(VehicleEvent.UNASSIGNED, location=Location(50.75, 6.01))
         self.assertEqual(self.veh.fleet, self.sim_fleet)
         self.assertEqual(self.veh.veh_id, 1)
         self.assertNotEqual(self.veh.location, old_loc)

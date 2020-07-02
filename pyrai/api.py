@@ -8,13 +8,40 @@ from dateutil.parser import *
 
 
 class FleetParams(object):
+    """
+    Class used to set fleet parameters for simulations
+
+    Attributes:
+        max_wait (str): the max wait time
+        max_delay (str): the max delay time
+        unlocked_window (str): the unlocked window time
+        close_pickup_window (str): the close pickup window time
+    """
+
     def __init__(self, max_wait, max_delay, unlocked_window, close_pickup_window):
+        """
+        Initializes a new FleetParams Object
+
+        Args:
+            max_wait (str): the max wait time
+            max_delay (str): the max delay time
+            unlocked_window (str): the unlocked window time
+            close_pickup_window (str): the close pickup window time
+        """        
+
         self.max_wait = max_wait
         self.max_delay = max_delay
         self.unlocked_window = unlocked_window
         self.close_pickup_window = close_pickup_window
 
     def todict(self):
+        """
+        Converts the FleetParams object to a python dictionary
+        
+        Returns:
+            dict: A dictionary representation of self
+        """
+
         return {
             'max_wait': self.max_wait,
             'max_delay': self.max_delay,
@@ -23,9 +50,14 @@ class FleetParams(object):
         }
 
 class Defaults:
+    """
+    Class used to set default values for various parameters
+    used by the API
+    """
+
     BASE_URL = "https://api.routable.ai"
     #visualization url temporary until dashboard is back
-    VISUALIZATION_URL = "https://dev.routable.ai/simulation/map?name={name}&start={start}&end={end}&api_key={apie_key}&fleet_key={fleet_key}"
+    VISUALIZATION_URL = "https://dev.routable.ai/simulation/map?name={name}&start={start}&end={end}&api_key={api_key}&fleet_key={fleet_key}"
     DEFAULT_CAPACITY = 6
     DEFAULT_DIRECTION = 0
     DEFAULT_PARAMS = FleetParams(
@@ -36,7 +68,43 @@ class Defaults:
         )
 
 
+class StatusError(Exception):
+    """
+    Error raised for responses are not 200s
+
+    Attributes:
+        resp (dict): The response.
+        status (int): The status of the response, should be nonzero
+            if error is raised
+        error (string): Description of the error.
+    """
+    def __init__(self, resp=None, status=None, error=None):
+        """
+        Initializes a StatusError
+
+        Args:
+            resp (dict, optional): The response. Defaults to None.
+            status (int, optional): The status of the response, should
+                be nonzero if error is raised. Defaults to None.
+            error (string, optional): Description of the error. Defaults to None.
+        """
+
+        if resp is not None:
+            self.status = resp.get('status')
+            self.error = resp.get('error')
+        else:
+            self.status = status
+            self.error = error
+
+    def __str__(self):
+        return self.error
+
+
 class Endpoints:
+    """
+    Class used to specify API endpoints
+    """
+
     CREATE_SIM_FLEET = "/dispatcher/simulation/create"
     CREATE_LIVE_FLEET = "/dispatcher/live/create"
     MAKE_VEHICLE_ONLINE = "/dispatcher/vehicle/online"
@@ -53,6 +121,10 @@ class Endpoints:
 
 
 class Metrics:
+    """
+    Class used to specify the metrics that can be queried
+    """
+
     TIME = "time"
     PASSENGERS = "passengers"
     WAITING_REQUESTS = "waiting_requests"
@@ -100,20 +172,47 @@ class Metrics:
 
 class Pyrai(object):
     """
-    Pyrai docs go here
+    Class used to connect to API with API key (no fleet key)
+
+    Attributes:
+        api_key (str): The API key. Defaults to None.
+        base_url (str): The url of the API service. Defaults to 
+            "https://api.routable.ai/"
     """
 
     def __init__(self, url=Defaults.BASE_URL, api_key=None):
         """
-        Docs go here
-        """
+        Initializes new Pyrai Object
+
+        Args:
+            url (str, optional): [description]. Defaults to Defaults.BASE_URL.
+            api_key (str, optional): [description]. Defaults to None.
+        """ 
+
         self.api_key = api_key
         self.base_url = url
     
     def build_url(self, endpoint):
+        """
+        Builds a URL given an endpoint
+
+        Args:
+            endpoint (Endpoint: str): The endpoint to build the URL for 
+
+        Returns:
+            str: The URL to access the given API endpoint
+        """
+
         return urllib.parse.urljoin(self.base_url, endpoint)
 
     def todict(self):
+        """
+        Converts the Pyrai object to a python dictionary
+
+        Returns:
+            dict: A dictionary representation of self.
+        """
+
         return {
             'api_key': self.api_key,
             'base_url': self.base_url
@@ -142,12 +241,28 @@ class Pyrai(object):
         if r.status_code == 200:
             return Fleet(pyrai=self, fleet_key=resp.get('fleet_key'), params=params)
         else:
-            return StatusResponse(resp=resp)
+            raise StatusError(resp=resp)
 
     def create_sim_fleet(
         self, max_wait="3m", max_delay="6m",
         unlocked_window="2m", close_pickup_window="1s"
     ):
+        """
+        Creates a new simulation fleet.
+
+        Args:
+            max_wait (str, optional): The max wait time. Defaults to "3m".
+            max_delay (str, optional): The max delay time. Defaults to "6m".
+            unlocked_window (str, optional): The unlocked window time. Defaults to "2m".
+            close_pickup_window (str, optional): The close pickup window time. Defaults to "1s".
+
+        Returns:
+            Fleet: The newly created fleet, if successful.
+
+        Raises:
+            StatusError: If the API call does not return a 200 response 
+        """
+
         return self.__create_fleet(
             Endpoints.CREATE_SIM_FLEET,
             max_wait=max_wait,
@@ -159,7 +274,23 @@ class Pyrai(object):
     def create_live_fleet(
         self, max_wait="3m", max_delay="6m",
         unlocked_window="2m", close_pickup_window="1s"
-    ):
+    ):        
+        """
+        Creates a new live fleet.
+
+        Args:
+            max_wait (str, optional): The max wait time. Defaults to "3m".
+            max_delay (str, optional): The max delay time. Defaults to "6m".
+            unlocked_window (str, optional): The unlocked window time. Defaults to "2m".
+            close_pickup_window (str, optional): The close pickup window time. Defaults to "1s".
+
+        Returns:
+            Fleet: The newly created fleet, if successful.
+
+        Raises:
+            StatusError: If the API call does not return a 200 response 
+        """
+
         return self.__create_fleet(
             Endpoints.CREATE_LIVE_FLEET,
             max_wait=max_wait,
@@ -170,13 +301,47 @@ class Pyrai(object):
     
 
 class Fleet(object):
-    def __init__(self, fleet_key, params=Defaults.DEFAULT_PARAMS, api_key=None, pyrai=None, vis_url=Defaults.VISUALIZATION_URL):
+    """
+    Class used to represent a fleet. All vehicle, request, and
+    assignment API calls are methods of this class.
+
+    Attributes:
+        pyrai (string): The Pyrai object this fleet was built from.
+        fleet_key (string): The fleet key corresponding to this fleet.
+        api_key (string): The API key corresponding to this fleet.
+        params (FleetParams): The parameters of this fleet.
+        vis_url (string): The URL used for visualizations. 
+    """
+
+    def __init__(self, 
+        fleet_key, 
+        params=Defaults.DEFAULT_PARAMS, 
+        api_key=None, 
+        pyrai=None, 
+        vis_url=Defaults.VISUALIZATION_URL, 
+        base_url=Defaults.BASE_URL):
+        """
+        Initializes a Fleet object.
+
+        Args:
+            fleet_key (string): The fleet key.
+            params (FleetParams, optional): The fleet parameters. Defaults to Defaults.DEFAULT_PARAMS.
+            api_key (string, optional): The API key. Defaults to None.
+            pyrai (Pyrai, optional): The Pyrai object this fleet was built from.
+                If the fleet is created without a Pyrai object, one is created.
+                Defaults to None.
+            vis_url (string, optional): The URL used for visualization. Defaults to Defaults.VISUALIZATION_URL.
+            base_url (string, optional): The base URL used for API calls. This is
+                used when a user wants to create a fleet without creating a fleet from
+                a Pyrai object (e.g. using a predetermined fleet key).
+                Defaults to Defaults.BASE_URL.
+        """
 
         if api_key is None:
             api_key = pyrai.api_key
 
         if pyrai is None:
-            pyrai = Pyrai(api_key=api_key)
+            pyrai = Pyrai(api_key=api_key, url=base_url)
 
         self.api_key = api_key
         self.fleet_key = fleet_key
@@ -186,9 +351,19 @@ class Fleet(object):
     
     @property
     def user_key(self):
+        """
+        UserKey: UserKey object corresponding to the fleet. 
+        """
         return UserKey(self.api_key, self.fleet_key)
 
     def todict(self):
+        """
+        Converts the Fleet object into a python dictionary. Note
+        that this does not contain all attributes.
+
+        Returns:
+            dict: A dictionary representation of self.
+        """
         return {
             'api_key': self.api_key,
             'fleet_key': self.fleet_key,
@@ -198,6 +373,16 @@ class Fleet(object):
         return str(self.todict())
 
     def build_url(self, endpoint):
+        """
+        Builds a URL given an endpoint
+
+        Args:
+            endpoint (Endpoint: str): The endpoint to build the URL for 
+
+        Returns:
+            str: The URL to access the given API endpoint
+        """
+
         return self.pyrai.build_url(endpoint)
 
     def set_params(self,
@@ -205,9 +390,21 @@ class Fleet(object):
         max_delay=None,
         unlocked_window=None,
         close_pickup_window=None):
-        '''
-        note that this mutates the fleet object
-        '''
+        """
+        Mutates the fleet object and sets the provided params.
+
+        Args:
+            max_wait (str, optional): The max wait time. Defaults to None.
+            max_delay (str, optional): The max delay time. Defaults to None.
+            unlocked_window (str, optional): The unlocked window time. Defaults to None.
+            close_pickup_window (str, optional): The close pickup window time. Defaults to None.
+
+        Returns:
+            StatusResponse: If successful
+
+        Raises:
+            StatusError: If unsuccessful
+        """
 
         if max_wait is not None:
             self.params.max_wait = max_wait
@@ -228,9 +425,28 @@ class Fleet(object):
         }
         r = requests.post(url, data=json.dumps(payload))
         resp = r.json()
-        return StatusResponse(resp=resp)
+        
+        if r.status_code == 200:
+            return StatusResponse(resp=resp)
+        else:
+            raise StatusError(resp=resp)
     
     def make_vehicle_online(self, vid, location, capacity):
+        """
+        Attempts to make vehicle online
+
+        Args:
+            vid (int): The vehicle ID.
+            location (Location): The vehicle location
+            capacity (int): The vehicle capacity
+
+        Raises:
+            StatusError: If unsuccessful
+
+        Returns:
+            StatusReponse: If successful
+        """
+
         url = self.build_url(Endpoints.MAKE_VEHICLE_ONLINE)
         payload = {
             "location": location.todict(),
@@ -240,9 +456,26 @@ class Fleet(object):
         }
         r = requests.post(url, data=json.dumps(payload))
         resp = r.json()
-        return StatusResponse(resp=resp)
+
+        if r.status_code == 200:
+            return StatusResponse(resp=resp)
+        else:
+            raise StatusError(resp=resp)
         
     def make_vehicle_offline(self, vid, location):
+        """
+        Attempts to take vehicle offline
+
+        Args:
+            vid (int): The vehicle ID.
+            location (Location): The vehicle location.
+
+        Raises:
+            StatusError: If unsuccessful
+
+        Returns:
+            StatusReponse: If successful
+        """
         url = self.build_url(Endpoints.MAKE_VEHICLE_OFFLINE)
         payload = {
             'location': location.todict(),
@@ -251,9 +484,38 @@ class Fleet(object):
         }
         r = requests.post(url, data = json.dumps(payload))
         resp = r.json()
-        return StatusResponse(resp = resp)
+        
+        if r.status_code == 200:
+            return StatusResponse(resp=resp)
+        else:
+            raise StatusError(resp=resp)
     
     def update_vehicle(self, vid, location, direction, event, event_time=datetime.datetime.now(), req_id=None):
+        """
+        Attempts to update a vehicle.
+
+        Args:
+            vid (int): The unique vehicle ID
+            location (Location): The vehicle location.
+            direction (float): Angle in radians clockwise away from true north
+            event (VehicleEvent): Describes the current event for the vehicle. 
+                pickup occurs when the vehicle has picked up a request. 
+                dropoff occurs when the vehicle has dropped of a request. 
+                progress should be set when the vehicle is moving to service a request, 
+                either picking up or dropping off. The vehicle should be marked as 
+                unassigned when it is is not assigned to any requests.
+            event_time (datetime.datetime, optional): Time at which the vehicle update has occurred. 
+                Defaults to datetime.datetime.now().
+            req_id (int, optional): [description]. Unique ID of request the vehicle is servicing. 
+                If the vehicle is unassigned, this may be omitted. Defaults to None.
+
+        Returns:
+            Vehicle: If successful
+
+        Raises:
+            StatusError: If unsucessful
+        """
+
         url = self.build_url(Endpoints.UPDATE_VEHICLE)
         payload = {
             'id': vid,
@@ -273,9 +535,23 @@ class Fleet(object):
         if r.status_code == 200:
             return Vehicle.fromdict(self, resp)
         else:
-            return StatusResponse(resp = resp)
+            raise StatusError(resp = resp)
 
     def remove_vehicle(self, vid, location):
+        """
+        Attempts to remove a vehicle
+
+        Args:
+            vid (int): The unique vehicle ID.
+            location (Location): The vehicle Location.
+
+        Returns:
+            list[int]: If vehicle is successfully removed, returns
+                a list of IDs of passengers of the vehicle.
+
+        Raises:
+            StatusError: If unsuccessful
+        """
         url = self.build_url(Endpoints.REMOVE_VEHICLE)
         payload = {
             'location': location.todict(),
@@ -291,10 +567,23 @@ class Fleet(object):
             else:
                 return []
         else:
-            return StatusResponse(resp = resp)
+            raise StatusError(resp = resp)
             
-    # need to update to use GraphQL but the endpoint doesn't work as expected?
+    # need to update to use GraphQL but the endpoint doesn't work as expected
     def get_vehicle_info(self, vid):
+        """
+        Attempts to get vehicle info.
+
+        Args:
+            vid (int): The unique vehicle ID.
+
+        Raises:
+            StatusError: If unsuccessful.
+
+        Returns:
+            Vehicle: If succesful, returns a vehicle object corresponding to the
+                vehicle with ID vid.
+        """
         url = self.build_url(Endpoints.GET_VEHICLE_INFO)
         params = {
             'api_key': self.api_key,
@@ -307,9 +596,28 @@ class Fleet(object):
         if r.status_code == 200:
             return Vehicle.fromdict(self, resp)
         else:
-            return StatusResponse(resp=resp) 
+            raise StatusError(resp=resp) 
     
     def add_request(self, rid, pickup, dropoff, load, request_time=datetime.datetime.now()):
+        """
+        Attempts to add a request
+
+        Args:
+            rid (int): The unique request ID.
+            pickup (Location): The pickup location.
+            dropoff (Location): The dropoff location.
+            load (int): The load (number of passengers).
+            request_time (datetime.datetime, optional): Time of the request. 
+                This may be in the future for scheduled pickups. 
+                Defaults to datetime.datetime.now().
+
+        Returns:
+            StatusResponse: If successful
+
+        Raises:
+            StatusError: If unsuccessful
+        """
+
         url = self.build_url(Endpoints.ADD_REQUEST)
         payload = {
             'id': rid,
@@ -322,9 +630,27 @@ class Fleet(object):
 
         r = requests.post(url, data=json.dumps(payload))
         resp = r.json()
-        return StatusResponse(resp = resp)
+
+        if r.status_code == 200:
+            return StatusResponse(resp=resp)
+        else:
+            raise StatusError(resp=resp)
 
     def cancel_request(self, rid, event_time=datetime.datetime.now()):
+        """
+        Attempts to cancel a request
+
+        Args:
+            rid (int): The unique request ID
+            event_time (datetime.datetime, optional): Time of the cancellation.
+                Defaults to datetime.datetime.now().
+
+        Raises:
+            StatusError: If unsuccessful
+
+        Returns:
+            Status Response: If the request is sucessfully cancelled
+        """
         url = self.build_url(Endpoints.CANCEL_REQUEST)
         payload = {
             'id': rid,
@@ -334,9 +660,25 @@ class Fleet(object):
 
         r = requests.post(url, data = json.dumps(payload))
         resp = r.json()
-        return StatusResponse(resp = resp)
+        
+        if r.status_code == 200:
+            return StatusResponse(resp=resp)
+        else:
+            raise StatusError(resp=resp)
 
     def get_request(self, rid):
+        """
+        Allows user to query request with given ID
+
+        Args:
+            rid (int): The unique request ID
+
+        Raises:
+            StatusError: If unsuccessful
+
+        Returns:
+            Request: A request object representing the request with ID rid
+        """
         url = self.build_url(Endpoints.GET_REQUEST)
         payload = {
             'api_key': self.api_key,
@@ -350,10 +692,22 @@ class Fleet(object):
         if r.status_code == 200:
             return Request.fromdict(self, resp)
         else:
-            return StatusResponse(resp=resp) 
+            raise StatusError(resp=resp) 
 
 
     def get_assignments(self, current_time=None):
+        """
+        Computes vehicle assignments for the fleet in the current state.
+
+        Args:
+            current_time (datetime.datetime, optional): Current time. Defaults to None.
+
+        Raises:
+            StatusError: If unsuccessful
+
+        Returns:
+            VehicleAssignments: If assignments are successfully computed
+        """
         url = self.build_url(Endpoints.COMPUTE_ASSIGNMENTS)
         payload = {
             'api_key': self.api_key,
@@ -373,10 +727,20 @@ class Fleet(object):
                 notifications=[Notification.fromdict(notif) for notif in resp.get('notifications')],
             )
         else:
-            return StatusResponse(resp = resp)
+            raise StatusError(resp = resp)
 
     # TODO: make __visualize function
     def visualize_state(self, start_time, end_time):
+        """
+        Visualizes the state of the vehicles.
+
+        Args:
+            start_time (datetime.datetime): The start time.
+            end_time (datetime.datetime): The end time.
+
+        Returns:
+            IFrame: A rendering of the current state.
+        """
         url = self.vis_url.format(name = "state", 
             start = to_rfc3339(start_time), 
             end = to_rfc3339(end_time), 
@@ -385,14 +749,37 @@ class Fleet(object):
         return IPython.display.IFrame(url, 800, 500)
 
     def visualize_requests(self, start_time, end_time):
+        """
+        Visualizes the state of the requests.
+
+        Args:
+            start_time (datetime.datetime): The start time.
+            end_time (datetime.datetime): The end time.
+
+        Returns:
+            IFrame: A rendering of the current state.
+        """
         url = self.vis_url.format(name = "requests", 
             start = to_rfc3339(start_time), 
             end = to_rfc3339(end_time), 
             api_key = self.api_key, 
             fleet_key = self.fleet_key)
+        print(url)
         return IPython.display.IFrame(url, 800, 500)
 
     def plot_metric(self, metrics, start_time, end_time):
+        """
+        Plots time series metrics
+
+        Args:
+            metrics (list[Metrics]): A list of metrics to plot.
+            start_time (datetime.datetime): The start time.
+            end_time (datetime.datetime): The end time.
+
+        Returns:
+            [Plotly.Figure]: A figure that graphs the metrics
+                over the time interval.
+        """
         url = self.build_url(Endpoints.GRAPHQL)
         query = Metrics.QUERY.format(
             api_key = self.api_key,
@@ -414,6 +801,15 @@ class Fleet(object):
 
 
 def to_rfc3339(dt):
+    """
+    Converts datetime objects to RFC3339 string for use with the API.
+
+    Args:
+        dt (datetime.datetime): A datetime.datetime object.
+
+    Returns:
+        string: An RFC3339 representation of dt.
+    """
     return dt.astimezone(datetime.timezone.utc).isoformat()[:-6] + "Z"
 
 
@@ -579,6 +975,12 @@ class Request():
 
     def __str__(self):
         return str(self.todict())
+
+class VehicleEvent():
+    PICKUP = "pickup"
+    DROPOFF = "dropoff"
+    PROGRESS = "progress"
+    UNASSIGNED = "unassigned"
 
 class Event(object):
     def __init__(self, req_id, location, time, event):
