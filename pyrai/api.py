@@ -1413,6 +1413,8 @@ class StatusResponse(object):
     def __str__(self):
         return str(self.todict())
 
+    def __repr__(self):
+        return "Success!"
 
 class VehicleAssignments(object):
     """
