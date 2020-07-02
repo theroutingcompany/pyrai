@@ -185,8 +185,8 @@ class Pyrai(object):
         Initializes new Pyrai Object
 
         Args:
-            url (str, optional): [description]. Defaults to Defaults.BASE_URL.
-            api_key (str, optional): [description]. Defaults to None.
+            url (str, optional): The base url for API calls. Defaults to Defaults.BASE_URL.
+            api_key (str, optional): The API key. Defaults to None.
         """ 
 
         self.api_key = api_key
@@ -506,7 +506,7 @@ class Fleet(object):
                 unassigned when it is is not assigned to any requests.
             event_time (datetime.datetime, optional): Time at which the vehicle update has occurred. 
                 Defaults to datetime.datetime.now().
-            req_id (int, optional): [description]. Unique ID of request the vehicle is servicing. 
+            req_id (int, optional): The unique ID of request the vehicle is servicing. 
                 If the vehicle is unassigned, this may be omitted. Defaults to None.
 
         Returns:
@@ -813,8 +813,32 @@ def to_rfc3339(dt):
     return dt.astimezone(datetime.timezone.utc).isoformat()[:-6] + "Z"
 
 
-class Vehicle():
+class Vehicle(object):
+    """
+    Class used to represent vehicles.
+
+    Attributes:
+        fleet (Fleet): the fleet the vehicle is a part of.
+        veh_id (int): the unique ID of the vehicle.
+        location (Locaiton): the location of the vehicle.
+        assigned (boolean): True if vehicle is assigned, false if not.
+        req_ids (list[int]): list of request IDs of assigned requests.
+        events (list[Event]): list of events this vehicle is assigned to.
+
+    """
     def __init__(self, fleet, veh_id, location, assigned, req_ids, events):
+        """
+        Initializes a vehicle object
+
+        Args:
+            fleet (Fleet): the fleet the vehicle is a part of.
+            veh_id (int): the unique ID of the vehicle.
+            location (Locaiton): the location of the vehicle.
+            assigned (boolean): True if vehicle is assigned, false if not.
+            req_ids (list[int]): list of request IDs of assigned requests.
+            events (list[Event]): list of events this vehicle is assigned to.
+        """
+
         self.fleet = fleet
         self.veh_id = veh_id
         self.location = location
@@ -824,6 +848,17 @@ class Vehicle():
     
     @staticmethod
     def fromdict(fleet, d):
+        """
+        Converts a python dictionary into a Vehicle object.
+
+        Args:
+            fleet (Fleet): The fleet the vehicle is part of.
+            d (dict): The dictionary with the vehicle parameters
+
+        Returns:
+            Vehicle: A vehicle object with the parameters the dictionary specifes.
+        """
+
         return Vehicle(
             fleet,
             d.get('veh_id'),
@@ -834,6 +869,13 @@ class Vehicle():
         )
 
     def todict(self):
+        """
+        Converts the Vehicle object to a python dictionary
+
+        Returns:
+            dict: A dictionary representation of self.
+        """
+
         return {
             'fleet': self.fleet.todict(),
             'veh_id': self.veh_id,
@@ -847,6 +889,21 @@ class Vehicle():
         return str(self.todict())
 
     def make_online(self, location=None, capacity=Defaults.DEFAULT_CAPACITY):
+        """
+        Makes vehicle online
+
+        Args:
+            location (Lovation, optional): Location of vehicle, uses self.location
+                if nothing is provided. Defaults to None.
+            capacity (int, optional): The capacity of the vehicle.
+                Defaults to Defaults.DEFAULT_CAPACITY.
+
+        Returns:
+            StatusResponse: If successful
+        
+        Raises:
+            StatusError: If unsuccessful
+        """
 
         if location is None:
             location = self.location
@@ -854,6 +911,19 @@ class Vehicle():
         return self.fleet.make_vehicle_online(self.veh_id, location, capacity)
 
     def make_offline(self, location=None):
+        """
+        Makes vehicle offline
+
+        Args:
+            location (Lovation, optional): Location of vehicle, uses self.location
+                if nothing is provided. Defaults to None.
+
+        Returns:
+            StatusResponse: If successful
+        
+        Raises:
+            StatusError: If unsuccessful
+        """
 
         if location is None:
             location = self.location
@@ -865,16 +935,35 @@ class Vehicle():
         req_id=None,
         location=None, 
         direction=Defaults.DEFAULT_DIRECTION, 
-        event_time=None):
-        '''
-        note that this mutates the input veh
-        '''
+        event_time=datetime.datetime.now()):
+        """
+        Updates the vehicle. Note that this mutates the vehicle, so nothing is returned.
+
+        Args:
+            location (Location, optional): The vehicle location, set the self.location
+                if nothing is provided. Defaults to None.
+            direction (float, optional): Angle in radians clockwise away from true north.
+                Defaults to Defaults.DEFAULT_DIRECTION.
+            event (VehicleEvent): Describes the current event for the vehicle. 
+                pickup occurs when the vehicle has picked up a request. 
+                dropoff occurs when the vehicle has dropped of a request. 
+                progress should be set when the vehicle is moving to service a request, 
+                either picking up or dropping off. The vehicle should be marked as 
+                unassigned when it is is not assigned to any requests.
+            event_time (datetime.datetime, optional): Time at which the vehicle update has occurred. 
+                Defaults to datetime.datetime.now().
+            req_id (int, optional): The unique ID of request the vehicle is servicing. 
+                If the vehicle is unassigned, this may be omitted. Defaults to None.
+
+        Returns:
+            None
+
+        Raises:
+            StatusError: if unsuccessful
+        """
         
         if location is None:
             location = self.location
-        
-        if event_time is None:
-            event_time = datetime.datetime.now()
 
         updated_veh = self.fleet.update_vehicle(
             vid=self.veh_id,
@@ -893,6 +982,20 @@ class Vehicle():
         return
 
     def remove(self, location=None):
+        """
+        Removes the vehicle.
+
+        Args:
+            location (Location, optional): The location of the vehicle,
+                will be set to self.location if nothing is provided.
+                Defaults to None.
+
+        Returns:
+            StatusResponse: If successful.
+
+        Raises:
+            StatusError: If unsuccessful.
+        """
         
         if location is None:
             location = self.location
@@ -901,11 +1004,31 @@ class Vehicle():
 
 
 class UserKey(object):
+    """
+    Class for representing user keys.
+
+    Attributes:
+        api_key (string): The API key.
+        fleet_key (string): The fleet key.
+    """
     def __init__(self, api_key, fleet_key):
+        """
+        Initializes a UserKey object
+
+        Args:
+            api_key (string): The API key
+            fleet_key (string): The fleet key
+        """
         self.api_key = api_key
         self.fleet_key = fleet_key
     
     def todict(self):
+        """
+        Converts the UserKey object to a python dictionary
+
+        Returns:
+            dict: A dictionary representation of self.
+        """
         return {
             'api_key': self.api_key,
             'fleet_key': self.fleet_key
@@ -916,15 +1039,48 @@ class UserKey(object):
 
 
 class Location(object):
+    """
+    Class for representing locations
+
+    Attributes:
+        lat (float): The latitude.
+        lng (float): The longitude.
+    """
+
     def __init__(self, lat, lng):
+        """
+        Initializes a location object
+
+        Args:
+            lat (float): The latitude.
+            lng (float): The longitude.
+        """
+
         self.lat = lat
         self.lng = lng
     
     @staticmethod
     def fromdict(d):
+        """
+        Converts a dict object into a Location object.
+
+        Args:
+            d (dict): The dictionary to convert.
+
+        Returns:
+            Location: A Location object with attributes set by
+                fields in the dictionary.
+        """
         return Location(d.get('lat'), d.get('lng'))
 
     def todict(self):
+        """
+        Converts a Location object to a python dictionary
+
+        Returns:
+            dict: A dictionary representation of self.
+        """
+
         return {
             'lat': self.lat,
             'lng': self.lng
@@ -934,8 +1090,37 @@ class Location(object):
         return str(self.todict())
 
 
-class Request():
+class Request(object):
+    """
+    Class for representing requests
+
+    Attributes:
+        fleet (Fleet): The fleet that the request is a part of.
+        pickup (Location): The pickup location.
+        dropoff (Location): The dropoff location.
+        request_time (datetime.datetime): The request time.
+        req_id (int): The request ID.
+        veh_id (int): The ID of the Vehicle corresponding to this request. 
+            -1 if unassigned.
+        load (int): The load (number of passengers) in this request.
+        assigned (boolean): True if assigned, false if not.
+    """
     def __init__(self, fleet, pickup, dropoff, request_time, req_id, veh_id, load, assigned):
+        """
+        Initializes a new Request Object.
+
+        Args:
+            fleet (Fleet): The fleet that the request is a part of.
+            pickup (Location): The pickup location.
+            dropoff (Location): The dropoff location.
+            request_time (datetime.datetime): The request time.
+            req_id (int): The request ID.
+            veh_id (int): The ID of the Vehicle corresponding to this request. 
+                -1 if unassigned.
+            load (int): The load (number of passengers) in this request.
+            assigned (boolean): True if assigned, false if not.
+        """
+
         self.fleet = fleet
         self.pickup = pickup
         self.dropoff = dropoff
@@ -947,6 +1132,16 @@ class Request():
 
     @staticmethod
     def fromdict(fleet, d):
+        """
+        Converts a python dict into a Request object.
+
+        Args:
+            fleet (Fleet): The fleet the request is part of.
+            d (dict): The dictionary with the request parameters.
+
+        Returns:
+            Request: A request initialized with the parameters defined by d
+        """
         return Request(
             fleet,
             Location.fromdict(d.get('pickup')),
@@ -959,6 +1154,12 @@ class Request():
         )
     
     def todict(self):
+        """
+        Converts a Request to a python dict.
+
+        Returns:
+            dict: A dictionary representation of self.
+        """
         return {
             'fleet': self.fleet.todict(),
             'pickup': self.pickup.todict(),
@@ -971,19 +1172,53 @@ class Request():
         }
 
     def cancel(self, event_time=datetime.datetime.now()):
+        """
+        Cancels a request
+
+        Args:
+            event_time (datetime.datetime, optional): The event time. 
+                Defaults to datetime.datetime.now().
+
+        Returns:
+            Status Response: If successful
+
+        Raises:
+            StatusError: If unsuccessful
+        """
         return self.fleet.cancel_request(self.req_id, event_time)
 
     def __str__(self):
         return str(self.todict())
 
-class VehicleEvent():
+class VehicleEvent:
+    """
+    Class used for specifying vehicle events.
+    """
     PICKUP = "pickup"
     DROPOFF = "dropoff"
     PROGRESS = "progress"
     UNASSIGNED = "unassigned"
 
 class Event(object):
+    """
+    Class used for representing events.
+
+    Attributes:
+        req_id (int): the ID of the request corresponding to this event
+        location (Location): the event Location
+        time (datetime.datetime): the event time.
+        event (VehicleEvent): the vehicle event corresponding to the event.
+    """
     def __init__(self, req_id, location, time, event):
+        """
+        Initializes an Event object.
+
+        Args:
+            req_id (int): the ID of the request corresponding to this event
+            location (Location): the event Location
+            time (datetime.datetime): the event time.
+            event (VehicleEvent): the vehicle event corresponding to the event.
+        """
         self.req_id = req_id
         self.location = location
         self.time = time
@@ -991,6 +1226,15 @@ class Event(object):
 
     @staticmethod
     def fromdict(d):
+        """
+        Converts a python dictionary to an Event object.
+
+        Args:
+            d (dict): The dictionary to convert.
+
+        Returns:
+            Event: An event with the parameters set by the values in d.
+        """
         return Event(
             d.get('req_id'),
             Location.fromdict(d.get('location')),
@@ -999,6 +1243,12 @@ class Event(object):
         )
 
     def todict(self):
+        """
+        Converts an Event to a python dictionary.
+
+        Returns:
+            dict: A dictionary representation of self.
+        """
         return {
             'req_id': self.req_id,
             'location': self.location.todict(),
@@ -1009,19 +1259,49 @@ class Event(object):
     def __str__(self):
         return str(self.todict())
 
-class Notification():
+class Notification(object):
+    """
+    Class for representing notifications.
+
+    Attributes:
+        message (str): The notification message.
+        data (NotificationData): the notification data.
+    """
     def __init__(self, message, data):
+        """
+        Initializes a Notification object.
+
+        Args:
+            message (str): The notification message.
+            data (NotificationData): the notification data.
+        """
         self.message = message
         self.data = data
     
     @staticmethod
     def fromdict(d):
+        """
+        Converts python dictionary to Notification object.
+
+        Args:
+            d (dict): The dictionary to convert.
+
+        Returns:
+            Notification: a Notification object with attributes set by
+                the values in d.
+        """
         return Notification(
             d.get('message'),
             NotificationData.fromdict(d.get('data'))
         )
 
     def todict(self):
+        """
+        Converts a notification object to a python dictionary
+
+        Returns:
+            dict: A dictionary representation of self.
+        """
         return {
             'message': self.message,
             'data': self.data.todict()
@@ -1030,8 +1310,26 @@ class Notification():
     def __str__(self):
         return str(self.todict())
 
-class NotificationData():
+class NotificationData(object):
+    """
+    Class used to represent notification data.
+
+    Attributes:
+        veh_id (int): The vehicle ID.
+        req_id (int): The request ID.
+        waiting_duration (str): The waiting duration.
+        assigned (bool): True if assigned, false if not.
+    """
     def __init__(self, veh_id, req_id, waiting_duration, assigned):
+        """
+        Initializes a NotificationData object.
+
+        Args:
+            veh_id (int): The vehicle ID.
+            req_id (int): The request ID.
+            waiting_duration (str): The waiting duration.
+            assigned (bool): True if assigned, false if not.
+        """
         self.veh_id = veh_id
         self.req_id = req_id
         self.waiting_duration = waiting_duration
@@ -1039,6 +1337,16 @@ class NotificationData():
 
     @staticmethod
     def fromdict(d):
+        """
+        Converts a python dictionary to a NotificationData object.
+
+        Args:
+            d (dict): The dictionary
+
+        Returns:
+            NotificationData: A NotificationData object with the attributes
+                set by values in d.
+        """
         return NotificationData(
             d.get('veh_id'),
             d.get('req_id'),
@@ -1047,6 +1355,13 @@ class NotificationData():
         )
 
     def todict(self):
+        """
+        Converts a NotificationData object to a python dictionary.
+
+        Returns:
+            dict: A dictionary representation of self.
+        """
+
         return {
             'veh_id': self.veh_id,
             'req_id': self.req_id,
@@ -1058,7 +1373,24 @@ class NotificationData():
         return str(self.todict())
 
 class StatusResponse(object):
+    """
+    Class used for representing Status Responses.
+
+    Attributes:
+        resp (dict): The response.
+        status (int): The status of the response.
+        error (string): Description of the error.
+
+    """
     def __init__(self, resp=None, status=None, error=None):
+        """
+        Initializes a StatusResponse Object
+
+        Args:
+            resp (dict, optional): The response. Defaults to None.
+            status (int, optional): The status of the response. Defaults to None.
+            error (str, optional): Description of the error. Defaults to None.
+        """
         if resp is not None:
             self.status = resp.get('status')
             self.error = resp.get('error')
@@ -1067,6 +1399,12 @@ class StatusResponse(object):
             self.error = error
 
     def todict(self):
+        """
+        Converts StatusResponse object to a python dictionary
+
+        Returns:
+            dict: A dictionary representation of self.
+        """
         return {
             'status': self.status,
             'error': self.error
@@ -1077,12 +1415,36 @@ class StatusResponse(object):
 
 
 class VehicleAssignments(object):
+    """
+    Class used to represent Vehicle Assignments
+
+    Attributes:
+        vehs (list[Vehicle]): A list of vehicles in the fleet.
+        requests (list[Request]): A list of requests in the fleet.
+        notifications (list[Notification]): A list of notifications for the fleet.
+    """
     def __init__(self, vehs=[], requests=[], notifications=[]):
+        """
+        Initializes a VehicleAssignments object
+
+        Args:
+            vehs (list[Vehicle], optional): A list of vehicles in the fleet. Defaults to [].
+            requests (list[Request], optional): A list of requests in the fleet. 
+                Defaults to [].
+            notifications (list[Notification], optional): A list of notifications 
+                for the fleet. Defaults to [].
+        """
         self.vehs = vehs
         self.requests = requests
         self.notifications = notifications
 
     def todict(self):
+        """
+        Converts VehicleAssignments object to python dictionary.
+
+        Returns:
+            dict: A dictionary representatino of self.
+        """
         return {
             'vehs': [v.todict() for v in self.vehs], 
             'requests': [r.todict() for r in self.requests],
