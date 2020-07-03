@@ -7,7 +7,8 @@ Contents
    :maxdepth: 2
    :caption: Contents:
 
-   overview
+   core
+   visualization
 
 
 Indices and tables
