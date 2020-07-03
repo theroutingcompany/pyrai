@@ -161,7 +161,7 @@ vehicles and requests.
     
     <iframe
         width="100%"
-        height="100%"
+        height="600"
         src="https://dashboard.routable.ai/pyraimap?start=2020-05-06T21:55:00Z&end=2020-05-06T22:55:00Z&api_key=907fab5b-c35e-497f-988f-92fbb8835977&fleet_key=8af41885-d9bf-465d-9746-e54d8147646d"
         frameborder="0"
         allowfullscreen

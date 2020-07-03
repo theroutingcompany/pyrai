@@ -57,7 +57,7 @@ class Defaults:
 
     BASE_URL = "https://api.routable.ai"
     #visualization url temporary until dashboard is back
-    VISUALIZATION_URL = "https://dev.routable.ai/simulation/map?name={name}&start={start}&end={end}&api_key={api_key}&fleet_key={fleet_key}"
+    VISUALIZATION_URL = "https://dashboard.routable.ai/pyraimap?start={start}&end={end}&api_key={api_key}&fleet_key={fleet_key}"
     DEFAULT_CAPACITY = 6
     DEFAULT_DIRECTION = 0
     DEFAULT_PARAMS = FleetParams(
@@ -490,7 +490,7 @@ class Fleet(object):
         else:
             raise StatusError(resp=resp)
     
-    def update_vehicle(self, vid, location, direction, event, event_time=datetime.datetime.now(), req_id=None):
+    def update_vehicle(self, vid, location, event, direction=Defaults.DEFAULT_DIRECTION, event_time=datetime.datetime.now(), req_id=None):
         """
         Attempts to update a vehicle.
 
@@ -729,57 +729,49 @@ class Fleet(object):
         else:
             raise StatusError(resp = resp)
 
-    # TODO: make __visualize function
-    def visualize_state(self, start_time, end_time):
+    def visualize(self, start_time, end_time):
         """
-        Visualizes the state of the vehicles.
+        Visualizes the fleet for the given time frame.
 
         Args:
-            start_time (datetime.datetime): The start time.
-            end_time (datetime.datetime): The end time.
+            start_time (datetime.datetime or str): The start time.
+            end_time (datetime.datetime or str): The end time.
 
         Returns:
-            IFrame: A rendering of the current state.
+            IFrame: A graphic view of the fleet through time.
         """
-        url = self.vis_url.format(name = "state", 
+        if isinstance(start_time, str):
+            start_time = isoparse(start_time)
+
+        if isinstance(end_time, str):
+            end_time = isoparse(end_time)
+
+        url = self.vis_url.format( 
             start = to_rfc3339(start_time), 
             end = to_rfc3339(end_time), 
             api_key = self.api_key, 
             fleet_key = self.fleet_key)
-        return IPython.display.IFrame(url, 800, 500)
+        return IPython.display.IFrame(url, 800, 800)
 
-    def visualize_requests(self, start_time, end_time):
-        """
-        Visualizes the state of the requests.
-
-        Args:
-            start_time (datetime.datetime): The start time.
-            end_time (datetime.datetime): The end time.
-
-        Returns:
-            IFrame: A rendering of the current state.
-        """
-        url = self.vis_url.format(name = "requests", 
-            start = to_rfc3339(start_time), 
-            end = to_rfc3339(end_time), 
-            api_key = self.api_key, 
-            fleet_key = self.fleet_key)
-        print(url)
-        return IPython.display.IFrame(url, 800, 500)
-
-    def plot_metric(self, metrics, start_time, end_time):
+    def plot_metrics(self, metrics, start_time, end_time):
         """
         Plots time series metrics
 
         Args:
             metrics (list[Metrics]): A list of metrics to plot.
-            start_time (datetime.datetime): The start time.
-            end_time (datetime.datetime): The end time.
+            start_time (datetime.datetime or str): The start time.
+            end_time (datetime.datetime or str): The end time.
 
         Returns:
-            [Plotly.Figure]: A figure that graphs the metrics
+            Plotly.Figure: A figure that graphs the metrics
                 over the time interval.
         """
+        if isinstance(start_time, str):
+            start_time = isoparse(start_time)
+
+        if isinstance(end_time, str):
+            end_time = isoparse(end_time)
+
         url = self.build_url(Endpoints.GRAPHQL)
         query = Metrics.QUERY.format(
             api_key = self.api_key,
@@ -940,7 +932,7 @@ class Vehicle(object):
         Updates the vehicle. Note that this mutates the vehicle, so nothing is returned.
 
         Args:
-            location (Location, optional): The vehicle location, set the self.location
+            location (Location, optional): The vehicle location, set to self.location
                 if nothing is provided. Defaults to None.
             direction (float, optional): Angle in radians clockwise away from true north.
                 Defaults to Defaults.DEFAULT_DIRECTION.
@@ -1001,6 +993,9 @@ class Vehicle(object):
             location = self.location
 
         return self.fleet.remove_vehicle(self.veh_id, location)
+
+    def __repr__(self):
+        return str(self.todict())
 
 
 class UserKey(object):
@@ -1188,6 +1183,9 @@ class Request(object):
         return self.fleet.cancel_request(self.req_id, event_time)
 
     def __str__(self):
+        return str(self.todict())
+
+    def __repr__(self):
         return str(self.todict())
 
 class VehicleEvent:
@@ -1456,3 +1454,5 @@ class VehicleAssignments(object):
     def __str__(self):
         return str(self.todict())
 
+    def __repr__(self):
+        return str(self.todict())
