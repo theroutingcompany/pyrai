@@ -56,7 +56,6 @@ class Defaults:
     """
 
     BASE_URL = "https://api.routable.ai"
-    #visualization url temporary until dashboard is back
     VISUALIZATION_URL = "https://dashboard.routable.ai/pyraimap?start={start}&end={end}&api_key={api_key}&fleet_key={fleet_key}"
     DEFAULT_CAPACITY = 6
     DEFAULT_DIRECTION = 0
@@ -70,7 +69,7 @@ class Defaults:
 
 class StatusError(Exception):
     """
-    Error raised for responses are not 200s
+    Error raised for responses that are not 200s
 
     Attributes:
         resp (dict): The response.
@@ -734,8 +733,10 @@ class Fleet(object):
         Visualizes the fleet for the given time frame.
 
         Args:
-            start_time (datetime.datetime or str): The start time.
-            end_time (datetime.datetime or str): The end time.
+            start_time (datetime.datetime or str): The start time, either as
+                a datetime.datetime object or a ISO string
+            end_time (datetime.datetime or str): The end time, either as
+                a datetime.datetime object or a ISO string
 
         Returns:
             IFrame: A graphic view of the fleet through time.
@@ -759,8 +760,10 @@ class Fleet(object):
 
         Args:
             metrics (list[Metrics]): A list of metrics to plot.
-            start_time (datetime.datetime or str): The start time.
-            end_time (datetime.datetime or str): The end time.
+            start_time (datetime.datetime or str): The start time, either as
+                a datetime.datetime object or a ISO string
+            end_time (datetime.datetime or str): The end time, either as
+                a datetime.datetime object or a ISO string
 
         Returns:
             Plotly.Figure: A figure that graphs the metrics
@@ -1345,7 +1348,7 @@ class NotificationData(object):
         Converts a python dictionary to a NotificationData object.
 
         Args:
-            d (dict): The dictionary
+            d (dict): The dictionary to convert.
 
         Returns:
             NotificationData: A NotificationData object with the attributes
@@ -1449,7 +1452,7 @@ class VehicleAssignments(object):
         Converts VehicleAssignments object to python dictionary.
 
         Returns:
-            dict: A dictionary representatino of self.
+            dict: A dictionary representation of self.
         """
         return {
             'vehs': [v.todict() for v in self.vehs], 

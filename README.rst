@@ -63,7 +63,7 @@ Vehicles are easy to take offline and/or remove:
 Requests
 --------
 
-Requests can be added and cancelled similar to vehicles.
+Requests can be added, queried, and cancelled similar to vehicles.
 
 .. code:: 
 
@@ -71,15 +71,6 @@ Requests can be added and cancelled similar to vehicles.
                       pickup=Location(30,40),
                       dropoff=Location(40,50),
                       load=4)
-
-
-
-
-.. parsed-literal::
-
-    Success!
-
-
 
 .. code:: 
 
@@ -89,13 +80,6 @@ Requests can be added and cancelled similar to vehicles.
 
     req.cancel()
     # Could also use fleet.cancel_request(rid=1)
-
-
-
-
-.. parsed-literal::
-
-    Success!
 
 
 

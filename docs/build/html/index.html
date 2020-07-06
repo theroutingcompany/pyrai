@@ -208,14 +208,11 @@ fleet or the individual vehicles:</p>
 </div>
 <div class="section" id="requests">
 <h2>Requests<a class="headerlink" href="#requests" title="Permalink to this headline">¶</a></h2>
-<p>Requests can be added and cancelled similar to vehicles.</p>
+<p>Requests can be added, queried, and cancelled similar to vehicles.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fleet</span><span class="o">.</span><span class="n">add_request</span><span class="p">(</span><span class="n">rid</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                   <span class="n">pickup</span><span class="o">=</span><span class="n">Location</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">40</span><span class="p">),</span>
                   <span class="n">dropoff</span><span class="o">=</span><span class="n">Location</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span><span class="mi">50</span><span class="p">),</span>
                   <span class="n">load</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Success!
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">req</span><span class="o">=</span><span class="n">fleet</span><span class="o">.</span><span class="n">get_request</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -223,9 +220,6 @@ fleet or the individual vehicles:</p>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">req</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
 <span class="c1"># Could also use fleet.cancel_request(rid=1)</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Success!
 </pre></div>
 </div>
 </div>
@@ -340,9 +334,12 @@ if (outputEl) {{
 <li class="toctree-l2"><a class="reference internal" href="core.html#defaults">Defaults</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#pyrai">Pyrai</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#fleets">Fleets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#locations">Locations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#vehicles">Vehicles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#requests">Requests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#assignments">Assignments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#responses">Responses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#metrics">Metrics</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="visualization.html">Visualization</a></li>
