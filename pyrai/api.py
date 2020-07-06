@@ -9,24 +9,24 @@ from dateutil.parser import *
 
 class FleetParams(object):
     """
-    Class used to set fleet parameters for simulations
+    Class used to set fleet parameters for simulations.
 
     Attributes:
-        max_wait (str): the max wait time
-        max_delay (str): the max delay time
-        unlocked_window (str): the unlocked window time
-        close_pickup_window (str): the close pickup window time
+        max_wait (str): The max wait time.
+        max_delay (str): The max delay time.
+        unlocked_window (str): The unlocked window time.
+        close_pickup_window (str): The close pickup window time.
     """
 
     def __init__(self, max_wait, max_delay, unlocked_window, close_pickup_window):
         """
-        Initializes a new FleetParams Object
+        Initializes a new FleetParams Object.
 
         Args:
-            max_wait (str): the max wait time
-            max_delay (str): the max delay time
-            unlocked_window (str): the unlocked window time
-            close_pickup_window (str): the close pickup window time
+            max_wait (str): The max wait time.
+            max_delay (str): The max delay time.
+            unlocked_window (str): The unlocked window time.
+            close_pickup_window (str): The close pickup window time.
         """        
 
         self.max_wait = max_wait
@@ -36,10 +36,10 @@ class FleetParams(object):
 
     def todict(self):
         """
-        Converts the FleetParams object to a python dictionary
+        Converts the FleetParams object to a python dictionary.
         
         Returns:
-            dict: A dictionary representation of self
+            dict: A dictionary representation of self.
         """
 
         return {
@@ -52,7 +52,7 @@ class FleetParams(object):
 class Defaults:
     """
     Class used to set default values for various parameters
-    used by the API
+    used by the API.
     """
 
     BASE_URL = "https://api.routable.ai"
@@ -69,17 +69,17 @@ class Defaults:
 
 class StatusError(Exception):
     """
-    Error raised for responses that are not 200s
+    Error raised for responses that are not 200s.
 
     Attributes:
         resp (dict): The response.
         status (int): The status of the response, should be nonzero
-            if error is raised
+            if error is raised.
         error (string): Description of the error.
     """
     def __init__(self, resp=None, status=None, error=None):
         """
-        Initializes a StatusError
+        Initializes a StatusError.
 
         Args:
             resp (dict, optional): The response. Defaults to None.
@@ -101,7 +101,7 @@ class StatusError(Exception):
 
 class Endpoints:
     """
-    Class used to specify API endpoints
+    Class used to specify API endpoints.
     """
 
     CREATE_SIM_FLEET = "/dispatcher/simulation/create"
@@ -121,7 +121,7 @@ class Endpoints:
 
 class Metrics:
     """
-    Class used to specify the metrics that can be queried
+    Class used to specify the metrics that can be queried.
     """
 
     TIME = "time"
@@ -171,7 +171,7 @@ class Metrics:
 
 class Pyrai(object):
     """
-    Class used to connect to API with API key (no fleet key)
+    Class used to connect to API with API key (no fleet key).
 
     Attributes:
         api_key (str): The API key. Defaults to None.
@@ -206,7 +206,7 @@ class Pyrai(object):
 
     def todict(self):
         """
-        Converts the Pyrai object to a python dictionary
+        Converts the Pyrai object to a python dictionary.
 
         Returns:
             dict: A dictionary representation of self.
@@ -259,7 +259,7 @@ class Pyrai(object):
             Fleet: The newly created fleet, if successful.
 
         Raises:
-            StatusError: If the API call does not return a 200 response 
+            StatusError: If the API call does not return a 200 response.
         """
 
         return self.__create_fleet(
@@ -287,7 +287,7 @@ class Pyrai(object):
             Fleet: The newly created fleet, if successful.
 
         Raises:
-            StatusError: If the API call does not return a 200 response 
+            StatusError: If the API call does not return a 200 response.
         """
 
         return self.__create_fleet(
@@ -373,13 +373,13 @@ class Fleet(object):
 
     def build_url(self, endpoint):
         """
-        Builds a URL given an endpoint
+        Builds a URL given an endpoint.
 
         Args:
-            endpoint (Endpoint: str): The endpoint to build the URL for 
+            endpoint (Endpoint: str): The endpoint to build the URL for. 
 
         Returns:
-            str: The URL to access the given API endpoint
+            str: The URL to access the given API endpoint.
         """
 
         return self.pyrai.build_url(endpoint)
@@ -399,10 +399,10 @@ class Fleet(object):
             close_pickup_window (str, optional): The close pickup window time. Defaults to None.
 
         Returns:
-            StatusResponse: If successful
+            StatusResponse: If successful.
 
         Raises:
-            StatusError: If unsuccessful
+            StatusError: If unsuccessful.
         """
 
         if max_wait is not None:
@@ -432,18 +432,18 @@ class Fleet(object):
     
     def make_vehicle_online(self, vid, location, capacity):
         """
-        Attempts to make vehicle online
+        Attempts to make vehicle online.
 
         Args:
             vid (int): The vehicle ID.
-            location (Location): The vehicle location
-            capacity (int): The vehicle capacity
+            location (Location): The vehicle location.
+            capacity (int): The vehicle capacity.
 
         Raises:
-            StatusError: If unsuccessful
+            StatusError: If unsuccessful.
 
         Returns:
-            StatusReponse: If successful
+            StatusReponse: If successful.
         """
 
         url = self.build_url(Endpoints.MAKE_VEHICLE_ONLINE)
@@ -463,17 +463,17 @@ class Fleet(object):
         
     def make_vehicle_offline(self, vid, location):
         """
-        Attempts to take vehicle offline
+        Attempts to take vehicle offline.
 
         Args:
             vid (int): The vehicle ID.
             location (Location): The vehicle location.
 
         Raises:
-            StatusError: If unsuccessful
+            StatusError: If unsuccessful.
 
         Returns:
-            StatusReponse: If successful
+            StatusReponse: If successful.
         """
         url = self.build_url(Endpoints.MAKE_VEHICLE_OFFLINE)
         payload = {
@@ -509,10 +509,10 @@ class Fleet(object):
                 If the vehicle is unassigned, this may be omitted. Defaults to None.
 
         Returns:
-            Vehicle: If successful
+            Vehicle: If successful.
 
         Raises:
-            StatusError: If unsucessful
+            StatusError: If unsucessful.
         """
 
         url = self.build_url(Endpoints.UPDATE_VEHICLE)
@@ -538,7 +538,7 @@ class Fleet(object):
 
     def remove_vehicle(self, vid, location):
         """
-        Attempts to remove a vehicle
+        Attempts to remove a vehicle.
 
         Args:
             vid (int): The unique vehicle ID.
@@ -549,7 +549,7 @@ class Fleet(object):
                 a list of IDs of passengers of the vehicle.
 
         Raises:
-            StatusError: If unsuccessful
+            StatusError: If unsuccessful.
         """
         url = self.build_url(Endpoints.REMOVE_VEHICLE)
         payload = {
@@ -599,7 +599,7 @@ class Fleet(object):
     
     def add_request(self, rid, pickup, dropoff, load, request_time=datetime.datetime.now()):
         """
-        Attempts to add a request
+        Attempts to add a request.
 
         Args:
             rid (int): The unique request ID.
@@ -611,10 +611,10 @@ class Fleet(object):
                 Defaults to datetime.datetime.now().
 
         Returns:
-            StatusResponse: If successful
+            StatusResponse: If successful.
 
         Raises:
-            StatusError: If unsuccessful
+            StatusError: If unsuccessful.
         """
 
         url = self.build_url(Endpoints.ADD_REQUEST)
@@ -637,7 +637,7 @@ class Fleet(object):
 
     def cancel_request(self, rid, event_time=datetime.datetime.now()):
         """
-        Attempts to cancel a request
+        Attempts to cancel a request.
 
         Args:
             rid (int): The unique request ID
@@ -645,10 +645,10 @@ class Fleet(object):
                 Defaults to datetime.datetime.now().
 
         Raises:
-            StatusError: If unsuccessful
+            StatusError: If unsuccessful.
 
         Returns:
-            Status Response: If the request is sucessfully cancelled
+            Status Response: If the request is sucessfully cancelled.
         """
         url = self.build_url(Endpoints.CANCEL_REQUEST)
         payload = {
@@ -667,16 +667,16 @@ class Fleet(object):
 
     def get_request(self, rid):
         """
-        Allows user to query request with given ID
+        Allows user to query request with given ID.
 
         Args:
-            rid (int): The unique request ID
+            rid (int): The unique request ID.
 
         Raises:
-            StatusError: If unsuccessful
+            StatusError: If unsuccessful.
 
         Returns:
-            Request: A request object representing the request with ID rid
+            Request: A request object representing the request with ID rid.
         """
         url = self.build_url(Endpoints.GET_REQUEST)
         payload = {
@@ -702,10 +702,10 @@ class Fleet(object):
             current_time (datetime.datetime, optional): Current time. Defaults to None.
 
         Raises:
-            StatusError: If unsuccessful
+            StatusError: If unsuccessful.
 
         Returns:
-            VehicleAssignments: If assignments are successfully computed
+            VehicleAssignments: If assignments are successfully computed.
         """
         url = self.build_url(Endpoints.COMPUTE_ASSIGNMENTS)
         payload = {
@@ -734,9 +734,9 @@ class Fleet(object):
 
         Args:
             start_time (datetime.datetime or str): The start time, either as
-                a datetime.datetime object or a ISO string
+                a datetime.datetime object or an ISO string.
             end_time (datetime.datetime or str): The end time, either as
-                a datetime.datetime object or a ISO string
+                a datetime.datetime object or an ISO string.
 
         Returns:
             IFrame: A graphic view of the fleet through time.
@@ -756,14 +756,14 @@ class Fleet(object):
 
     def plot_metrics(self, metrics, start_time, end_time):
         """
-        Plots time series metrics
+        Plots time series metrics.
 
         Args:
             metrics (list[Metrics]): A list of metrics to plot.
             start_time (datetime.datetime or str): The start time, either as
-                a datetime.datetime object or a ISO string
+                a datetime.datetime object or an ISO string.
             end_time (datetime.datetime or str): The end time, either as
-                a datetime.datetime object or a ISO string
+                a datetime.datetime object or an ISO string.
 
         Returns:
             Plotly.Figure: A figure that graphs the metrics
@@ -848,7 +848,7 @@ class Vehicle(object):
 
         Args:
             fleet (Fleet): The fleet the vehicle is part of.
-            d (dict): The dictionary with the vehicle parameters
+            d (dict): The dictionary with the vehicle parameters.
 
         Returns:
             Vehicle: A vehicle object with the parameters the dictionary specifes.
@@ -865,7 +865,7 @@ class Vehicle(object):
 
     def todict(self):
         """
-        Converts the Vehicle object to a python dictionary
+        Converts the Vehicle object to a python dictionary.
 
         Returns:
             dict: A dictionary representation of self.
@@ -885,7 +885,7 @@ class Vehicle(object):
 
     def make_online(self, location=None, capacity=Defaults.DEFAULT_CAPACITY):
         """
-        Makes vehicle online
+        Makes vehicle online.
 
         Args:
             location (Lovation, optional): Location of vehicle, uses self.location
@@ -894,10 +894,10 @@ class Vehicle(object):
                 Defaults to Defaults.DEFAULT_CAPACITY.
 
         Returns:
-            StatusResponse: If successful
+            StatusResponse: If successful.
         
         Raises:
-            StatusError: If unsuccessful
+            StatusError: If unsuccessful.
         """
 
         if location is None:
@@ -907,17 +907,17 @@ class Vehicle(object):
 
     def make_offline(self, location=None):
         """
-        Makes vehicle offline
+        Makes vehicle offline.
 
         Args:
             location (Lovation, optional): Location of vehicle, uses self.location
                 if nothing is provided. Defaults to None.
 
         Returns:
-            StatusResponse: If successful
+            StatusResponse: If successful.
         
         Raises:
-            StatusError: If unsuccessful
+            StatusError: If unsuccessful.
         """
 
         if location is None:
@@ -954,7 +954,7 @@ class Vehicle(object):
             None
 
         Raises:
-            StatusError: if unsuccessful
+            StatusError: If unsuccessful.
         """
         
         if location is None:
@@ -1011,18 +1011,18 @@ class UserKey(object):
     """
     def __init__(self, api_key, fleet_key):
         """
-        Initializes a UserKey object
+        Initializes a UserKey object.
 
         Args:
-            api_key (string): The API key
-            fleet_key (string): The fleet key
+            api_key (string): The API key.
+            fleet_key (string): The fleet key.
         """
         self.api_key = api_key
         self.fleet_key = fleet_key
     
     def todict(self):
         """
-        Converts the UserKey object to a python dictionary
+        Converts the UserKey object to a python dictionary.
 
         Returns:
             dict: A dictionary representation of self.
@@ -1038,7 +1038,7 @@ class UserKey(object):
 
 class Location(object):
     """
-    Class for representing locations
+    Class for representing locations.
 
     Attributes:
         lat (float): The latitude.
@@ -1073,7 +1073,7 @@ class Location(object):
 
     def todict(self):
         """
-        Converts a Location object to a python dictionary
+        Converts a Location object to a python dictionary.
 
         Returns:
             dict: A dictionary representation of self.
@@ -1090,7 +1090,7 @@ class Location(object):
 
 class Request(object):
     """
-    Class for representing requests
+    Class for representing requests.
 
     Attributes:
         fleet (Fleet): The fleet that the request is a part of.
@@ -1138,7 +1138,7 @@ class Request(object):
             d (dict): The dictionary with the request parameters.
 
         Returns:
-            Request: A request initialized with the parameters defined by d
+            Request: A request initialized with the parameters defined by d.
         """
         return Request(
             fleet,
@@ -1171,17 +1171,17 @@ class Request(object):
 
     def cancel(self, event_time=datetime.datetime.now()):
         """
-        Cancels a request
+        Cancels a request.
 
         Args:
             event_time (datetime.datetime, optional): The event time. 
                 Defaults to datetime.datetime.now().
 
         Returns:
-            Status Response: If successful
+            Status Response: If successful.
 
         Raises:
-            StatusError: If unsuccessful
+            StatusError: If unsuccessful.
         """
         return self.fleet.cancel_request(self.req_id, event_time)
 
@@ -1304,7 +1304,7 @@ class Notification(object):
 
     def todict(self):
         """
-        Converts a notification object to a python dictionary
+        Converts a notification object to a python dictionary.
 
         Returns:
             dict: A dictionary representation of self.
@@ -1407,7 +1407,7 @@ class StatusResponse(object):
 
     def todict(self):
         """
-        Converts StatusResponse object to a python dictionary
+        Converts StatusResponse object to a python dictionary.
 
         Returns:
             dict: A dictionary representation of self.
@@ -1425,7 +1425,7 @@ class StatusResponse(object):
 
 class VehicleAssignments(object):
     """
-    Class used to represent Vehicle Assignments
+    Class used to represent Vehicle Assignments.
 
     Attributes:
         vehs (list[Vehicle]): A list of vehicles in the fleet.
@@ -1434,7 +1434,7 @@ class VehicleAssignments(object):
     """
     def __init__(self, vehs=[], requests=[], notifications=[]):
         """
-        Initializes a VehicleAssignments object
+        Initializes a VehicleAssignments object.
 
         Args:
             vehs (list[Vehicle], optional): A list of vehicles in the fleet. Defaults to [].
