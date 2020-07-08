@@ -807,6 +807,18 @@ def to_rfc3339(dt):
     """
     return dt.astimezone(datetime.timezone.utc).isoformat()[:-6] + "Z"
 
+    Args:
+        dt (datetime.datetime): A datetime.datetime object.
+
+    Returns:
+        string: An RFC3339 representation of dt.
+    """
+    return dt.astimezone(datetime.timezone.utc).isoformat()[:-6] + "Z"
+
+
+class Vehicle(object):
+    """
+    Class used to represent vehicles.
 
 class Vehicle(object):
     """
