@@ -704,7 +704,7 @@ class Fleet(object):
 
         Raises:
             StatusError: If unsuccessful
-
+            
         Returns:
             VehicleAssignments: If assignments are successfully computed
         """
