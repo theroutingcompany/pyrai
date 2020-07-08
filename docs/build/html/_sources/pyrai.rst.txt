@@ -1,0 +1,22 @@
+pyrai package
+=============
+
+Submodules
+----------
+
+pyrai.api module
+----------------
+
+.. automodule:: pyrai.api
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: pyrai
+   :members:
+   :undoc-members:
+   :show-inheritance:
