@@ -41,7 +41,6 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="pyrai 0.0.1 documentation" href="index.html"/>
-        <link rel="next" title="Visualization" href="visualization.html"/>
         <link rel="prev" title="pyrai: A Python library for the Routable AI API" href="index.html"/> 
 
   
@@ -114,7 +113,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#metrics">Metrics</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="visualization.html">Visualization</a></li>
 </ul>
 
             
@@ -175,8 +173,6 @@
   
   <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
       
-        <a href="visualization.html" class="btn btn-neutral float-right" title="Visualization" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
       
         <a href="index.html" class="btn btn-neutral" title="pyrai: A Python library for the Routable AI API" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
@@ -195,7 +191,7 @@
 <dt id="pyrai.api.Defaults">
 <em class="property">class </em><code class="sig-prename descclassname">pyrai.api.</code><code class="sig-name descname">Defaults</code><a class="headerlink" href="#pyrai.api.Defaults" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class used to set default values for various parameters
-used by the API</p>
+used by the API.</p>
 </dd></dl>
 
 <dl class="py data">
@@ -214,7 +210,7 @@ used by the API</p>
 <dl class="py class">
 <dt id="pyrai.api.Pyrai">
 <em class="property">class </em><code class="sig-prename descclassname">pyrai.api.</code><code class="sig-name descname">Pyrai</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span><span class="o">=</span><span class="default_value">'https://api.routable.ai'</span></em>, <em class="sig-param"><span class="n">api_key</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Pyrai" title="Permalink to this definition">¶</a></dt>
-<dd><p>Class used to connect to API with API key (no fleet key)</p>
+<dd><p>Class used to connect to API with API key (no fleet key).</p>
 <dl class="py attribute">
 <dt id="pyrai.api.Pyrai.api_key">
 <code class="sig-name descname">api_key</code><a class="headerlink" href="#pyrai.api.Pyrai.api_key" title="Permalink to this definition">¶</a></dt>
@@ -275,7 +271,7 @@ used by the API</p>
 <dd class="field-odd"><p><a class="reference internal" href="#pyrai.api.Fleet" title="pyrai.api.Fleet">Fleet</a></p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If the API call does not return a 200 response</p>
+<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If the API call does not return a 200 response.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -300,7 +296,7 @@ used by the API</p>
 <dd class="field-odd"><p><a class="reference internal" href="#pyrai.api.Fleet" title="pyrai.api.Fleet">Fleet</a></p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If the API call does not return a 200 response</p>
+<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If the API call does not return a 200 response.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -308,7 +304,7 @@ used by the API</p>
 <dl class="py method">
 <dt id="pyrai.api.Pyrai.todict">
 <code class="sig-name descname">todict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Pyrai.todict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Converts the Pyrai object to a python dictionary</p>
+<dd><p>Converts the Pyrai object to a python dictionary.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>A dictionary representation of self.</p>
@@ -386,8 +382,8 @@ assignment API calls are methods of this class.</p>
 
 <dl class="py method">
 <dt id="pyrai.api.Fleet.add_request">
-<code class="sig-name descname">add_request</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rid</span></em>, <em class="sig-param"><span class="n">pickup</span></em>, <em class="sig-param"><span class="n">dropoff</span></em>, <em class="sig-param"><span class="n">load</span></em>, <em class="sig-param"><span class="n">request_time</span><span class="o">=</span><span class="default_value">datetime.datetime(2020, 7, 6, 8, 38, 16, 509854)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.add_request" title="Permalink to this definition">¶</a></dt>
-<dd><p>Attempts to add a request</p>
+<code class="sig-name descname">add_request</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rid</span></em>, <em class="sig-param"><span class="n">pickup</span></em>, <em class="sig-param"><span class="n">dropoff</span></em>, <em class="sig-param"><span class="n">load</span></em>, <em class="sig-param"><span class="n">request_time</span><span class="o">=</span><span class="default_value">datetime.datetime(2020, 7, 8, 10, 20, 57, 40890)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.add_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempts to add a request.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -401,13 +397,13 @@ Defaults to datetime.datetime.now().</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>If successful</p>
+<dd class="field-even"><p>If successful.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#pyrai.api.StatusResponse" title="pyrai.api.StatusResponse">StatusResponse</a></p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful</p>
+<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -415,13 +411,13 @@ Defaults to datetime.datetime.now().</p></li>
 <dl class="py method">
 <dt id="pyrai.api.Fleet.build_url">
 <code class="sig-name descname">build_url</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">endpoint</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.build_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Builds a URL given an endpoint</p>
+<dd><p>Builds a URL given an endpoint.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>(</strong><strong>Endpoint</strong> (<em>endpoint</em>) – str): The endpoint to build the URL for</p>
+<dd class="field-odd"><p><strong>(</strong><strong>Endpoint</strong> (<em>endpoint</em>) – str): The endpoint to build the URL for.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The URL to access the given API endpoint</p>
+<dd class="field-even"><p>The URL to access the given API endpoint.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>str</p>
@@ -431,8 +427,8 @@ Defaults to datetime.datetime.now().</p></li>
 
 <dl class="py method">
 <dt id="pyrai.api.Fleet.cancel_request">
-<code class="sig-name descname">cancel_request</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rid</span></em>, <em class="sig-param"><span class="n">event_time</span><span class="o">=</span><span class="default_value">datetime.datetime(2020, 7, 6, 8, 38, 16, 509855)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.cancel_request" title="Permalink to this definition">¶</a></dt>
-<dd><p>Attempts to cancel a request</p>
+<code class="sig-name descname">cancel_request</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rid</span></em>, <em class="sig-param"><span class="n">event_time</span><span class="o">=</span><span class="default_value">datetime.datetime(2020, 7, 8, 10, 20, 57, 40891)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.cancel_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempts to cancel a request.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -442,10 +438,10 @@ Defaults to datetime.datetime.now().</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful</p>
+<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful.</p>
 </dd>
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>If the request is sucessfully cancelled</p>
+<dd class="field-odd"><p>If the request is sucessfully cancelled.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>Status Response</p>
@@ -462,10 +458,10 @@ Defaults to datetime.datetime.now().</p></li>
 <dd class="field-odd"><p><strong>current_time</strong> (<em>datetime.datetime</em><em>, </em><em>optional</em>) – Current time. Defaults to None.</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful</p>
+<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful.</p>
 </dd>
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>If assignments are successfully computed</p>
+<dd class="field-odd"><p>If assignments are successfully computed.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><a class="reference internal" href="#pyrai.api.VehicleAssignments" title="pyrai.api.VehicleAssignments">VehicleAssignments</a></p>
@@ -476,16 +472,16 @@ Defaults to datetime.datetime.now().</p></li>
 <dl class="py method">
 <dt id="pyrai.api.Fleet.get_request">
 <code class="sig-name descname">get_request</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rid</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.get_request" title="Permalink to this definition">¶</a></dt>
-<dd><p>Allows user to query request with given ID</p>
+<dd><p>Allows user to query request with given ID.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>rid</strong> (<em>int</em>) – The unique request ID</p>
+<dd class="field-odd"><p><strong>rid</strong> (<em>int</em>) – The unique request ID.</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful</p>
+<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful.</p>
 </dd>
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>A request object representing the request with ID rid</p>
+<dd class="field-odd"><p>A request object representing the request with ID rid.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><a class="reference internal" href="#pyrai.api.Request" title="pyrai.api.Request">Request</a></p>
@@ -520,7 +516,7 @@ Defaults to datetime.datetime.now().</p></li>
 <dl class="py method">
 <dt id="pyrai.api.Fleet.make_vehicle_offline">
 <code class="sig-name descname">make_vehicle_offline</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vid</span></em>, <em class="sig-param"><span class="n">location</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.make_vehicle_offline" title="Permalink to this definition">¶</a></dt>
-<dd><p>Attempts to take vehicle offline</p>
+<dd><p>Attempts to take vehicle offline.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -529,10 +525,10 @@ Defaults to datetime.datetime.now().</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful</p>
+<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful.</p>
 </dd>
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>If successful</p>
+<dd class="field-odd"><p>If successful.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>StatusReponse</p>
@@ -543,20 +539,20 @@ Defaults to datetime.datetime.now().</p></li>
 <dl class="py method">
 <dt id="pyrai.api.Fleet.make_vehicle_online">
 <code class="sig-name descname">make_vehicle_online</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vid</span></em>, <em class="sig-param"><span class="n">location</span></em>, <em class="sig-param"><span class="n">capacity</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.make_vehicle_online" title="Permalink to this definition">¶</a></dt>
-<dd><p>Attempts to make vehicle online</p>
+<dd><p>Attempts to make vehicle online.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>vid</strong> (<em>int</em>) – The vehicle ID.</p></li>
-<li><p><strong>location</strong> (<a class="reference internal" href="#pyrai.api.Location" title="pyrai.api.Location"><em>Location</em></a>) – The vehicle location</p></li>
-<li><p><strong>capacity</strong> (<em>int</em>) – The vehicle capacity</p></li>
+<li><p><strong>location</strong> (<a class="reference internal" href="#pyrai.api.Location" title="pyrai.api.Location"><em>Location</em></a>) – The vehicle location.</p></li>
+<li><p><strong>capacity</strong> (<em>int</em>) – The vehicle capacity.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful</p>
+<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful.</p>
 </dd>
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>If successful</p>
+<dd class="field-odd"><p>If successful.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>StatusReponse</p>
@@ -567,15 +563,15 @@ Defaults to datetime.datetime.now().</p></li>
 <dl class="py method">
 <dt id="pyrai.api.Fleet.plot_metrics">
 <code class="sig-name descname">plot_metrics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">metrics</span></em>, <em class="sig-param"><span class="n">start_time</span></em>, <em class="sig-param"><span class="n">end_time</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.plot_metrics" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plots time series metrics</p>
+<dd><p>Plots time series metrics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>metrics</strong> (<em>list</em><em>[</em><a class="reference internal" href="#pyrai.api.Metrics" title="pyrai.api.Metrics"><em>Metrics</em></a><em>]</em>) – A list of metrics to plot.</p></li>
 <li><p><strong>start_time</strong> (<em>datetime.datetime</em><em> or </em><em>str</em>) – The start time, either as
-a datetime.datetime object or a ISO string</p></li>
+a datetime.datetime object or an ISO string.</p></li>
 <li><p><strong>end_time</strong> (<em>datetime.datetime</em><em> or </em><em>str</em>) – The end time, either as
-a datetime.datetime object or a ISO string</p></li>
+a datetime.datetime object or an ISO string.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -594,7 +590,7 @@ a datetime.datetime object or a ISO string</p></li>
 <dl class="py method">
 <dt id="pyrai.api.Fleet.remove_vehicle">
 <code class="sig-name descname">remove_vehicle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vid</span></em>, <em class="sig-param"><span class="n">location</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.remove_vehicle" title="Permalink to this definition">¶</a></dt>
-<dd><p>Attempts to remove a vehicle</p>
+<dd><p>Attempts to remove a vehicle.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -613,7 +609,7 @@ a datetime.datetime object or a ISO string</p></li>
 <dd class="field-odd"><p>list[int]</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful</p>
+<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -632,13 +628,13 @@ a datetime.datetime object or a ISO string</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>If successful</p>
+<dd class="field-even"><p>If successful.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#pyrai.api.StatusResponse" title="pyrai.api.StatusResponse">StatusResponse</a></p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful</p>
+<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -660,7 +656,7 @@ that this does not contain all attributes.</p>
 
 <dl class="py method">
 <dt id="pyrai.api.Fleet.update_vehicle">
-<code class="sig-name descname">update_vehicle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vid</span></em>, <em class="sig-param"><span class="n">location</span></em>, <em class="sig-param"><span class="n">event</span></em>, <em class="sig-param"><span class="n">direction</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">event_time</span><span class="o">=</span><span class="default_value">datetime.datetime(2020, 7, 6, 8, 38, 16, 509844)</span></em>, <em class="sig-param"><span class="n">req_id</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.update_vehicle" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update_vehicle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vid</span></em>, <em class="sig-param"><span class="n">location</span></em>, <em class="sig-param"><span class="n">event</span></em>, <em class="sig-param"><span class="n">direction</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">event_time</span><span class="o">=</span><span class="default_value">datetime.datetime(2020, 7, 8, 10, 20, 57, 40882)</span></em>, <em class="sig-param"><span class="n">req_id</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.update_vehicle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attempts to update a vehicle.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -681,13 +677,13 @@ If the vehicle is unassigned, this may be omitted. Defaults to None.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>If successful</p>
+<dd class="field-even"><p>If successful.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#pyrai.api.Vehicle" title="pyrai.api.Vehicle">Vehicle</a></p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsucessful</p>
+<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsucessful.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -711,9 +707,9 @@ If the vehicle is unassigned, this may be omitted. Defaults to None.</p></li>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>start_time</strong> (<em>datetime.datetime</em><em> or </em><em>str</em>) – The start time, either as
-a datetime.datetime object or a ISO string</p></li>
+a datetime.datetime object or an ISO string.</p></li>
 <li><p><strong>end_time</strong> (<em>datetime.datetime</em><em> or </em><em>str</em>) – The end time, either as
-a datetime.datetime object or a ISO string</p></li>
+a datetime.datetime object or an ISO string.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -733,7 +729,7 @@ a datetime.datetime object or a ISO string</p></li>
 <dl class="py class">
 <dt id="pyrai.api.Location">
 <em class="property">class </em><code class="sig-prename descclassname">pyrai.api.</code><code class="sig-name descname">Location</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lat</span></em>, <em class="sig-param"><span class="n">lng</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Location" title="Permalink to this definition">¶</a></dt>
-<dd><p>Class for representing locations</p>
+<dd><p>Class for representing locations.</p>
 <dl class="py attribute">
 <dt id="pyrai.api.Location.lat">
 <code class="sig-name descname">lat</code><a class="headerlink" href="#pyrai.api.Location.lat" title="Permalink to this definition">¶</a></dt>
@@ -780,7 +776,7 @@ a datetime.datetime object or a ISO string</p></li>
 <dl class="py method">
 <dt id="pyrai.api.Location.todict">
 <code class="sig-name descname">todict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Location.todict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Converts a Location object to a python dictionary</p>
+<dd><p>Converts a Location object to a python dictionary.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>A dictionary representation of self.</p>
@@ -874,7 +870,7 @@ a datetime.datetime object or a ISO string</p></li>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fleet</strong> (<a class="reference internal" href="#pyrai.api.Fleet" title="pyrai.api.Fleet"><em>Fleet</em></a>) – The fleet the vehicle is part of.</p></li>
-<li><p><strong>d</strong> (<em>dict</em>) – The dictionary with the vehicle parameters</p></li>
+<li><p><strong>d</strong> (<em>dict</em>) – The dictionary with the vehicle parameters.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -889,20 +885,20 @@ a datetime.datetime object or a ISO string</p></li>
 <dl class="py method">
 <dt id="pyrai.api.Vehicle.make_offline">
 <code class="sig-name descname">make_offline</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">location</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Vehicle.make_offline" title="Permalink to this definition">¶</a></dt>
-<dd><p>Makes vehicle offline</p>
+<dd><p>Makes vehicle offline.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>location</strong> (<em>Lovation</em><em>, </em><em>optional</em>) – Location of vehicle, uses self.location
 if nothing is provided. Defaults to None.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>If successful</p>
+<dd class="field-even"><p>If successful.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#pyrai.api.StatusResponse" title="pyrai.api.StatusResponse">StatusResponse</a></p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful</p>
+<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -910,7 +906,7 @@ if nothing is provided. Defaults to None.</p>
 <dl class="py method">
 <dt id="pyrai.api.Vehicle.make_online">
 <code class="sig-name descname">make_online</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">location</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">capacity</span><span class="o">=</span><span class="default_value">6</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Vehicle.make_online" title="Permalink to this definition">¶</a></dt>
-<dd><p>Makes vehicle online</p>
+<dd><p>Makes vehicle online.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -921,13 +917,13 @@ Defaults to Defaults.DEFAULT_CAPACITY.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>If successful</p>
+<dd class="field-even"><p>If successful.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#pyrai.api.StatusResponse" title="pyrai.api.StatusResponse">StatusResponse</a></p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful</p>
+<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -957,7 +953,7 @@ Defaults to None.</p>
 <dl class="py method">
 <dt id="pyrai.api.Vehicle.todict">
 <code class="sig-name descname">todict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Vehicle.todict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Converts the Vehicle object to a python dictionary</p>
+<dd><p>Converts the Vehicle object to a python dictionary.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>A dictionary representation of self.</p>
@@ -970,7 +966,7 @@ Defaults to None.</p>
 
 <dl class="py method">
 <dt id="pyrai.api.Vehicle.update">
-<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em>, <em class="sig-param"><span class="n">req_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">location</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">direction</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">event_time</span><span class="o">=</span><span class="default_value">datetime.datetime(2020, 7, 6, 8, 38, 16, 509878)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Vehicle.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em>, <em class="sig-param"><span class="n">req_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">location</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">direction</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">event_time</span><span class="o">=</span><span class="default_value">datetime.datetime(2020, 7, 8, 10, 20, 57, 40913)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Vehicle.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates the vehicle. Note that this mutates the vehicle, so nothing is returned.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -995,7 +991,7 @@ If the vehicle is unassigned, this may be omitted. Defaults to None.</p></li>
 <dd class="field-even"><p>None</p>
 </dd>
 <dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – if unsuccessful</p>
+<dd class="field-odd"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1127,7 +1123,7 @@ assigned to any requests.</p>
 <dl class="py class">
 <dt id="pyrai.api.Request">
 <em class="property">class </em><code class="sig-prename descclassname">pyrai.api.</code><code class="sig-name descname">Request</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fleet</span></em>, <em class="sig-param"><span class="n">pickup</span></em>, <em class="sig-param"><span class="n">dropoff</span></em>, <em class="sig-param"><span class="n">request_time</span></em>, <em class="sig-param"><span class="n">req_id</span></em>, <em class="sig-param"><span class="n">veh_id</span></em>, <em class="sig-param"><span class="n">load</span></em>, <em class="sig-param"><span class="n">assigned</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Request" title="Permalink to this definition">¶</a></dt>
-<dd><p>Class for representing requests</p>
+<dd><p>Class for representing requests.</p>
 <dl class="py attribute">
 <dt id="pyrai.api.Request.fleet">
 <code class="sig-name descname">fleet</code><a class="headerlink" href="#pyrai.api.Request.fleet" title="Permalink to this definition">¶</a></dt>
@@ -1219,21 +1215,21 @@ assigned to any requests.</p>
 
 <dl class="py method">
 <dt id="pyrai.api.Request.cancel">
-<code class="sig-name descname">cancel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event_time</span><span class="o">=</span><span class="default_value">datetime.datetime(2020, 7, 6, 8, 38, 16, 509926)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Request.cancel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Cancels a request</p>
+<code class="sig-name descname">cancel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event_time</span><span class="o">=</span><span class="default_value">datetime.datetime(2020, 7, 8, 10, 20, 57, 40957)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Request.cancel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cancels a request.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>event_time</strong> (<em>datetime.datetime</em><em>, </em><em>optional</em>) – The event time.
 Defaults to datetime.datetime.now().</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>If successful</p>
+<dd class="field-even"><p>If successful.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Status Response</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful</p>
+<dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1250,7 +1246,7 @@ Defaults to datetime.datetime.now().</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A request initialized with the parameters defined by d</p>
+<dd class="field-even"><p>A request initialized with the parameters defined by d.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#pyrai.api.Request" title="pyrai.api.Request">Request</a></p>
@@ -1280,7 +1276,7 @@ Defaults to datetime.datetime.now().</p>
 <dl class="py class">
 <dt id="pyrai.api.VehicleAssignments">
 <em class="property">class </em><code class="sig-prename descclassname">pyrai.api.</code><code class="sig-name descname">VehicleAssignments</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vehs</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">requests</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">notifications</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.VehicleAssignments" title="Permalink to this definition">¶</a></dt>
-<dd><p>Class used to represent Vehicle Assignments</p>
+<dd><p>Class used to represent Vehicle Assignments.</p>
 <dl class="py attribute">
 <dt id="pyrai.api.VehicleAssignments.vehs">
 <code class="sig-name descname">vehs</code><a class="headerlink" href="#pyrai.api.VehicleAssignments.vehs" title="Permalink to this definition">¶</a></dt>
@@ -1382,7 +1378,7 @@ Defaults to datetime.datetime.now().</p>
 <dl class="py method">
 <dt id="pyrai.api.Notification.todict">
 <code class="sig-name descname">todict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Notification.todict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Converts a notification object to a python dictionary</p>
+<dd><p>Converts a notification object to a python dictionary.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>A dictionary representation of self.</p>
@@ -1527,7 +1523,7 @@ Defaults to datetime.datetime.now().</p>
 <dl class="py method">
 <dt id="pyrai.api.StatusResponse.todict">
 <code class="sig-name descname">todict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.StatusResponse.todict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Converts StatusResponse object to a python dictionary</p>
+<dd><p>Converts StatusResponse object to a python dictionary.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>A dictionary representation of self.</p>
@@ -1543,7 +1539,7 @@ Defaults to datetime.datetime.now().</p>
 <dl class="py class">
 <dt id="pyrai.api.StatusError">
 <em class="property">class </em><code class="sig-prename descclassname">pyrai.api.</code><code class="sig-name descname">StatusError</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">resp</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">status</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">error</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.StatusError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Error raised for responses that are not 200s</p>
+<dd><p>Error raised for responses that are not 200s.</p>
 <dl class="py attribute">
 <dt id="pyrai.api.StatusError.resp">
 <code class="sig-name descname">resp</code><a class="headerlink" href="#pyrai.api.StatusError.resp" title="Permalink to this definition">¶</a></dt>
@@ -1559,7 +1555,7 @@ Defaults to datetime.datetime.now().</p>
 <dt id="pyrai.api.StatusError.status">
 <code class="sig-name descname">status</code><a class="headerlink" href="#pyrai.api.StatusError.status" title="Permalink to this definition">¶</a></dt>
 <dd><p>The status of the response, should be nonzero
-if error is raised</p>
+if error is raised.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>int</p>
@@ -1586,7 +1582,7 @@ if error is raised</p>
 <dl class="py class">
 <dt id="pyrai.api.Metrics">
 <em class="property">class </em><code class="sig-prename descclassname">pyrai.api.</code><code class="sig-name descname">Metrics</code><a class="headerlink" href="#pyrai.api.Metrics" title="Permalink to this definition">¶</a></dt>
-<dd><p>Class used to specify the metrics that can be queried</p>
+<dd><p>Class used to specify the metrics that can be queried.</p>
 </dd></dl>
 
 <dl class="py data">
@@ -1676,8 +1672,6 @@ if error is raised</p>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="visualization.html" class="btn btn-neutral float-right" title="Visualization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral" title="pyrai: A Python library for the Routable AI API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

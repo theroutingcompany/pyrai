@@ -8,7 +8,6 @@ Contents
    :caption: Contents:
 
    core
-   visualization
 
 
 Indices and tables
