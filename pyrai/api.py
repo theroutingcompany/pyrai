@@ -116,6 +116,7 @@ class Endpoints:
     CANCEL_REQUEST = "/dispatcher/request/cancel"
     COMPUTE_ASSIGNMENTS = "/dispatcher/assignments"
     SET_PARAMS = "/dispatcher/params"
+    FORWARD_SIMULATE = "/dispatcher/simulation/forward"
     GRAPHQL = "/graphql"
 
 
@@ -728,6 +729,45 @@ class Fleet(object):
         else:
             raise StatusError(resp = resp)
 
+    def forward_simulate(self, duration, current_time=datetime.datetime.now()):
+        """
+        Forward simulates the fleet for a given duration.
+
+        Args:
+            duration (string): A duration to forward simulate for, e.g. "5m."
+            current_time (datetime.datetime or str, optional): The current time, from when the simulation will begin. Can be provided as a datetime.datetime object or ISO string. Defaults to datetime.datetime.now().
+
+        Returns:
+            VehicleAssignments: The final state of all vehicles and requests, after the simulation.
+
+        Raises:
+            StatusError: If unsuccessful.
+        """
+
+        if isinstance(current_time, str):
+            current_time = isoparse(current_time)
+
+        url = self.build_url(Endpoints.FORWARD_SIMULATE)
+        payload = {
+            'user_key': self.user_key.todict(),
+            'sim_duration': duration,
+            'current_time': to_rfc3339(current_time)
+        }
+
+        r = requests.post(url, data = json.dumps(payload))
+        resp = r.json()
+
+        if r.status_code == 200:
+            return VehicleAssignments(
+                vehs=[Vehicle.fromdict(self, veh) for veh in resp.get('vehs')],
+                requests=[Request.fromdict(self, req) for req in resp.get('reqs')],
+                notifications=[Notification.fromdict(notif) for notif in resp.get('notifications')],
+            )
+        else:
+            raise StatusError(resp = resp)
+
+        
+
     def visualize(self, start_time, end_time):
         """
         Visualizes the fleet for the given time frame.
@@ -807,21 +847,8 @@ def to_rfc3339(dt):
     """
     return dt.astimezone(datetime.timezone.utc).isoformat()[:-6] + "Z"
 
-    Args:
-        dt (datetime.datetime): A datetime.datetime object.
-
-    Returns:
-        string: An RFC3339 representation of dt.
-    """
-    return dt.astimezone(datetime.timezone.utc).isoformat()[:-6] + "Z"
-
-
 class Vehicle(object):
-    """
-    Class used to represent vehicles.
-
-class Vehicle(object):
-    """
+    """ 
     Class used to represent vehicles.
 
     Attributes:
