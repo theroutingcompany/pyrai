@@ -382,7 +382,7 @@ assignment API calls are methods of this class.</p>
 
 <dl class="py method">
 <dt id="pyrai.api.Fleet.add_request">
-<code class="sig-name descname">add_request</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rid</span></em>, <em class="sig-param"><span class="n">pickup</span></em>, <em class="sig-param"><span class="n">dropoff</span></em>, <em class="sig-param"><span class="n">load</span></em>, <em class="sig-param"><span class="n">request_time</span><span class="o">=</span><span class="default_value">datetime.datetime(2020, 7, 10, 10, 29, 48, 360076)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.add_request" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_request</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rid</span></em>, <em class="sig-param"><span class="n">pickup</span></em>, <em class="sig-param"><span class="n">dropoff</span></em>, <em class="sig-param"><span class="n">load</span></em>, <em class="sig-param"><span class="n">request_time</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.add_request" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attempts to add a request.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -391,9 +391,7 @@ assignment API calls are methods of this class.</p>
 <li><p><strong>pickup</strong> (<a class="reference internal" href="#pyrai.api.Location" title="pyrai.api.Location"><em>Location</em></a>) – The pickup location.</p></li>
 <li><p><strong>dropoff</strong> (<a class="reference internal" href="#pyrai.api.Location" title="pyrai.api.Location"><em>Location</em></a>) – The dropoff location.</p></li>
 <li><p><strong>load</strong> (<em>int</em>) – The load (number of passengers).</p></li>
-<li><p><strong>request_time</strong> (<em>datetime.datetime</em><em>, </em><em>optional</em>) – Time of the request.
-This may be in the future for scheduled pickups.
-Defaults to datetime.datetime.now().</p></li>
+<li><p><strong>request_time</strong> (<em>datetime.datetime</em><em>, </em><em>optional</em>) – Time of the request. This may be in the future for scheduled pickups. Set to datetime.datetime.now() if not provided. Defaults to None.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -427,14 +425,13 @@ Defaults to datetime.datetime.now().</p></li>
 
 <dl class="py method">
 <dt id="pyrai.api.Fleet.cancel_request">
-<code class="sig-name descname">cancel_request</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rid</span></em>, <em class="sig-param"><span class="n">event_time</span><span class="o">=</span><span class="default_value">datetime.datetime(2020, 7, 10, 10, 29, 48, 360077)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.cancel_request" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">cancel_request</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rid</span></em>, <em class="sig-param"><span class="n">event_time</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.cancel_request" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attempts to cancel a request.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>rid</strong> (<em>int</em>) – The unique request ID</p></li>
-<li><p><strong>event_time</strong> (<em>datetime.datetime</em><em>, </em><em>optional</em>) – Time of the cancellation.
-Defaults to datetime.datetime.now().</p></li>
+<li><p><strong>event_time</strong> (<em>datetime.datetime</em><em>, </em><em>optional</em>) – Time of the cancellation. Set to datetime.datetime.now() if not provided. Defaults to None.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
@@ -451,13 +448,13 @@ Defaults to datetime.datetime.now().</p></li>
 
 <dl class="py method">
 <dt id="pyrai.api.Fleet.forward_simulate">
-<code class="sig-name descname">forward_simulate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">duration</span></em>, <em class="sig-param"><span class="n">current_time</span><span class="o">=</span><span class="default_value">datetime.datetime(2020, 7, 10, 10, 29, 48, 360078)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.forward_simulate" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">forward_simulate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">duration</span></em>, <em class="sig-param"><span class="n">current_time</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.forward_simulate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Forward simulates the fleet for a given duration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>duration</strong> (<em>string</em>) – A duration to forward simulate for, e.g. “5m.”</p></li>
-<li><p><strong>current_time</strong> (<em>datetime.datetime</em><em> or </em><em>str</em><em>, </em><em>optional</em>) – The current time, from when the simulation will begin. Can be provided as a datetime.datetime object or ISO string. Defaults to datetime.datetime.now().</p></li>
+<li><p><strong>current_time</strong> (<em>datetime.datetime</em><em> or </em><em>str</em><em>, </em><em>optional</em>) – The current time, from when the simulation will begin. Can be provided as a datetime.datetime object or ISO string. Set to datetime.datetime.now() if not provided. Defaults to None.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -478,7 +475,7 @@ Defaults to datetime.datetime.now().</p></li>
 <dd><p>Computes vehicle assignments for the fleet in the current state.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>current_time</strong> (<em>datetime.datetime</em><em>, </em><em>optional</em>) – Current time. Defaults to None.</p>
+<dd class="field-odd"><p><strong>current_time</strong> (<em>datetime.datetime</em><em>, </em><em>optional</em>) – Current time. Set to datetime.datetime.now() if not provided. Defaults to None.</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><p><a class="reference internal" href="#pyrai.api.StatusError" title="pyrai.api.StatusError"><strong>StatusError</strong></a> – If unsuccessful.</p>
@@ -679,7 +676,7 @@ that this does not contain all attributes.</p>
 
 <dl class="py method">
 <dt id="pyrai.api.Fleet.update_vehicle">
-<code class="sig-name descname">update_vehicle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vid</span></em>, <em class="sig-param"><span class="n">location</span></em>, <em class="sig-param"><span class="n">event</span></em>, <em class="sig-param"><span class="n">direction</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">event_time</span><span class="o">=</span><span class="default_value">datetime.datetime(2020, 7, 10, 10, 29, 48, 360070)</span></em>, <em class="sig-param"><span class="n">req_id</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.update_vehicle" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update_vehicle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vid</span></em>, <em class="sig-param"><span class="n">location</span></em>, <em class="sig-param"><span class="n">event</span></em>, <em class="sig-param"><span class="n">direction</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">event_time</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">req_id</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.update_vehicle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attempts to update a vehicle.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -694,7 +691,7 @@ progress should be set when the vehicle is moving to service a request,
 either picking up or dropping off. The vehicle should be marked as
 unassigned when it is is not assigned to any requests.</p></li>
 <li><p><strong>event_time</strong> (<em>datetime.datetime</em><em>, </em><em>optional</em>) – Time at which the vehicle update has occurred.
-Defaults to datetime.datetime.now().</p></li>
+Set to datetime.datetime.now() if not provided. Defaults to None.</p></li>
 <li><p><strong>req_id</strong> (<em>int</em><em>, </em><em>optional</em>) – The unique ID of request the vehicle is servicing.
 If the vehicle is unassigned, this may be omitted. Defaults to None.</p></li>
 </ul>
@@ -989,7 +986,7 @@ Defaults to None.</p>
 
 <dl class="py method">
 <dt id="pyrai.api.Vehicle.update">
-<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em>, <em class="sig-param"><span class="n">req_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">location</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">direction</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">event_time</span><span class="o">=</span><span class="default_value">datetime.datetime(2020, 7, 10, 10, 29, 48, 360103)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Vehicle.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em>, <em class="sig-param"><span class="n">req_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">location</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">direction</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">event_time</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Vehicle.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates the vehicle. Note that this mutates the vehicle, so nothing is returned.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1004,8 +1001,7 @@ dropoff occurs when the vehicle has dropped of a request.
 progress should be set when the vehicle is moving to service a request,
 either picking up or dropping off. The vehicle should be marked as
 unassigned when it is is not assigned to any requests.</p></li>
-<li><p><strong>event_time</strong> (<em>datetime.datetime</em><em>, </em><em>optional</em>) – Time at which the vehicle update has occurred.
-Defaults to datetime.datetime.now().</p></li>
+<li><p><strong>event_time</strong> (<em>datetime.datetime</em><em>, </em><em>optional</em>) – Time at which the vehicle update has occurred. Set to datetime.datetime.now() if not provided. Defaults to None.</p></li>
 <li><p><strong>req_id</strong> (<em>int</em><em>, </em><em>optional</em>) – The unique ID of request the vehicle is servicing.
 If the vehicle is unassigned, this may be omitted. Defaults to None.</p></li>
 </ul>
@@ -1238,12 +1234,12 @@ assigned to any requests.</p>
 
 <dl class="py method">
 <dt id="pyrai.api.Request.cancel">
-<code class="sig-name descname">cancel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event_time</span><span class="o">=</span><span class="default_value">datetime.datetime(2020, 7, 10, 10, 29, 48, 360143)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Request.cancel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">cancel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event_time</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Request.cancel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Cancels a request.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>event_time</strong> (<em>datetime.datetime</em><em>, </em><em>optional</em>) – The event time.
-Defaults to datetime.datetime.now().</p>
+Set to datetime.datetime.now() if not provided. Defaults to None.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>If successful.</p>

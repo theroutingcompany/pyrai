@@ -167,24 +167,42 @@
 <h1>pyrai: A Python library for the Routable AI API<a class="headerlink" href="#pyrai-a-python-library-for-the-routable-ai-api" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Pyrai makes it easy to use the Routable AI API to create, run, and visualize simulations with just 10 lines of code.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyrai</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="n">rai</span> <span class="o">=</span> <span class="n">pyrai</span><span class="o">.</span><span class="n">Pyrai</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;774721b6-2e77-4d4a-8b4c-e997bcef11c3&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;http://localhost:8080/&quot;</span><span class="p">)</span>
+<span class="n">fleet</span> <span class="o">=</span> <span class="n">rai</span><span class="o">.</span><span class="n">create_live_fleet</span><span class="p">()</span>
+<span class="n">fleet</span><span class="o">.</span><span class="n">make_vehicle_online</span><span class="p">(</span><span class="n">vid</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">pyrai</span><span class="o">.</span><span class="n">Location</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="mf">42.36</span><span class="p">,</span> <span class="n">lng</span><span class="o">=</span><span class="mf">71.05</span><span class="p">),</span> <span class="n">capacity</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">fleet</span><span class="o">.</span><span class="n">add_request</span><span class="p">(</span><span class="n">rid</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pickup</span><span class="o">=</span><span class="n">pyrai</span><span class="o">.</span><span class="n">Location</span><span class="p">(</span><span class="mf">42.1</span><span class="p">,</span><span class="mf">71.2</span><span class="p">),</span> <span class="n">dropoff</span><span class="o">=</span><span class="n">pyrai</span><span class="o">.</span><span class="n">Location</span><span class="p">(</span><span class="mf">42.3</span><span class="p">,</span><span class="mf">71.4</span><span class="p">),</span> <span class="n">load</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">fleet</span><span class="o">.</span><span class="n">get_assignments</span><span class="p">()</span>
+<span class="n">fleet</span><span class="o">.</span><span class="n">forward_simulate</span><span class="p">(</span><span class="s2">&quot;10m&quot;</span><span class="p">)</span>
+<span class="n">fleet</span><span class="o">.</span><span class="n">visualize</span><span class="p">(</span><span class="n">start_time</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">-</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span> <span class="n">end_time</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
 <p>Pyrai allows you to create, run, and visualize simulations with the
 Routable AI API, right in Python.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">api</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="section" id="getting-started">
+<h3>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h3>
+<p>Begin by importing the package and adding your API key.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyrai</span>
 <span class="n">API_KEY</span> <span class="o">=</span> <span class="s2">&quot;your-api-key-here&quot;</span>
 </pre></div>
 </div>
 <p>Once you have added your API key, you can create a fleet:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rai</span> <span class="o">=</span> <span class="n">Pyrai</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">API_KEY</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rai</span> <span class="o">=</span> <span class="n">pyrai</span><span class="o">.</span><span class="n">Pyrai</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">API_KEY</span><span class="p">)</span>
 <span class="n">fleet</span> <span class="o">=</span> <span class="n">rai</span><span class="o">.</span><span class="n">create_sim_fleet</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>You can also create a fleet directly from its API key and fleet key:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">directly_created_fleet</span> <span class="o">=</span> <span class="n">Fleet</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;api-key-here&quot;</span><span class="p">,</span> <span class="n">fleet_key</span><span class="o">=</span><span class="s2">&quot;fleet-key-here&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">directly_created_fleet</span> <span class="o">=</span> <span class="n">pyrai</span><span class="o">.</span><span class="n">Fleet</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;api-key-here&quot;</span><span class="p">,</span> <span class="n">fleet_key</span><span class="o">=</span><span class="s2">&quot;fleet-key-here&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="vehicles">
-<h2>Vehicles<a class="headerlink" href="#vehicles" title="Permalink to this headline">¶</a></h2>
+<h3>Vehicles<a class="headerlink" href="#vehicles" title="Permalink to this headline">¶</a></h3>
 <p>Once you have a fleet, you can add, update, and remove vehicles from it:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fleet</span><span class="o">.</span><span class="n">make_vehicle_online</span><span class="p">(</span><span class="n">vid</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">Location</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">capacity</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 <span class="n">veh</span> <span class="o">=</span> <span class="n">fleet</span><span class="o">.</span><span class="n">get_vehicle_info</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -207,7 +225,7 @@ fleet or the individual vehicles:</p>
 </div>
 </div>
 <div class="section" id="requests">
-<h2>Requests<a class="headerlink" href="#requests" title="Permalink to this headline">¶</a></h2>
+<h3>Requests<a class="headerlink" href="#requests" title="Permalink to this headline">¶</a></h3>
 <p>Requests can be added, queried, and cancelled similar to vehicles.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fleet</span><span class="o">.</span><span class="n">add_request</span><span class="p">(</span><span class="n">rid</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                   <span class="n">pickup</span><span class="o">=</span><span class="n">Location</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">40</span><span class="p">),</span>
@@ -224,7 +242,7 @@ fleet or the individual vehicles:</p>
 </div>
 </div>
 <div class="section" id="assignments">
-<h2>Assignments<a class="headerlink" href="#assignments" title="Permalink to this headline">¶</a></h2>
+<h3>Assignments<a class="headerlink" href="#assignments" title="Permalink to this headline">¶</a></h3>
 <p>Once you have a fleet with requests and vehicles, you can use the API to
 assign vehicles to requests.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
@@ -247,18 +265,18 @@ assign vehicles to requests.</p>
 </div>
 </div>
 <div class="section" id="forward-simulation">
-<h2>Forward Simulation<a class="headerlink" href="#forward-simulation" title="Permalink to this headline">¶</a></h2>
+<h3>Forward Simulation<a class="headerlink" href="#forward-simulation" title="Permalink to this headline">¶</a></h3>
 <p>Once you have assignments, you can forward simulate for a specified
 duration</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fleet</span><span class="o">.</span><span class="n">forward_simulate</span><span class="p">(</span><span class="s2">&quot;5m&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fleet</span><span class="o">.</span><span class="n">forward_simulate</span><span class="p">(</span><span class="n">sim_duration</span><span class="o">=</span><span class="s2">&quot;5m&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>This updates the state of your vehicles and requests.</p>
 </div>
 <div class="section" id="visualization">
-<h2>Visualization<a class="headerlink" href="#visualization" title="Permalink to this headline">¶</a></h2>
-<p>Once you have a fleet that has accumulated events, you can visualize the
-vehicles and requests.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fleet</span> <span class="o">=</span> <span class="n">Fleet</span><span class="p">(</span><span class="n">api_key</span> <span class="o">=</span> <span class="s2">&quot;907fab5b-c35e-497f-988f-92fbb8835977&quot;</span><span class="p">,</span>
+<h3>Visualization<a class="headerlink" href="#visualization" title="Permalink to this headline">¶</a></h3>
+<p>Once you have a fleet that has accumulated events and run through a forward simulation, you can visualize the vehicles and requests:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fleet</span> <span class="o">=</span> <span class="n">pyrai</span><span class="o">.</span><span class="n">Fleet</span><span class="p">(</span><span class="n">api_key</span> <span class="o">=</span> <span class="s2">&quot;907fab5b-c35e-497f-988f-92fbb8835977&quot;</span><span class="p">,</span>
               <span class="n">fleet_key</span> <span class="o">=</span> <span class="s2">&quot;8af41885-d9bf-465d-9746-e54d8147646d&quot;</span><span class="p">)</span>
 <span class="n">fleet</span><span class="o">.</span><span class="n">visualize</span><span class="p">(</span><span class="s1">&#39;2020-05-06T21:55:00Z&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;2020-05-06T22:55:00Z&#39;</span><span class="p">)</span>
@@ -325,6 +343,7 @@ if (outputEl) {{
         </div>
 </body>
 </html></div>
+</div>
 <div class="section" id="contents">
 <h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
