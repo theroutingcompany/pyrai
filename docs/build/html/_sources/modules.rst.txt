@@ -1,7 +1,0 @@
-pyrai
-=====
-
-.. toctree::
-   :maxdepth: 4
-
-   pyrai

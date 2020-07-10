@@ -4,8 +4,8 @@ import datetime
 import json
 import IPython
 import plotly.graph_objects as go
-from dateutil.parser import *
-
+from dateutil.parser import isoparse
+from pytimeparse.timeparse import timeparse
 
 class FleetParams(object):
     """
@@ -348,6 +348,8 @@ class Fleet(object):
         self.pyrai = pyrai
         self.params = params
         self.vis_url = vis_url
+        self.start_time = datetime.datetime.now()
+        self.end_time = datetime.datetime.now()
     
     @property
     def user_key(self):
@@ -447,6 +449,9 @@ class Fleet(object):
             StatusReponse: If successful.
         """
 
+        if datetime.datetime.now() > self.end_time:
+            self.end_time = datetime.datetime.now()
+
         url = self.build_url(Endpoints.MAKE_VEHICLE_ONLINE)
         payload = {
             "location": location.todict(),
@@ -476,6 +481,9 @@ class Fleet(object):
         Returns:
             StatusReponse: If successful.
         """
+        if datetime.datetime.now() > self.end_time:
+            self.end_time = datetime.datetime.now()
+
         url = self.build_url(Endpoints.MAKE_VEHICLE_OFFLINE)
         payload = {
             'location': location.todict(),
@@ -490,7 +498,7 @@ class Fleet(object):
         else:
             raise StatusError(resp=resp)
     
-    def update_vehicle(self, vid, location, event, direction=Defaults.DEFAULT_DIRECTION, event_time=datetime.datetime.now(), req_id=None):
+    def update_vehicle(self, vid, location, event, direction=Defaults.DEFAULT_DIRECTION, event_time=None, req_id=None):
         """
         Attempts to update a vehicle.
 
@@ -505,7 +513,7 @@ class Fleet(object):
                 either picking up or dropping off. The vehicle should be marked as 
                 unassigned when it is is not assigned to any requests.
             event_time (datetime.datetime, optional): Time at which the vehicle update has occurred. 
-                Defaults to datetime.datetime.now().
+                Set to datetime.datetime.now() if not provided. Defaults to None.
             req_id (int, optional): The unique ID of request the vehicle is servicing. 
                 If the vehicle is unassigned, this may be omitted. Defaults to None.
 
@@ -515,6 +523,11 @@ class Fleet(object):
         Raises:
             StatusError: If unsucessful.
         """
+        if event_time is None:
+            event_time = datetime.datetime.now()
+
+        if event_time > self.end_time:
+            self.end_time = event_time
 
         url = self.build_url(Endpoints.UPDATE_VEHICLE)
         payload = {
@@ -552,6 +565,10 @@ class Fleet(object):
         Raises:
             StatusError: If unsuccessful.
         """
+
+        if datetime.datetime.now() > self.end_time:
+            self.end_time = datetime.datetime.now()
+        
         url = self.build_url(Endpoints.REMOVE_VEHICLE)
         payload = {
             'location': location.todict(),
@@ -598,7 +615,7 @@ class Fleet(object):
         else:
             raise StatusError(resp=resp) 
     
-    def add_request(self, rid, pickup, dropoff, load, request_time=datetime.datetime.now()):
+    def add_request(self, rid, pickup, dropoff, load, request_time=None):
         """
         Attempts to add a request.
 
@@ -607,9 +624,7 @@ class Fleet(object):
             pickup (Location): The pickup location.
             dropoff (Location): The dropoff location.
             load (int): The load (number of passengers).
-            request_time (datetime.datetime, optional): Time of the request. 
-                This may be in the future for scheduled pickups. 
-                Defaults to datetime.datetime.now().
+            request_time (datetime.datetime, optional): Time of the request. This may be in the future for scheduled pickups. Set to datetime.datetime.now() if not provided. Defaults to None.
 
         Returns:
             StatusResponse: If successful.
@@ -617,6 +632,12 @@ class Fleet(object):
         Raises:
             StatusError: If unsuccessful.
         """
+        
+        if request_time is None:
+            request_time = datetime.datetime.now()
+
+        if request_time > self.end_time:
+            self.end_time = request_time
 
         url = self.build_url(Endpoints.ADD_REQUEST)
         payload = {
@@ -636,14 +657,13 @@ class Fleet(object):
         else:
             raise StatusError(resp=resp)
 
-    def cancel_request(self, rid, event_time=datetime.datetime.now()):
+    def cancel_request(self, rid, event_time=None):
         """
         Attempts to cancel a request.
 
         Args:
             rid (int): The unique request ID
-            event_time (datetime.datetime, optional): Time of the cancellation.
-                Defaults to datetime.datetime.now().
+            event_time (datetime.datetime, optional): Time of the cancellation. Set to datetime.datetime.now() if not provided. Defaults to None.
 
         Raises:
             StatusError: If unsuccessful.
@@ -651,6 +671,12 @@ class Fleet(object):
         Returns:
             Status Response: If the request is sucessfully cancelled.
         """
+        if event_time is None:
+            event_time = datetime.datetime.now()
+
+        if event_time > self.end_time:
+            self.end_time = event_time
+
         url = self.build_url(Endpoints.CANCEL_REQUEST)
         payload = {
             'id': rid,
@@ -700,7 +726,7 @@ class Fleet(object):
         Computes vehicle assignments for the fleet in the current state.
 
         Args:
-            current_time (datetime.datetime, optional): Current time. Defaults to None.
+            current_time (datetime.datetime, optional): Current time. Set to datetime.datetime.now() if not provided. Defaults to None.
 
         Raises:
             StatusError: If unsuccessful.
@@ -708,14 +734,18 @@ class Fleet(object):
         Returns:
             VehicleAssignments: If assignments are successfully computed.
         """
+        if current_time is None:
+            current_time = datetime.datetime.now()
+
+        if current_time > self.end_time:
+            self.end_time = current_time
+
         url = self.build_url(Endpoints.COMPUTE_ASSIGNMENTS)
         payload = {
             'api_key': self.api_key,
-            'fleet_key': self.fleet_key
+            'fleet_key': self.fleet_key,
+            'current_time': to_rfc3339(current_time)
         }
-
-        if current_time is not None:
-            payload['current_time'] = to_rfc3339(current_time)
 
         r = requests.get(url, params=payload)
         resp = r.json()
@@ -729,13 +759,13 @@ class Fleet(object):
         else:
             raise StatusError(resp = resp)
 
-    def forward_simulate(self, duration, current_time=datetime.datetime.now()):
+    def forward_simulate(self, duration, current_time=None):
         """
         Forward simulates the fleet for a given duration.
 
         Args:
             duration (string): A duration to forward simulate for, e.g. "5m."
-            current_time (datetime.datetime or str, optional): The current time, from when the simulation will begin. Can be provided as a datetime.datetime object or ISO string. Defaults to datetime.datetime.now().
+            current_time (datetime.datetime or str, optional): The current time, from when the simulation will begin. Can be provided as a datetime.datetime object or ISO string. Set to datetime.datetime.now() if not provided. Defaults to None.
 
         Returns:
             VehicleAssignments: The final state of all vehicles and requests, after the simulation.
@@ -743,9 +773,16 @@ class Fleet(object):
         Raises:
             StatusError: If unsuccessful.
         """
+        if current_time is None:
+            current_time = datetime.datetime.now()
 
         if isinstance(current_time, str):
             current_time = isoparse(current_time)
+
+        duration_td = datetime.timedelta(seconds=timeparse(duration))
+    
+        if current_time + duration_td > self.end_time:
+            self.end_time = current_time + duration_td
 
         url = self.build_url(Endpoints.FORWARD_SIMULATE)
         payload = {
@@ -768,19 +805,23 @@ class Fleet(object):
 
         
 
-    def visualize(self, start_time, end_time):
+    def visualize(self, start_time=None, end_time=None):
         """
         Visualizes the fleet for the given time frame.
 
         Args:
-            start_time (datetime.datetime or str): The start time, either as
-                a datetime.datetime object or an ISO string.
-            end_time (datetime.datetime or str): The end time, either as
-                a datetime.datetime object or an ISO string.
+            start_time (datetime.datetime or str): The start time, either as a datetime.datetime object or an ISO string. Set to the python fleet creation time if not set. Defaults to None.
+            end_time (datetime.datetime or str): The end time, either as a datetime.datetime object or an ISO string. Set to the latest API call time if not set. Defaults to None.
 
         Returns:
             IFrame: A graphic view of the fleet through time.
         """
+        if start_time is None:
+            start_time = self.start_time
+        
+        if end_time is None:
+            end_time = self.end_time
+
         if isinstance(start_time, str):
             start_time = isoparse(start_time)
 
@@ -792,23 +833,30 @@ class Fleet(object):
             end = to_rfc3339(end_time), 
             api_key = self.api_key, 
             fleet_key = self.fleet_key)
+
+        print(url)
+
         return IPython.display.IFrame(url, 800, 800)
 
-    def plot_metrics(self, metrics, start_time, end_time):
+    def plot_metrics(self, metrics, start_time=None, end_time=None):
         """
         Plots time series metrics.
 
         Args:
             metrics (list[Metrics]): A list of metrics to plot.
-            start_time (datetime.datetime or str): The start time, either as
-                a datetime.datetime object or an ISO string.
-            end_time (datetime.datetime or str): The end time, either as
-                a datetime.datetime object or an ISO string.
+            start_time (datetime.datetime or str): The start time, either as a datetime.datetime object or an ISO string. Set to the fleet creation time if not set. Defaults to None.
+            end_time (datetime.datetime or str): The end time, either as a datetime.datetime object or an ISO string. Set to the latest API call time if not set. Defaults to None.
 
         Returns:
             Plotly.Figure: A figure that graphs the metrics
                 over the time interval.
         """
+        if start_time is None:
+            start_time = self.start_time
+        
+        if end_time is None:
+            end_time = self.end_time
+
         if isinstance(start_time, str):
             start_time = isoparse(start_time)
 
@@ -969,7 +1017,7 @@ class Vehicle(object):
         req_id=None,
         location=None, 
         direction=Defaults.DEFAULT_DIRECTION, 
-        event_time=datetime.datetime.now()):
+        event_time=None):
         """
         Updates the vehicle. Note that this mutates the vehicle, so nothing is returned.
 
@@ -984,8 +1032,7 @@ class Vehicle(object):
                 progress should be set when the vehicle is moving to service a request, 
                 either picking up or dropping off. The vehicle should be marked as 
                 unassigned when it is is not assigned to any requests.
-            event_time (datetime.datetime, optional): Time at which the vehicle update has occurred. 
-                Defaults to datetime.datetime.now().
+            event_time (datetime.datetime, optional): Time at which the vehicle update has occurred. Set to datetime.datetime.now() if not provided. Defaults to None.
             req_id (int, optional): The unique ID of request the vehicle is servicing. 
                 If the vehicle is unassigned, this may be omitted. Defaults to None.
 
@@ -1208,13 +1255,13 @@ class Request(object):
             'assigned': self.assigned
         }
 
-    def cancel(self, event_time=datetime.datetime.now()):
+    def cancel(self, event_time=None):
         """
         Cancels a request.
 
         Args:
             event_time (datetime.datetime, optional): The event time. 
-                Defaults to datetime.datetime.now().
+                Set to datetime.datetime.now() if not provided. Defaults to None.
 
         Returns:
             Status Response: If successful.
@@ -1222,6 +1269,9 @@ class Request(object):
         Raises:
             StatusError: If unsuccessful.
         """
+        if event_time is None:
+            event_time = datetime.datetime.now()
+
         return self.fleet.cancel_request(self.req_id, event_time)
 
     def __str__(self):
