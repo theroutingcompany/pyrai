@@ -4,7 +4,7 @@ import datetime
 import json
 import IPython
 import plotly.graph_objects as go
-from dateutil.parser import *
+from dateutil.parser import isoparse
 
 
 class FleetParams(object):

@@ -22,6 +22,11 @@ setuptools.setup(
     long_description_content_type="text/x-rst",
     url="https://github.com/routable-ai/pyrai",
     packages=setuptools.find_packages(),
+    install_requires=[
+          "ipython", 
+          "plotly", 
+          "python-dateutil"
+      ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
