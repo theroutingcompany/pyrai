@@ -128,7 +128,7 @@ duration
 
 .. code:: 
 
-    fleet.forward_simulate("duration goes here")
+    fleet.forward_simulate("5m")
 
 Visualization
 -------------

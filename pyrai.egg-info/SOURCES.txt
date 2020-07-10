@@ -1,0 +1,10 @@
+README.rst
+setup.py
+pyrai/__init__.py
+pyrai/api.py
+pyrai.egg-info/PKG-INFO
+pyrai.egg-info/SOURCES.txt
+pyrai.egg-info/dependency_links.txt
+pyrai.egg-info/top_level.txt
+tests/__init__.py
+tests/test.py
