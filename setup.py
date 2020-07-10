@@ -14,9 +14,9 @@ with open("README.rst", "r") as fh:
 
 setuptools.setup(
     name="pyrai", # Replace with your own username
-    version="0.0.0",
+    version="0.0.1",
     author="Routable AI",
-    author_email="nathan@routable.ai",
+    author_email="eng@routable.ai",
     description="A Python library for the Routable AI API",
     long_description=long_description,
     long_description_content_type="text/x-rst",
