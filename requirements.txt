@@ -1,1 +1,4 @@
 requests
+IPython
+plotly
+dateutil
