@@ -582,16 +582,14 @@ assignment API calls are methods of this class.</p>
 
 <dl class="py method">
 <dt id="pyrai.api.Fleet.plot_metrics">
-<code class="sig-name descname">plot_metrics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">metrics</span></em>, <em class="sig-param"><span class="n">start_time</span></em>, <em class="sig-param"><span class="n">end_time</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.plot_metrics" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot_metrics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">metrics</span></em>, <em class="sig-param"><span class="n">start_time</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end_time</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.plot_metrics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plots time series metrics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>metrics</strong> (<em>list</em><em>[</em><a class="reference internal" href="#pyrai.api.Metrics" title="pyrai.api.Metrics"><em>Metrics</em></a><em>]</em>) – A list of metrics to plot.</p></li>
-<li><p><strong>start_time</strong> (<em>datetime.datetime</em><em> or </em><em>str</em>) – The start time, either as
-a datetime.datetime object or an ISO string.</p></li>
-<li><p><strong>end_time</strong> (<em>datetime.datetime</em><em> or </em><em>str</em>) – The end time, either as
-a datetime.datetime object or an ISO string.</p></li>
+<li><p><strong>start_time</strong> (<em>datetime.datetime</em><em> or </em><em>str</em>) – The start time, either as a datetime.datetime object or an ISO string. Set to the fleet creation time if not set. Defaults to None.</p></li>
+<li><p><strong>end_time</strong> (<em>datetime.datetime</em><em> or </em><em>str</em>) – The end time, either as a datetime.datetime object or an ISO string. Set to the latest API call time if not set. Defaults to None.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -721,15 +719,13 @@ If the vehicle is unassigned, this may be omitted. Defaults to None.</p></li>
 
 <dl class="py method">
 <dt id="pyrai.api.Fleet.visualize">
-<code class="sig-name descname">visualize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start_time</span></em>, <em class="sig-param"><span class="n">end_time</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.visualize" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">visualize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start_time</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end_time</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrai.api.Fleet.visualize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Visualizes the fleet for the given time frame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>start_time</strong> (<em>datetime.datetime</em><em> or </em><em>str</em>) – The start time, either as
-a datetime.datetime object or an ISO string.</p></li>
-<li><p><strong>end_time</strong> (<em>datetime.datetime</em><em> or </em><em>str</em>) – The end time, either as
-a datetime.datetime object or an ISO string.</p></li>
+<li><p><strong>start_time</strong> (<em>datetime.datetime</em><em> or </em><em>str</em>) – The start time, either as a datetime.datetime object or an ISO string. Set to the python fleet creation time if not set. Defaults to None.</p></li>
+<li><p><strong>end_time</strong> (<em>datetime.datetime</em><em> or </em><em>str</em>) – The end time, either as a datetime.datetime object or an ISO string. Set to the latest API call time if not set. Defaults to None.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

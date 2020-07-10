@@ -10,29 +10,51 @@ pyrai: A Python library for the Routable AI API
 Introduction
 ------------
 
+Pyrai makes it easy to use the Routable AI API to create, run, and visualize simulations with just 10 lines of code.
+
+.. code::
+
+    import pyrai
+    import datetime
+    rai = pyrai.Pyrai(api_key="API-KEY-HERE")
+    fleet = rai.create_live_fleet()
+    fleet.make_vehicle_online(vid=1, location=pyrai.Location(lat=42.36, lng=71.05), capacity=4)
+    fleet.add_request(rid=1, pickup=pyrai.Location(42.1,71.2), dropoff=pyrai.Location(42.3,71.4), load=4)
+    fleet.get_assignments()
+    fleet.forward_simulate("10m")
+    fleet.visualize()
+
+Features
+--------
+
 Pyrai allows you to create, run, and visualize simulations with the
 Routable AI API, right in Python.
 
+Getting Started
+^^^^^^^^^^^^^^^
+
+Begin by importing the package and adding your API key.
+
 .. code:: 
 
-    from api import *
+    import pyrai
     API_KEY = "your-api-key-here"
 
 Once you have added your API key, you can create a fleet:
 
 .. code:: 
 
-    rai = Pyrai(api_key=API_KEY)
+    rai = pyrai.Pyrai(api_key=API_KEY)
     fleet = rai.create_sim_fleet()
 
 You can also create a fleet directly from its API key and fleet key:
 
 .. code:: 
 
-    directly_created_fleet = Fleet(api_key="api-key-here", fleet_key="fleet-key-here")
+    directly_created_fleet = pyrai.Fleet(api_key="api-key-here", fleet_key="fleet-key-here")
 
 Vehicles
---------
+^^^^^^^^
 
 Once you have a fleet, you can add, update, and remove vehicles from it:
 
@@ -67,7 +89,7 @@ Vehicles are easy to take offline and/or remove:
     veh.remove()
 
 Requests
---------
+^^^^^^^^
 
 Requests can be added, queried, and cancelled similar to vehicles.
 
@@ -90,7 +112,7 @@ Requests can be added, queried, and cancelled similar to vehicles.
 
 
 Assignments
------------
+^^^^^^^^^^^
 
 Once you have a fleet with requests and vehicles, you can use the API to
 assign vehicles to requests.
@@ -121,24 +143,25 @@ assign vehicles to requests.
 
 
 Forward Simulation
-------------------
+^^^^^^^^^^^^^^^^^^
 
 Once you have assignments, you can forward simulate for a specified
 duration
 
 .. code:: 
 
-    fleet.forward_simulate("5m")
+    fleet.forward_simulate(duration="5m")
+
+This updates the state of your vehicles and requests.
 
 Visualization
--------------
+^^^^^^^^^^^^^
 
-Once you have a fleet that has accumulated events, you can visualize the
-vehicles and requests.
+Once you have a fleet that has accumulated events and run through a forward simulation, you can visualize the vehicles and requests:
 
 .. code:: 
 
-    fleet = Fleet(api_key = "907fab5b-c35e-497f-988f-92fbb8835977", 
+    fleet = pyrai.Fleet(api_key = "907fab5b-c35e-497f-988f-92fbb8835977", 
                   fleet_key = "8af41885-d9bf-465d-9746-e54d8147646d")
     fleet.visualize('2020-05-06T21:55:00Z',
                     '2020-05-06T22:55:00Z')

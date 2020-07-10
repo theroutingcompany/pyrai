@@ -5,7 +5,7 @@ import json
 import IPython
 import plotly.graph_objects as go
 from dateutil.parser import isoparse
-
+from pytimeparse.timeparse import timeparse
 
 class FleetParams(object):
     """
@@ -348,6 +348,8 @@ class Fleet(object):
         self.pyrai = pyrai
         self.params = params
         self.vis_url = vis_url
+        self.start_time = datetime.datetime.now()
+        self.end_time = datetime.datetime.now()
     
     @property
     def user_key(self):
@@ -447,6 +449,9 @@ class Fleet(object):
             StatusReponse: If successful.
         """
 
+        if datetime.datetime.now() > self.end_time:
+            self.end_time = datetime.datetime.now()
+
         url = self.build_url(Endpoints.MAKE_VEHICLE_ONLINE)
         payload = {
             "location": location.todict(),
@@ -476,6 +481,9 @@ class Fleet(object):
         Returns:
             StatusReponse: If successful.
         """
+        if datetime.datetime.now() > self.end_time:
+            self.end_time = datetime.datetime.now()
+
         url = self.build_url(Endpoints.MAKE_VEHICLE_OFFLINE)
         payload = {
             'location': location.todict(),
@@ -518,6 +526,9 @@ class Fleet(object):
         if event_time is None:
             event_time = datetime.datetime.now()
 
+        if event_time > self.end_time:
+            self.end_time = event_time
+
         url = self.build_url(Endpoints.UPDATE_VEHICLE)
         payload = {
             'id': vid,
@@ -554,6 +565,10 @@ class Fleet(object):
         Raises:
             StatusError: If unsuccessful.
         """
+
+        if datetime.datetime.now() > self.end_time:
+            self.end_time = datetime.datetime.now()
+        
         url = self.build_url(Endpoints.REMOVE_VEHICLE)
         payload = {
             'location': location.todict(),
@@ -621,6 +636,9 @@ class Fleet(object):
         if request_time is None:
             request_time = datetime.datetime.now()
 
+        if request_time > self.end_time:
+            self.end_time = request_time
+
         url = self.build_url(Endpoints.ADD_REQUEST)
         payload = {
             'id': rid,
@@ -655,6 +673,9 @@ class Fleet(object):
         """
         if event_time is None:
             event_time = datetime.datetime.now()
+
+        if event_time > self.end_time:
+            self.end_time = event_time
 
         url = self.build_url(Endpoints.CANCEL_REQUEST)
         payload = {
@@ -716,6 +737,9 @@ class Fleet(object):
         if current_time is None:
             current_time = datetime.datetime.now()
 
+        if current_time > self.end_time:
+            self.end_time = current_time
+
         url = self.build_url(Endpoints.COMPUTE_ASSIGNMENTS)
         payload = {
             'api_key': self.api_key,
@@ -755,6 +779,11 @@ class Fleet(object):
         if isinstance(current_time, str):
             current_time = isoparse(current_time)
 
+        duration_td = datetime.timedelta(seconds=timeparse(duration))
+    
+        if current_time + duration_td > self.end_time:
+            self.end_time = current_time + duration_td
+
         url = self.build_url(Endpoints.FORWARD_SIMULATE)
         payload = {
             'user_key': self.user_key.todict(),
@@ -776,19 +805,23 @@ class Fleet(object):
 
         
 
-    def visualize(self, start_time, end_time):
+    def visualize(self, start_time=None, end_time=None):
         """
         Visualizes the fleet for the given time frame.
 
         Args:
-            start_time (datetime.datetime or str): The start time, either as
-                a datetime.datetime object or an ISO string.
-            end_time (datetime.datetime or str): The end time, either as
-                a datetime.datetime object or an ISO string.
+            start_time (datetime.datetime or str): The start time, either as a datetime.datetime object or an ISO string. Set to the python fleet creation time if not set. Defaults to None.
+            end_time (datetime.datetime or str): The end time, either as a datetime.datetime object or an ISO string. Set to the latest API call time if not set. Defaults to None.
 
         Returns:
             IFrame: A graphic view of the fleet through time.
         """
+        if start_time is None:
+            start_time = self.start_time
+        
+        if end_time is None:
+            end_time = self.end_time
+
         if isinstance(start_time, str):
             start_time = isoparse(start_time)
 
@@ -805,21 +838,25 @@ class Fleet(object):
 
         return IPython.display.IFrame(url, 800, 800)
 
-    def plot_metrics(self, metrics, start_time, end_time):
+    def plot_metrics(self, metrics, start_time=None, end_time=None):
         """
         Plots time series metrics.
 
         Args:
             metrics (list[Metrics]): A list of metrics to plot.
-            start_time (datetime.datetime or str): The start time, either as
-                a datetime.datetime object or an ISO string.
-            end_time (datetime.datetime or str): The end time, either as
-                a datetime.datetime object or an ISO string.
+            start_time (datetime.datetime or str): The start time, either as a datetime.datetime object or an ISO string. Set to the fleet creation time if not set. Defaults to None.
+            end_time (datetime.datetime or str): The end time, either as a datetime.datetime object or an ISO string. Set to the latest API call time if not set. Defaults to None.
 
         Returns:
             Plotly.Figure: A figure that graphs the metrics
                 over the time interval.
         """
+        if start_time is None:
+            start_time = self.start_time
+        
+        if end_time is None:
+            end_time = self.end_time
+
         if isinstance(start_time, str):
             start_time = isoparse(start_time)
 

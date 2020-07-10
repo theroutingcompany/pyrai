@@ -2,3 +2,4 @@ requests
 IPython
 plotly
 python-dateutil
+pytimeparse
