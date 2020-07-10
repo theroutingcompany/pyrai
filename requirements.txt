@@ -1,4 +1,4 @@
 requests
 IPython
 plotly
-dateutil
+python-dateutil
