@@ -26,7 +26,8 @@ setuptools.setup(
           "ipython",
           "plotly",
           "python-dateutil",
-          "pytimeparse"
+          "pytimeparse",
+          "requests"
       ],
     classifiers=[
         "Programming Language :: Python :: 3",
