@@ -6,12 +6,9 @@ Defaults
 .. autoclass:: pyrai.api.Defaults
     :members:
 
-.. py:data:: Defaults.BASE_URL
-    :type: Defaults
-    :value: "https://api.routable.ai"
-.. py:data:: Defaults.VISUALIZATION_URL
-    :type: Defaults
-    :value: "https://dashboard.routable.ai/pyraimap?start={start}&end={end}&api_key={api_key}&fleet_key={fleet_key}"
+.. autoattribute:: pyrai.api.Defaults.BASE_URL
+
+.. autoattribute:: pyrai.api.Defaults.VISUALIZATION_URL
 
 Pyrai 
 -----
@@ -43,21 +40,13 @@ VehicleEvents
 .. autoclass:: pyrai.api.VehicleEvent
     :members:
 
-.. py:data:: VehicleEvent.PICKUP
-    :type: VehicleEvent
-    :value: "pickup"
+.. autoattribute:: pyrai.api.VehicleEvent.PICKUP
 
-.. py:data:: VehicleEvent.DROPOFF
-    :type: VehicleEvent
-    :value: "dropoff"
+.. autoattribute:: pyrai.api.VehicleEvent.DROPOFF
 
-.. py:data:: VehicleEvent.PROGRESS
-    :type: VehicleEvent
-    :value: "progress"
+.. autoattribute:: pyrai.api.VehicleEvent.PROGRESS
 
-.. py:data:: VehicleEvent.UNASSIGNED
-    :type: VehicleEvent
-    :value: "unassigned"
+.. autoattribute:: pyrai.api.VehicleEvent.UNASSIGNED
 
 Requests
 --------
@@ -92,63 +81,32 @@ Metrics
 .. autoclass:: pyrai.api.Metrics
     :members:
 
-.. py:data:: Metrics.TIME
-    :type: Metrics
-    :value: "time"
+.. autoattribute:: pyrai.api.Metrics.TIME
 
-.. py:data:: Metrics.PASSENGERS
-    :type: Metrics
-    :value: "passengers"
+.. autoattribute:: pyrai.api.Metrics.PASSENGERS
 
-.. py:data:: Metrics.WAITING_REQUESTS
-    :type: Metrics
-    :value: "waiting_requests"
+.. autoattribute:: pyrai.api.Metrics.WAITING_REQUESTS
     
-.. py:data:: Metrics.ACTIVE_REQUESTS
-    :type: Metrics
-    :value: "active_requests"
-    
-.. py:data:: Metrics.DROPPED_REQUESTS
-    :type: Metrics
-    :value: "dropped_requests"
-    
-.. py:data:: Metrics.CANCELED_REQUESTS
-    :type: Metrics
-    :value: "canceled_requests"
-    
-.. py:data:: Metrics.TOTAL_REQUESTS
-    :type: Metrics
-    :value: "total_requests"
-    
-.. py:data:: Metrics.ASSIGNED_VEHICLES
-    :type: Metrics
-    :value: "assigned_vehicles"
-    
-.. py:data:: Metrics.IDLE_VEHICLES
-    :type: Metrics
-    :value: "idle_vehicles"
-    
-.. py:data:: Metrics.REBALANCING_VEHICLES
-    :type: Metrics
-    :value: "rebalancing_vehicles"
-    
-.. py:data:: Metrics.OFFLINE_VEHICLES
-    :type: Metrics
-    :value: "offline_vehicles"
-    
-.. py:data:: Metrics.AVG_WAIT
-    :type: Metrics
-    :value: "avg_wait"
-    
-.. py:data:: Metrics.AVG_DELAY
-    :type: Metrics
-    :value: "avg_delay"
-    
-.. py:data:: Metrics.AVG_OCCUPANCY
-    :type: Metrics
-    :value: "avg_occupancy"
-    
-.. py:data:: Metrics.SERVICE_RATE
-    :type: Metrics
-    :value: "service_rate"
-    
+.. autoattribute:: pyrai.api.Metrics.ACTIVE_REQUESTS
+
+.. autoattribute:: pyrai.api.Metrics.DROPPED_REQUESTS
+
+.. autoattribute:: pyrai.api.Metrics.CANCELED_REQUESTS
+  
+.. autoattribute:: pyrai.api.Metrics.TOTAL_REQUESTS
+   
+.. autoattribute:: pyrai.api.Metrics.ASSIGNED_VEHICLES
+   
+.. autoattribute:: pyrai.api.Metrics.IDLE_VEHICLES
+
+.. autoattribute:: pyrai.api.Metrics.REBALANCING_VEHICLES
+ 
+.. autoattribute:: pyrai.api.Metrics.OFFLINE_VEHICLES
+  
+.. autoattribute:: pyrai.api.Metrics.AVG_WAIT
+   
+.. autoattribute:: pyrai.api.Metrics.AVG_DELAY
+
+.. autoattribute:: pyrai.api.Metrics.AVG_OCCUPANCY
+  
+.. autoattribute:: pyrai.api.Metrics.SERVICE_RATE
