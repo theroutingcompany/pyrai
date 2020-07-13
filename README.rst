@@ -161,8 +161,8 @@ Once you have a fleet that has accumulated events and run through a forward simu
 
 .. code:: 
 
-    fleet = pyrai.Fleet(api_key = "907fab5b-c35e-497f-988f-92fbb8835977", 
-                  fleet_key = "8af41885-d9bf-465d-9746-e54d8147646d")
+    fleet = pyrai.Fleet(api_key = "api-key-here", 
+                  fleet_key = "fleet-key-here")
     fleet.visualize('2020-05-06T21:55:00Z',
                     '2020-05-06T22:55:00Z')
 
