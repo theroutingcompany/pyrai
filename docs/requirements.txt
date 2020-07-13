@@ -1,1 +1,6 @@
+requests
+IPython
+plotly
+python-dateutil
+pytimeparse
 sphinx_glpi_theme
