@@ -51,6 +51,7 @@ exclude_patterns = []
 import sphinx_glpi_theme
 html_theme = "glpi"
 html_theme_path = sphinx_glpi_theme.get_html_themes_path()
+master_doc = 'index'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
