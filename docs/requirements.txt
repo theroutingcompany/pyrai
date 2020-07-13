@@ -3,4 +3,5 @@ IPython
 plotly
 python-dateutil
 pytimeparse
+Sphinx
 sphinx_glpi_theme
