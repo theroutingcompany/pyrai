@@ -12,9 +12,8 @@ Introduction
 Pyrai makes it easy to use the Routable AI API to create, run, and
 visualize simulations with just 10 lines of code.
 
-``` {.python}
+``` python
 import pyrai
-import datetime
 rai = pyrai.Pyrai(api_key="API-KEY-HERE")
 fleet = rai.create_live_fleet()
 fleet.make_vehicle_online(vid=1, location=pyrai.Location(lat=42.36, lng=71.05), capacity=4)
@@ -34,21 +33,21 @@ Routable AI API, right in Python.
 
 Begin by importing the package and adding your API key.
 
-``` {.python}
+```python
 import pyrai
 API_KEY = "your-api-key-here"
 ```
 
 Once you have added your API key, you can create a fleet:
 
-``` {.python}
+```python
 rai = pyrai.Pyrai(api_key=API_KEY)
 fleet = rai.create_sim_fleet()
 ```
 
 You can also create a fleet directly from its API key and fleet key:
 
-``` {.python}
+```python
 directly_created_fleet = pyrai.Fleet(api_key="api-key-here", fleet_key="fleet-key-here")
 ```
 
@@ -56,7 +55,7 @@ directly_created_fleet = pyrai.Fleet(api_key="api-key-here", fleet_key="fleet-ke
 
 Once you have a fleet, you can add, update, and remove vehicles from it:
 
-``` {.python}
+```python
 fleet.make_vehicle_online(vid=1, location=Location(50, 7), capacity=4)
 veh = fleet.get_vehicle_info(1)
 ```
@@ -64,19 +63,19 @@ veh = fleet.get_vehicle_info(1)
 Vehicles adding, updating, and removing can be done either from the
 fleet or the individual vehicles:
 
-``` {.python}
+```python
 # These lines do the same thing
 veh.update(event=VehicleEvent.UNASSIGNED, location=Location(50,6), direction=0)
 fleet.update_vehicle(vid=1, location=Location(50, 6), direction=0, event=VehicleEvent.UNASSIGNED)
 ```
 
-``` {.python}
+```python
 >>> {'fleet': {'api_key': 'your-api-key-here', 'fleet_key': '6b515268-6125-43b4-bd34-2ecdb112e9aa'}, 'veh_id': 1, 'location': {'lat': 50.748227, 'lng': 5.992767}, 'assigned': False, 'req_ids': [], 'events': []}
 ```
 
 Vehicles are easy to take offline and/or remove:
 
-``` {.python}
+```python
 veh.make_offline()
 veh.remove()
 ```
@@ -85,18 +84,18 @@ veh.remove()
 
 Requests can be added, queried, and cancelled similar to vehicles.
 
-``` {.python}
+```python
 fleet.add_request(rid=1,
                   pickup=Location(30,40),
                   dropoff=Location(40,50),
                   load=4)
 ```
 
-``` {.python}
+```python
 req=fleet.get_request(1)
 ```
 
-``` {.python}
+```python
 req.cancel()
 # Could also use fleet.cancel_request(rid=1)
 ```
@@ -106,7 +105,7 @@ req.cancel()
 Once you have a fleet with requests and vehicles, you can use the API to
 assign vehicles to requests.
 
-``` {.python}
+```python
 import random
 fleet = rai.create_live_fleet()
 import random
@@ -122,7 +121,7 @@ for r in range(100): # Add 100 random requests
 fleet.get_assignments() # Get assignments
 ```
 
-``` {.python}
+```python
 >>> {'vehs': [{'fleet': {'api_key': 'your-api-key-here', 'fleet_key': 'your-fleet-key-here'}, 'veh_id': 1, 'location': {'lat': 50.754699, 'lng': 5.681816}, 'assigned': True, 'req_ids': [80], 'events': [{'req_id': 80, 'location': {'lat': 50.754699, 'lng': 5.681816}, 'time': '2020-07-03T12:27:27Z', 'event': 'pickup'}, {'req_id': 80, 'location': {'lat': 51.541428, 'lng': 3.438608}, 'time': '2020-07-03T17:44:31Z', 'event': 'dropoff'}]}, {'fleet': {'api_key': 'your-api-key-here', 'fleet_key': 'your-fleet-key-here'}, 'veh_id': 17, 'location': {'lat': 50.751542, 'lng': 6.019059}, 'assigned': True, 'req_ids': [13], 'events': [{'req_id': 13, 'location': {'lat': 50.751542, 'lng': 6.019059}, 'time': '2020-07-03T12:27:27Z', 'event': 'pickup'}, {'req_id': 13, 'location': {'lat': 51.239186, 'lng': 3.42657}, 'time': '2020-07-03T18:33:33Z', 'event': 'dropoff'}]},..., {'fleet': {'api_key': 'your-api-key-here', 'fleet_key': 'your-fleet-key-here'}, 'veh_id': 3, 'location': {'lat': 50.753503, 'lng': 6.021277}, 'assigned': True, 'req_ids': [94], 'events': [{'req_id': 94, 'location': {'lat': 50.753503, 'lng': 6.021277}, 'time': '2020-07-03T12:27:27Z', 'event': 'pickup'}, {'req_id': 94, 'location': {'lat': 53.258865, 'lng': 7.267049}, 'time': '2020-07-03T20:12:17Z', 'event': 'dropoff'}]}], 'requests': [{'fleet': {'api_key': 'your-api-key-here', 'fleet_key': 'your-fleet-key-here'}, 'pickup': {'lat': 50.867703, 'lng': 6.091752}, 'dropoff': {'lat': 53.401362, 'lng': 5.25105}, 'request_time': '2020-07-03T12:26:47Z', 'req_id': 0, 'veh_id': 11, 'load': 4, 'assigned': True}, {'fleet': {'api_key': 'your-api-key-here', 'fleet_key': 'your-fleet-key-here'}, 'pickup': {'lat': 50.751542, 'lng': 6.019059}, 'dropoff': {'lat': 51.956534, 'lng': 6.823075}, 'request_time': '2020-07-03T12:26:47Z', 'req_id': 1, 'veh_id': -1, 'load': 4, 'assigned': False},..., {'fleet': {'api_key': 'your-api-key-here', 'fleet_key': 'your-fleet-key-here'}, 'pickup': {'lat': 51.302285, 'lng': 3.328629}, 'dropoff': {'lat': 50.748227, 'lng': 5.992767}, 'request_time': '2020-07-03T12:26:47Z', 'req_id': 99, 'veh_id': -1, 'load': 4, 'assigned': False}], 'notifications': []}
 ```
 
@@ -131,7 +130,7 @@ fleet.get_assignments() # Get assignments
 Once you have assignments, you can forward simulate for a specified
 duration
 
-``` {.python}
+```python
 fleet.forward_simulate(duration="5m")
 ```
 
@@ -142,14 +141,14 @@ This updates the state of your vehicles and requests.
 Once you have a fleet that has accumulated events and run through a
 forward simulation, you can visualize the vehicles and requests:
 
-``` {.}
+```python
 fleet = pyrai.Fleet(api_key = "907fab5b-c35e-497f-988f-92fbb8835977", 
               fleet_key = "8af41885-d9bf-465d-9746-e54d8147646d")
 fleet.visualize('2020-05-06T21:55:00Z',
                 '2020-05-06T22:55:00Z')
 ```
 
-```{=html}
+```html
 <iframe
     width="100%"
     height="600"
@@ -160,13 +159,13 @@ fleet.visualize('2020-05-06T21:55:00Z',
 ```
 You can also plot various time series metrics:
 
-``` {.}
+```python
 fleet.plot_metrics([Metrics.PASSENGERS, Metrics.TOTAL_REQUESTS, Metrics.AVG_OCCUPANCY, Metrics.IDLE_VEHICLES], 
                   '2020-05-06T21:55:00Z',
                   '2020-05-06T22:55:00Z')
 ```
 
-```{=html}
+```html
 <html>
 <head><meta charset="utf-8" /></head>
 <body>
