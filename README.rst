@@ -24,6 +24,15 @@ Pyrai makes it easy to use the Routable AI API to create, run, and visualize sim
     fleet.forward_simulate("10m")
     fleet.visualize()
 
+Installation
+------------
+
+Download the install the latest release with
+
+.. code::
+
+    pip install pyrai
+
 Features
 --------
 
