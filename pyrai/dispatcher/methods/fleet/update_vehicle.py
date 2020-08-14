@@ -1,7 +1,11 @@
 import datetime
 import json
 import requests
-from pyrai.dispatcher.structures import Defaults, FleetParams, Endpoints, StatusError, Vehicle
+from pyrai.dispatcher.structures.fleet_params import FleetParams
+from pyrai.dispatcher.structures.defaults import Defaults
+from pyrai.dispatcher.structures.endpoints import Endpoints 
+from pyrai.dispatcher.structures.vehicle import Vehicle
+from pyrai.dispatcher.structures.status_error import StatusError
 from pyrai.helpers import to_rfc3339
 
 def update_vehicle(self, vid, location, event, direction=Defaults.DEFAULT_DIRECTION, event_time=None, req_id=None):

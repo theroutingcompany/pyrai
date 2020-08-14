@@ -1,4 +1,8 @@
-from ..structures import Defaults, Fleet, Endpoints, StatusError, FleetParams
+from .defaults import Defaults
+from .fleet import Fleet
+from .endpoints import Endpoints
+from .status_error import StatusError
+from .fleet_params import FleetParams
 import requests
 import json
 import urllib.parse
@@ -25,19 +29,8 @@ class Pyrai(object):
 
         self.api_key = api_key
         self.base_url = url
-    
-    def build_url(self, endpoint):
-        """
-        Builds a URL given an endpoint
 
-        Args:
-            endpoint (Endpoint: str): The endpoint to build the URL for 
-
-        Returns:
-            str: The URL to access the given API endpoint
-        """
-
-        return urllib.parse.urljoin(self.base_url, endpoint)
+    from pyrai.helpers import build_url
 
     def todict(self):
         """
@@ -73,7 +66,7 @@ class Pyrai(object):
         resp = r.json()
 
         if r.status_code == 200:
-            return Fleet(pyrai=self, fleet_key=resp.get('fleet_key'), params=params)
+            return Fleet(api_key=self.api_key, fleet_key=resp.get('fleet_key'), params=params, base_url=self.base_url)
         else:
             raise StatusError(resp=resp)
 

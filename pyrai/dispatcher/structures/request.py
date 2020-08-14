@@ -1,6 +1,6 @@
 import datetime
 from pyrai.helpers import to_rfc3339
-from pyrai.dispatcher.structures import Location
+from pyrai.dispatcher.structures.location import Location
 from dateutil.parser import isoparse
 
 class Request(object):

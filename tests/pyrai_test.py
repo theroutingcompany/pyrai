@@ -18,7 +18,6 @@ class TestAPICalls(unittest.TestCase):
             unlocked_window="2m", close_pickup_window="1s")
         self.assertEqual(sim_fleet.api_key, self.api_key)
         self.assertIsNotNone(sim_fleet.fleet_key)
-        self.assertEqual(sim_fleet.pyrai, rai)
         with self.assertRaises(pyrai.StatusError):
             bad_rai.create_sim_fleet()
 
@@ -27,7 +26,6 @@ class TestAPICalls(unittest.TestCase):
             unlocked_window="2m", close_pickup_window="1s")
         self.assertEqual(live_fleet.api_key, self.api_key)
         self.assertIsNotNone(live_fleet.fleet_key)
-        self.assertEqual(live_fleet.pyrai, rai)
         with self.assertRaises(pyrai.StatusError):
             bad_rai.create_live_fleet()
 

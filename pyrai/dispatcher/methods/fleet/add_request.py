@@ -1,4 +1,6 @@
-from pyrai.dispatcher.structures import Endpoints, StatusResponse, StatusError
+from pyrai.dispatcher.structures.endpoints import Endpoints
+from pyrai.dispatcher.structures.status_response import StatusResponse
+from pyrai.dispatcher.structures.status_error import StatusError
 import datetime
 import requests
 import json

@@ -1,4 +1,9 @@
-from pyrai.dispatcher.structures import Endpoints, VehicleAssignments, Vehicle, Request, Notification, StatusError
+from pyrai.dispatcher.structures.endpoints import Endpoints 
+from pyrai.dispatcher.structures.vehicle_assignments import VehicleAssignments
+from pyrai.dispatcher.structures.vehicle import Vehicle
+from pyrai.dispatcher.structures.request import Request 
+from pyrai.dispatcher.structures.notification import Notification
+from pyrai.dispatcher.structures.status_error import StatusError
 import datetime
 import requests
 from pyrai.helpers import to_rfc3339

@@ -8,6 +8,9 @@ from .add_request import add_request
 from .cancel_request import cancel_request
 from .get_request import get_request
 from .get_assignments import get_assignments
+from .forward_simulate import forward_simulate
+from .plot_metrics import plot_metrics
+from .visualize import visualize
 __all__ = ["make_vehicle_online", 
 "make_vehicle_offline",
 "update_vehicle",
@@ -17,5 +20,7 @@ __all__ = ["make_vehicle_online",
 "add_request",
 "cancel_request",
 "get_request",
-"get_assignments"
+"get_assignments",
+"forward_simulate",
+"plot_metrics"
 ]

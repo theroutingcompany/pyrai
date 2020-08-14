@@ -1,6 +1,8 @@
 import requests
 import json
-from pyrai.dispatcher.structures import Endpoints, Vehicle, StatusError
+from pyrai.dispatcher.structures.endpoints import Endpoints 
+from pyrai.dispatcher.structures.vehicle import Vehicle
+from pyrai.dispatcher.structures.status_error import StatusError
 
 
 def get_vehicle_info(self, vid):

@@ -1,6 +1,8 @@
 import requests
 import json
-from pyrai.dispatcher.structures import Endpoints, StatusError, StatusResponse
+from pyrai.dispatcher.structures.endpoints import Endpoints
+from pyrai.dispatcher.structures.status_response import StatusResponse
+from pyrai.dispatcher.structures.status_error import StatusError
 
 def set_params(self,
     max_wait=None,
