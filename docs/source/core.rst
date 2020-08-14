@@ -3,110 +3,110 @@ Core
 
 Defaults
 --------
-.. autoclass:: pyrai.api.Defaults
+.. autoclass:: pyrai.Defaults
     :members:
 
-.. autoattribute:: pyrai.api.Defaults.BASE_URL
+.. autoattribute:: pyrai.Defaults.BASE_URL
 
-.. autoattribute:: pyrai.api.Defaults.VISUALIZATION_URL
+.. autoattribute:: pyrai.Defaults.VISUALIZATION_URL
 
 Pyrai 
 -----
-.. autoclass:: pyrai.api.Pyrai
+.. autoclass:: pyrai.Pyrai
     :members:
 
 Fleets
 ------
-.. autoclass:: pyrai.api.Fleet
+.. autoclass:: pyrai.Fleet
     :members:
 
 Locations
 ---------
-.. autoclass:: pyrai.api.Location
+.. autoclass:: pyrai.Location
     :members:
 
 Vehicles
 --------
-.. autoclass:: pyrai.api.Vehicle
+.. autoclass:: pyrai.Vehicle
     :members:
 
 Events
 ^^^^^^
-.. autoclass:: pyrai.api.Event
+.. autoclass:: pyrai.Event
     :members:
 
 VehicleEvents
 ^^^^^^^^^^^^^
-.. autoclass:: pyrai.api.VehicleEvent
+.. autoclass:: pyrai.VehicleEvent
     :members:
 
-.. autoattribute:: pyrai.api.VehicleEvent.PICKUP
+.. autoattribute:: pyrai.VehicleEvent.PICKUP
 
-.. autoattribute:: pyrai.api.VehicleEvent.DROPOFF
+.. autoattribute:: pyrai.VehicleEvent.DROPOFF
 
-.. autoattribute:: pyrai.api.VehicleEvent.PROGRESS
+.. autoattribute:: pyrai.VehicleEvent.PROGRESS
 
-.. autoattribute:: pyrai.api.VehicleEvent.UNASSIGNED
+.. autoattribute:: pyrai.VehicleEvent.UNASSIGNED
 
 Requests
 --------
-.. autoclass:: pyrai.api.Request
+.. autoclass:: pyrai.Request
     :members:
 
 Assignments
 -----------
-.. autoclass:: pyrai.api.VehicleAssignments
+.. autoclass:: pyrai.VehicleAssignments
     :members:
 
 Notifications
 ^^^^^^^^^^^^^
-.. autoclass:: pyrai.api.Notification
+.. autoclass:: pyrai.Notification
     :members:
 
 NotificationData
 """"""""""""""""
-.. autoclass:: pyrai.api.NotificationData
+.. autoclass:: pyrai.NotificationData
     :members:
 
 Responses
 ---------
-.. autoclass:: pyrai.api.StatusResponse
+.. autoclass:: pyrai.StatusResponse
     :members:
 
-.. autoclass:: pyrai.api.StatusError
+.. autoclass:: pyrai.StatusError
     :members:
 
 Metrics
 -------
-.. autoclass:: pyrai.api.Metrics
+.. autoclass:: pyrai.Metrics
     :members:
 
-.. autoattribute:: pyrai.api.Metrics.TIME
+.. autoattribute:: pyrai.Metrics.TIME
 
-.. autoattribute:: pyrai.api.Metrics.PASSENGERS
+.. autoattribute:: pyrai.Metrics.PASSENGERS
 
-.. autoattribute:: pyrai.api.Metrics.WAITING_REQUESTS
+.. autoattribute:: pyrai.Metrics.WAITING_REQUESTS
     
-.. autoattribute:: pyrai.api.Metrics.ACTIVE_REQUESTS
+.. autoattribute:: pyrai.Metrics.ACTIVE_REQUESTS
 
-.. autoattribute:: pyrai.api.Metrics.DROPPED_REQUESTS
+.. autoattribute:: pyrai.Metrics.DROPPED_REQUESTS
 
-.. autoattribute:: pyrai.api.Metrics.CANCELED_REQUESTS
+.. autoattribute:: pyrai.Metrics.CANCELED_REQUESTS
   
-.. autoattribute:: pyrai.api.Metrics.TOTAL_REQUESTS
+.. autoattribute:: pyrai.Metrics.TOTAL_REQUESTS
    
-.. autoattribute:: pyrai.api.Metrics.ASSIGNED_VEHICLES
+.. autoattribute:: pyrai.Metrics.ASSIGNED_VEHICLES
    
-.. autoattribute:: pyrai.api.Metrics.IDLE_VEHICLES
+.. autoattribute:: pyrai.Metrics.IDLE_VEHICLES
 
-.. autoattribute:: pyrai.api.Metrics.REBALANCING_VEHICLES
+.. autoattribute:: pyrai.Metrics.REBALANCING_VEHICLES
  
-.. autoattribute:: pyrai.api.Metrics.OFFLINE_VEHICLES
+.. autoattribute:: pyrai.Metrics.OFFLINE_VEHICLES
   
-.. autoattribute:: pyrai.api.Metrics.AVG_WAIT
+.. autoattribute:: pyrai.Metrics.AVG_WAIT
    
-.. autoattribute:: pyrai.api.Metrics.AVG_DELAY
+.. autoattribute:: pyrai.Metrics.AVG_DELAY
 
-.. autoattribute:: pyrai.api.Metrics.AVG_OCCUPANCY
+.. autoattribute:: pyrai.Metrics.AVG_OCCUPANCY
   
-.. autoattribute:: pyrai.api.Metrics.SERVICE_RATE
+.. autoattribute:: pyrai.Metrics.SERVICE_RATE

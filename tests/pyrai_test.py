@@ -1,6 +1,6 @@
 import unittest
 import datetime
-from pyrai.api import *
+import pyrai
 
 class TestAPICalls(unittest.TestCase):
 
@@ -8,9 +8,9 @@ class TestAPICalls(unittest.TestCase):
     api_key = "774721b6-2e77-4d4a-8b4c-e997bcef11c3"
 
     def test_create_and_destroy(self):
-        rai = Pyrai(api_key=self.api_key)
+        rai = pyrai.Pyrai(api_key=self.api_key)
         self.assertEqual(rai.api_key, self.api_key)
-        bad_rai = Pyrai(api_key=self.bad_api_key)
+        bad_rai = pyrai.Pyrai(api_key=self.bad_api_key)
         self.assertEqual(bad_rai.api_key, self.bad_api_key)
 
         # sim fleet
@@ -18,8 +18,7 @@ class TestAPICalls(unittest.TestCase):
             unlocked_window="2m", close_pickup_window="1s")
         self.assertEqual(sim_fleet.api_key, self.api_key)
         self.assertIsNotNone(sim_fleet.fleet_key)
-        self.assertEqual(sim_fleet.pyrai, rai)
-        with self.assertRaises(StatusError):
+        with self.assertRaises(pyrai.StatusError):
             bad_rai.create_sim_fleet()
 
         # live fleet
@@ -27,12 +26,11 @@ class TestAPICalls(unittest.TestCase):
             unlocked_window="2m", close_pickup_window="1s")
         self.assertEqual(live_fleet.api_key, self.api_key)
         self.assertIsNotNone(live_fleet.fleet_key)
-        self.assertEqual(live_fleet.pyrai, rai)
-        with self.assertRaises(StatusError):
+        with self.assertRaises(pyrai.StatusError):
             bad_rai.create_live_fleet()
 
         # make vehicle online
-        resp = sim_fleet.make_vehicle_online(1, Location(80, -80), 5)
+        resp = sim_fleet.make_vehicle_online(1, pyrai.Location(80, -80), 5)
         self.assertEqual(resp.status, 0, resp.error)
     
         # get vehicle info
@@ -42,15 +40,15 @@ class TestAPICalls(unittest.TestCase):
 
         # update loc
         old_loc = veh.location
-        veh.update(VehicleEvent.UNASSIGNED, location=Location(50.75, 6.01))
+        veh.update(pyrai.VehicleEvent.UNASSIGNED, location=pyrai.Location(50.75, 6.01))
         self.assertEqual(veh.fleet, sim_fleet)
         self.assertEqual(veh.veh_id, 1)
         self.assertNotEqual(veh.location, old_loc)
 
         # add request
         resp = sim_fleet.add_request(2, 
-            Location(50.75, 6.019), 
-            Location(51.15, 6.017), 
+            pyrai.Location(50.75, 6.019), 
+            pyrai.Location(51.15, 6.017), 
             3, 
             datetime.datetime.now())
         self.assertEqual(resp.status, 0, resp.error)
