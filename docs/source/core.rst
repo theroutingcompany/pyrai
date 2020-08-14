@@ -3,110 +3,110 @@ Core
 
 Defaults
 --------
-.. autoclass:: pyrai.dispatcher.structures.Defaults
+.. autoclass:: pyrai.Defaults
     :members:
 
-.. autoattribute:: pyrai.dispatcher.structures.Defaults.BASE_URL
+.. autoattribute:: pyrai.Defaults.BASE_URL
 
-.. autoattribute:: pyrai.dispatcher.structures.Defaults.VISUALIZATION_URL
+.. autoattribute:: pyrai.Defaults.VISUALIZATION_URL
 
 Pyrai 
 -----
-.. autoclass:: pyrai.dispatcher.structures.Pyrai
+.. autoclass:: pyrai.Pyrai
     :members:
 
 Fleets
 ------
-.. autoclass:: pyrai.dispatcher.structures.Fleet
+.. autoclass:: pyrai.Fleet
     :members:
 
 Locations
 ---------
-.. autoclass:: pyrai.dispatcher.structures.Location
+.. autoclass:: pyrai.Location
     :members:
 
 Vehicles
 --------
-.. autoclass:: pyrai.dispatcher.structures.Vehicle
+.. autoclass:: pyrai.Vehicle
     :members:
 
 Events
 ^^^^^^
-.. autoclass:: pyrai.dispatcher.structures.Event
+.. autoclass:: pyrai.Event
     :members:
 
 VehicleEvents
 ^^^^^^^^^^^^^
-.. autoclass:: pyrai.dispatcher.structures.VehicleEvent
+.. autoclass:: pyrai.VehicleEvent
     :members:
 
-.. autoattribute:: pyrai.dispatcher.structures.VehicleEvent.PICKUP
+.. autoattribute:: pyrai.VehicleEvent.PICKUP
 
-.. autoattribute:: pyrai.dispatcher.structures.VehicleEvent.DROPOFF
+.. autoattribute:: pyrai.VehicleEvent.DROPOFF
 
-.. autoattribute:: pyrai.dispatcher.structures.VehicleEvent.PROGRESS
+.. autoattribute:: pyrai.VehicleEvent.PROGRESS
 
-.. autoattribute:: pyrai.dispatcher.structures.VehicleEvent.UNASSIGNED
+.. autoattribute:: pyrai.VehicleEvent.UNASSIGNED
 
 Requests
 --------
-.. autoclass:: pyrai.dispatcher.structures.Request
+.. autoclass:: pyrai.Request
     :members:
 
 Assignments
 -----------
-.. autoclass:: pyrai.dispatcher.structures.VehicleAssignments
+.. autoclass:: pyrai.VehicleAssignments
     :members:
 
 Notifications
 ^^^^^^^^^^^^^
-.. autoclass:: pyrai.dispatcher.structures.Notification
+.. autoclass:: pyrai.Notification
     :members:
 
 NotificationData
 """"""""""""""""
-.. autoclass:: pyrai.dispatcher.structures.NotificationData
+.. autoclass:: pyrai.NotificationData
     :members:
 
 Responses
 ---------
-.. autoclass:: pyrai.dispatcher.structures.StatusResponse
+.. autoclass:: pyrai.StatusResponse
     :members:
 
-.. autoclass:: pyrai.dispatcher.structures.StatusError
+.. autoclass:: pyrai.StatusError
     :members:
 
 Metrics
 -------
-.. autoclass:: pyrai.dispatcher.structures.Metrics
+.. autoclass:: pyrai.Metrics
     :members:
 
-.. autoattribute:: pyrai.dispatcher.structures.Metrics.TIME
+.. autoattribute:: pyrai.Metrics.TIME
 
-.. autoattribute:: pyrai.dispatcher.structures.Metrics.PASSENGERS
+.. autoattribute:: pyrai.Metrics.PASSENGERS
 
-.. autoattribute:: pyrai.dispatcher.structures.Metrics.WAITING_REQUESTS
+.. autoattribute:: pyrai.Metrics.WAITING_REQUESTS
     
-.. autoattribute:: pyrai.dispatcher.structures.Metrics.ACTIVE_REQUESTS
+.. autoattribute:: pyrai.Metrics.ACTIVE_REQUESTS
 
-.. autoattribute:: pyrai.dispatcher.structures.Metrics.DROPPED_REQUESTS
+.. autoattribute:: pyrai.Metrics.DROPPED_REQUESTS
 
-.. autoattribute:: pyrai.dispatcher.structures.Metrics.CANCELED_REQUESTS
+.. autoattribute:: pyrai.Metrics.CANCELED_REQUESTS
   
-.. autoattribute:: pyrai.dispatcher.structures.Metrics.TOTAL_REQUESTS
+.. autoattribute:: pyrai.Metrics.TOTAL_REQUESTS
    
-.. autoattribute:: pyrai.dispatcher.structures.Metrics.ASSIGNED_VEHICLES
+.. autoattribute:: pyrai.Metrics.ASSIGNED_VEHICLES
    
-.. autoattribute:: pyrai.dispatcher.structures.Metrics.IDLE_VEHICLES
+.. autoattribute:: pyrai.Metrics.IDLE_VEHICLES
 
-.. autoattribute:: pyrai.dispatcher.structures.Metrics.REBALANCING_VEHICLES
+.. autoattribute:: pyrai.Metrics.REBALANCING_VEHICLES
  
-.. autoattribute:: pyrai.dispatcher.structures.Metrics.OFFLINE_VEHICLES
+.. autoattribute:: pyrai.Metrics.OFFLINE_VEHICLES
   
-.. autoattribute:: pyrai.dispatcher.structures.Metrics.AVG_WAIT
+.. autoattribute:: pyrai.Metrics.AVG_WAIT
    
-.. autoattribute:: pyrai.dispatcher.structures.Metrics.AVG_DELAY
+.. autoattribute:: pyrai.Metrics.AVG_DELAY
 
-.. autoattribute:: pyrai.dispatcher.structures.Metrics.AVG_OCCUPANCY
+.. autoattribute:: pyrai.Metrics.AVG_OCCUPANCY
   
-.. autoattribute:: pyrai.dispatcher.structures.Metrics.SERVICE_RATE
+.. autoattribute:: pyrai.Metrics.SERVICE_RATE
