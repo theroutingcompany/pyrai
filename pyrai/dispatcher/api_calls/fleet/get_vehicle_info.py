@@ -2,6 +2,7 @@ import requests
 import json
 from pyrai.dispatcher.structures import Endpoints, Vehicle, StatusError
 
+
 def get_vehicle_info(self, vid):
     """
     Attempts to get vehicle info.
@@ -22,10 +23,10 @@ def get_vehicle_info(self, vid):
         'fleet_key': self.fleet_key,
         'id': vid
     }
-    r = requests.get(url, params = params)
+    r = requests.get(url, params=params)
     resp = r.json()
 
     if r.status_code == 200:
         return Vehicle.fromdict(self, resp)
     else:
-        raise StatusError(resp=resp) 
+        raise StatusError(resp=resp)
