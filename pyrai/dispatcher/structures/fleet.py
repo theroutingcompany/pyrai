@@ -76,4 +76,16 @@ class Fleet(object):
 
     from pyrai.helpers import build_url
 
-    from pyrai.dispatcher.methods.fleet import make_vehicle_online, make_vehicle_offline, update_vehicle, remove_vehicle, get_vehicle_info, set_params, add_request, cancel_request, get_request, get_assignments, forward_simulate, plot_metrics, visualize
+    from pyrai.dispatcher.methods.fleet.make_vehicle_online import make_vehicle_online
+    from pyrai.dispatcher.methods.fleet.make_vehicle_offline import make_vehicle_offline
+    from pyrai.dispatcher.methods.fleet.update_vehicle import update_vehicle
+    from pyrai.dispatcher.methods.fleet.remove_vehicle import remove_vehicle
+    from pyrai.dispatcher.methods.fleet.get_vehicle_info import get_vehicle_info
+    from pyrai.dispatcher.methods.fleet.set_params import set_params
+    from pyrai.dispatcher.methods.fleet.add_request import add_request
+    from pyrai.dispatcher.methods.fleet.cancel_request import cancel_request
+    from pyrai.dispatcher.methods.fleet.get_request import get_request
+    from pyrai.dispatcher.methods.fleet.get_assignments import get_assignments
+    from pyrai.dispatcher.methods.fleet.forward_simulate import forward_simulate
+    from pyrai.dispatcher.methods.fleet.plot_metrics import plot_metrics
+    from pyrai.dispatcher.methods.fleet.visualize import visualize

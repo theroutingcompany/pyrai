@@ -78,6 +78,7 @@ class Vehicle(object):
     def __str__(self):
         return str(self.todict())
 
+    # eventually want to move the below calls to dispatcher/methods
     def make_online(self, location=None, capacity=Defaults.DEFAULT_CAPACITY):
         """
         Makes vehicle online.
